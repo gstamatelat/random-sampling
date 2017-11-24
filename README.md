@@ -1,6 +1,6 @@
 # Random Sampling
 
-A collection of algorithms in Java for the problem of random sampling with a reservoir.
+A collection of algorithms in Java 8 for the problem of random sampling with a reservoir.
 
 Reservoir sampling is a family of randomized algorithms for randomly choosing a sample of `k` items from a list `S` containing `n` items, where `n` is either a very large or unknown number. Typically `n` is large enough that the list doesn't fit into main memory. [1] In this context, we will refer to the sample of `k` items as ***sample*** and the list `S` as ***stream***.
 
