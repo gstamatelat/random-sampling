@@ -70,7 +70,7 @@ public class VitterSampling<T> extends AbstractRandomSampling<T> implements Unwe
     private int generateRandom(int streamSize, int sampleSize) {
         int currentStream = streamSize;
 
-        double r = random.nextDouble();
+        final double r = random.nextDouble();
         int gamma = 0;
 
         double quot = (currentStream - sampleSize) / (double) currentStream;
