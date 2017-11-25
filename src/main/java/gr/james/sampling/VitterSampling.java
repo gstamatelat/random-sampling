@@ -41,6 +41,9 @@ public class VitterSampling<T> extends AbstractRandomSampling<T> implements Unwe
         if (item == null) {
             throw new NullPointerException("Item was null");
         }
+        if (streamSize == Integer.MAX_VALUE) {
+            throw new StreamOverflowException();
+        }
 
         // Increase stream size
         this.streamSize++;

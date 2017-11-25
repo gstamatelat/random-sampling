@@ -39,6 +39,9 @@ public class WatermanSampling<T> extends AbstractRandomSampling<T> implements Un
         if (item == null) {
             throw new NullPointerException("Item was null");
         }
+        if (streamSize == Integer.MAX_VALUE) {
+            throw new StreamOverflowException();
+        }
 
         // Increase stream size
         this.streamSize++;

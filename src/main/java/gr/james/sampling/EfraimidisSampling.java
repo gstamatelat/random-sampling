@@ -45,6 +45,9 @@ public class EfraimidisSampling<T> extends AbstractRandomSampling<T> implements 
         if (item == null) {
             throw new NullPointerException("Item was null");
         }
+        if (streamSize == Integer.MAX_VALUE) {
+            throw new StreamOverflowException();
+        }
         if (weight <= 0) {
             throw new IllegalWeightException("Weight was not positive, must be in (0,+Inf)");
         }

@@ -23,8 +23,9 @@ public interface WeightedRandomSampling<T> extends RandomSampling<T> {
      *
      * @param item   the item to feed to the algorithm
      * @param weight the weight assigned to this item
-     * @throws NullPointerException   if {@code item} is {@code null}
-     * @throws IllegalWeightException if {@code weight} is incompatible with the algorithm
+     * @throws NullPointerException    if {@code item} is {@code null}
+     * @throws IllegalWeightException  if {@code weight} is incompatible with the algorithm
+     * @throws StreamOverflowException if the amount if items feeded to this algorithm has reached the maximum allowed
      */
     void feed(T item, double weight);
 
@@ -41,6 +42,8 @@ public interface WeightedRandomSampling<T> extends RandomSampling<T> {
      *                                  {@code null}
      * @throws IllegalArgumentException if {@code items} and {@code weights} are not of same size
      * @throws IllegalWeightException   if any of the weights in {@code weights} is incompatible with the algorithm
+     * @throws StreamOverflowException  if any subsequent calls to {@link #feed(Object, double)} causes
+     *                                  {@code StreamOverflowException}
      */
     default void feed(Iterator<T> items, Iterator<Double> weights) {
         while (items.hasNext() && weights.hasNext()) {
@@ -57,10 +60,12 @@ public interface WeightedRandomSampling<T> extends RandomSampling<T> {
      * This method is equivalent to invoking the method {@link #feed(Object, double)} for each entry in {@code items}.
      *
      * @param items the items to feed to the algorithm
-     * @throws NullPointerException   if {@code items} is {@code null} or any key or value in {@code items} is
-     *                                {@code null}
-     * @throws IllegalWeightException if any of the weights in the values of {@code items} is incompatible with the
-     *                                algorithm
+     * @throws NullPointerException    if {@code items} is {@code null} or any key or value in {@code items} is
+     *                                 {@code null}
+     * @throws IllegalWeightException  if any of the weights in the values of {@code items} is incompatible with the
+     *                                 algorithm
+     * @throws StreamOverflowException if any subsequent calls to {@link #feed(Object, double)} causes
+     *                                 {@code StreamOverflowException}
      */
     default void feed(Map<T, Double> items) {
         for (Map.Entry<T, Double> e : items.entrySet()) {
