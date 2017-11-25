@@ -18,7 +18,7 @@ System.out.println(sample);
 
 Select 5 random tokens from an input stream.
 ```java
-final UnweightedRandomSampling<String> rs = new WatermanSampling<>(5, new Random());
+final UnweightedRandomSampling<String> rs = new VitterSampling<>(5, new Random());
 rs.feed(new Scanner(System.in));
 System.out.println(rs.sample());
 ```
@@ -42,6 +42,12 @@ System.out.println(rs.sample());
 The Art of Computer Programming, Vol II, Random Sampling and Shuffling.
 
 Signature: `WatermanSampling` implements `UnweightedRandomSampling`
+
+### Algorithm X by Vitter
+
+[Vitter, Jeffrey S. "Random sampling with a reservoir." ACM Transactions on Mathematical Software (TOMS) 11.1 (1985): 37-57.](https://doi.org/10.1145/3147.3165)
+
+Signature: `VitterSampling` implements `UnweightedRandomSampling`
 
 ### Algorithm A-ES by Efraimidis and Spirakis
 
