@@ -74,7 +74,7 @@ public class VitterSampling<T> extends AbstractRandomSampling<T> implements Unwe
         int gamma = 0;
 
         double quot = (currentStream - sampleSize) / (double) currentStream;
-        while (quot > r) {
+        while (quot > r && currentStream > 0) {
             gamma++;
             currentStream++;
             quot = (quot * (currentStream - sampleSize)) / (double) currentStream;
