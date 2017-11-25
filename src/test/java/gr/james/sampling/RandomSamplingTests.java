@@ -55,7 +55,7 @@ public class RandomSamplingTests {
         for (int c : d) {
             final double expected = (double) REPS * SAMPLE / STREAM;
             final double actual = (double) c;
-            Assert.assertEquals("RandomSamplingTests.correctness", actual / expected, 1, 1e-2);
+            Assert.assertEquals("RandomSamplingTests.correctness", 1, actual / expected, 1e-2);
         }
     }
 
