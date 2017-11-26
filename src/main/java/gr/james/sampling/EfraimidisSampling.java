@@ -55,11 +55,7 @@ public class EfraimidisSampling<T> extends AbstractRandomSampling<T> implements 
         }
 
         // Produce a random value
-        double r = 0.0;
-        while (r == 0.0) {
-            r = random.nextDouble();
-        }
-        assert r > 0.0 && r < 1.0;
+        double r = RandomSamplingUtils.randomExclusive(random);
 
         // Increase stream size
         this.streamSize++;

@@ -18,7 +18,7 @@ System.out.println(sample);
 
 Select 5 random tokens from an input stream.
 ```java
-final UnweightedRandomSampling<String> rs = new VitterSampling<>(5, new Random());
+final UnweightedRandomSampling<String> rs = new VitterXSampling<>(5, new Random());
 rs.feed(new Scanner(System.in));
 System.out.println(rs.sample());
 ```
@@ -47,9 +47,15 @@ Signature: `WatermanSampling` implements `UnweightedRandomSampling`
 
 [Vitter, Jeffrey S. "Random sampling with a reservoir." ACM Transactions on Mathematical Software (TOMS) 11.1 (1985): 37-57.](https://doi.org/10.1145/3147.3165)
 
-Signature: `VitterSampling` implements `UnweightedRandomSampling`
+Signature: `VitterXSampling` implements `UnweightedRandomSampling`
 
-### 3 Algorithm A-ES by Efraimidis and Spirakis
+### 3 Algorithm Z by Vitter
+
+[Vitter, Jeffrey S. "Random sampling with a reservoir." ACM Transactions on Mathematical Software (TOMS) 11.1 (1985): 37-57.](https://doi.org/10.1145/3147.3165)
+
+Signature: `VitterZSampling` implements `UnweightedRandomSampling`
+
+### 4 Algorithm A-ES by Efraimidis and Spirakis
 
 [Efraimidis, Pavlos S., and Paul G. Spirakis. "Weighted random sampling with a reservoir." Information Processing Letters 97.5 (2006): 181-185.](https://doi.org/10.1016/j.ipl.2005.11.003)
 

@@ -15,8 +15,8 @@ public class RandomSamplingTests {
 
     private static final Random RANDOM = new Random();
 
-    private static final int STREAM = 10;
-    private static final int SAMPLE = 5;
+    private static final int STREAM = 20;
+    private static final int SAMPLE = 10;
     private static final int REPS = 1000000;
 
     private final Supplier<RandomSampling<Integer>> impl;
@@ -25,11 +25,12 @@ public class RandomSamplingTests {
         this.impl = impl;
     }
 
-    @Parameterized.Parameters
+    @Parameterized.Parameters()
     public static Collection<Supplier<RandomSampling<Integer>>> implementations() {
         final Collection<Supplier<RandomSampling<Integer>>> implementations = new ArrayList<>();
         implementations.add(() -> new WatermanSampling<>(SAMPLE, RANDOM));
-        implementations.add(() -> new VitterSampling<>(SAMPLE, RANDOM));
+        implementations.add(() -> new VitterXSampling<>(SAMPLE, RANDOM));
+        implementations.add(() -> new VitterZSampling<>(SAMPLE, RANDOM));
         implementations.add(() -> new EfraimidisSampling<>(SAMPLE, RANDOM));
         return implementations;
     }
@@ -40,13 +41,17 @@ public class RandomSamplingTests {
 
         for (int reps = 0; reps < REPS; reps++) {
             final RandomSampling<Integer> alg = impl.get();
-            for (int i = 0; i < STREAM; i++) {
-                if (alg instanceof UnweightedRandomSampling) {
+
+            if (alg instanceof UnweightedRandomSampling) {
+                for (int i = 0; i < STREAM; i++) {
                     ((UnweightedRandomSampling<Integer>) alg).feed(i);
-                } else if (alg instanceof WeightedRandomSampling) {
+                }
+            } else if (alg instanceof WeightedRandomSampling) {
+                for (int i = 0; i < STREAM; i++) {
                     ((WeightedRandomSampling<Integer>) alg).feed(i, 1.0);
                 }
             }
+
             for (int s : alg.sample()) {
                 d[s]++;
             }
@@ -56,6 +61,20 @@ public class RandomSamplingTests {
             final double expected = (double) REPS * SAMPLE / STREAM;
             final double actual = (double) c;
             Assert.assertEquals("RandomSamplingTests.correctness", 1, actual / expected, 1e-2);
+        }
+    }
+
+    @Test
+    public void performance() {
+        final RandomSampling<Integer> alg = impl.get();
+        if (alg instanceof UnweightedRandomSampling) {
+            for (int i = 0; i < 100000000; i++) {
+                ((UnweightedRandomSampling<Integer>) alg).feed(i);
+            }
+        } else if (alg instanceof WeightedRandomSampling) {
+            for (int i = 0; i < 100000000; i++) {
+                ((WeightedRandomSampling<Integer>) alg).feed(i, 1.0);
+            }
         }
     }
 
