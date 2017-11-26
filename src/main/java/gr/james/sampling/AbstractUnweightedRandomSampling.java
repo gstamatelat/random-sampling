@@ -2,6 +2,13 @@ package gr.james.sampling;
 
 import java.util.*;
 
+/**
+ * This class provides a skeletal implementation of the {@link UnweightedRandomSampling} interface to minimize the
+ * effort required to implement that interface.
+ *
+ * @param <T> the item type
+ * @author Giorgos Stamatelatos
+ */
 public abstract class AbstractUnweightedRandomSampling<T> implements UnweightedRandomSampling<T> {
     private final int sampleSize;
     private final Random random;
