@@ -4,6 +4,8 @@ import java.util.Random;
 
 /**
  * Global utility methods used.
+ *
+ * @author Giorgos Stamatelatos
  */
 public final class RandomSamplingUtils {
     /**
