@@ -1,6 +1,6 @@
 package gr.james.sampling;
 
-import java.util.*;
+import java.util.Random;
 
 /**
  * Implementation of the algorithm "Algorithm X" by Vitter in "Random Sampling with a Reservoir".
@@ -9,10 +9,7 @@ import java.util.*;
  * @author Giorgos Stamatelatos
  * @see <a href="https://doi.org/10.1145/3147.3165">doi:10.1145/3147.3165</a>
  */
-public class VitterXSampling<T> extends AbstractRandomSampling<T> implements UnweightedRandomSampling<T> {
-    private final List<T> sample;
-    private int skip;
-
+public class VitterXSampling<T> extends AbstractUnweightedRandomSampling<T> {
     /**
      * Construct a new instance of {@link VitterXSampling} using the specified sample size and RNG. The implementation
      * assumes that {@code random} conforms to the contract of {@link Random} and will perform no checks to ensure that.
@@ -25,48 +22,9 @@ public class VitterXSampling<T> extends AbstractRandomSampling<T> implements Unw
      */
     public VitterXSampling(int sampleSize, Random random) {
         super(sampleSize, random);
-        this.sample = new ArrayList<>(sampleSize);
-        this.skip = generateRandom(sampleSize, sampleSize);
     }
 
-    /**
-     * {@inheritDoc}
-     * <p>
-     * This method runs in constant amortized time and may or may not generate a random number.
-     */
-    @Override
-    public void feed(T item) {
-        // Checks
-        if (item == null) {
-            throw new NullPointerException("Item was null");
-        }
-        if (streamSize == Integer.MAX_VALUE) {
-            throw new StreamOverflowException();
-        }
-
-        // Increase stream size
-        this.streamSize++;
-        assert this.streamSize > 0;
-
-        // Skip items and add to reservoir
-        if (sample.size() < sampleSize) {
-            sample.add(item);
-        } else {
-            assert sample.size() == sampleSize;
-            if (skip > 0) {
-                skip--;
-            } else {
-                assert skip == 0;
-                sample.set(random.nextInt(sampleSize), item);
-                skip = generateRandom(streamSize, sampleSize);
-            }
-        }
-
-        assert sample.size() == Math.min(sampleSize(), streamSize());
-        assert this.skip >= 0;
-    }
-
-    private int generateRandom(int streamSize, int sampleSize) {
+    protected int skipLength(int streamSize, int sampleSize, Random random) {
         int currentStream = streamSize + 1;
 
         final double r = random.nextDouble();
@@ -80,17 +38,5 @@ public class VitterXSampling<T> extends AbstractRandomSampling<T> implements Unw
         }
 
         return gamma;
-    }
-
-    /**
-     * {@inheritDoc}
-     * <p>
-     * This method runs in time O(k).
-     */
-    @Override
-    public Collection<T> sample() {
-        final List<T> r = new ArrayList<>(sample);
-        assert r.size() == Math.min(sampleSize(), streamSize());
-        return Collections.unmodifiableList(r);
     }
 }
