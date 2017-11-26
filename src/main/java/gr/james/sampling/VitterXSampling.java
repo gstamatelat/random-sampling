@@ -26,7 +26,7 @@ public class VitterXSampling<T> extends AbstractRandomSampling<T> implements Unw
     public VitterXSampling(int sampleSize, Random random) {
         super(sampleSize, random);
         this.sample = new ArrayList<>(sampleSize);
-        this.skip = generateRandom(sampleSize + 1, sampleSize);
+        this.skip = generateRandom(sampleSize, sampleSize);
     }
 
     /**
@@ -58,7 +58,7 @@ public class VitterXSampling<T> extends AbstractRandomSampling<T> implements Unw
             } else {
                 assert skip == 0;
                 sample.set(random.nextInt(sampleSize), item);
-                skip = generateRandom(streamSize + 1, sampleSize);
+                skip = generateRandom(streamSize, sampleSize);
             }
         }
 
@@ -67,7 +67,7 @@ public class VitterXSampling<T> extends AbstractRandomSampling<T> implements Unw
     }
 
     private int generateRandom(int streamSize, int sampleSize) {
-        int currentStream = streamSize;
+        int currentStream = streamSize + 1;
 
         final double r = random.nextDouble();
         int gamma = 0;
