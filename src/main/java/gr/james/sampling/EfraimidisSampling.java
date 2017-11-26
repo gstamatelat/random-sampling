@@ -14,7 +14,6 @@ import java.util.*;
  */
 public class EfraimidisSampling<T> extends AbstractRandomSampling<T> implements WeightedRandomSampling<T> {
     private final PriorityQueue<Weighted<T>> pq;
-    private int streamSize;
 
     /**
      * Construct a new instance of {@link EfraimidisSampling} using the specified sample size and RNG. The
@@ -95,16 +94,5 @@ public class EfraimidisSampling<T> extends AbstractRandomSampling<T> implements 
         }
         assert r.size() == Math.min(sampleSize(), streamSize());
         return Collections.unmodifiableList(r);
-    }
-
-    /**
-     * {@inheritDoc}
-     * <p>
-     * This method runs in constant time.
-     */
-    @Override
-    public int streamSize() {
-        assert this.streamSize >= 0;
-        return this.streamSize;
     }
 }

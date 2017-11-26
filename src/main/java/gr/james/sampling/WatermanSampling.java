@@ -11,7 +11,6 @@ import java.util.*;
  */
 public class WatermanSampling<T> extends AbstractRandomSampling<T> implements UnweightedRandomSampling<T> {
     private final List<T> sample;
-    private int streamSize;
 
     /**
      * Construct a new instance of {@link WatermanSampling} using the specified sample size and RNG. The implementation
@@ -70,16 +69,5 @@ public class WatermanSampling<T> extends AbstractRandomSampling<T> implements Un
         final List<T> r = new ArrayList<>(sample);
         assert r.size() == Math.min(sampleSize(), streamSize());
         return Collections.unmodifiableList(r);
-    }
-
-    /**
-     * {@inheritDoc}
-     * <p>
-     * This method runs in constant time.
-     */
-    @Override
-    public int streamSize() {
-        assert this.streamSize >= 0;
-        return this.streamSize;
     }
 }

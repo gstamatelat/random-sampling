@@ -21,6 +21,12 @@ public abstract class AbstractRandomSampling<T> implements RandomSampling<T> {
     protected final Random random;
 
     /**
+     * The stream size, that is the number of items that have been processed so far. Implementations must increase this
+     * field as more items come through.
+     */
+    protected int streamSize; // TODO: It looks like this field can be manipulated from the same package (probably fine)
+
+    /**
      * Construct a new instance of this class using the specified sample size and RNG. The implementation assumes that
      * {@code random} conforms to the contract of {@link Random} and will perform no checks to ensure that. If this
      * contract is violated, the behavior is undefined.
@@ -39,6 +45,7 @@ public abstract class AbstractRandomSampling<T> implements RandomSampling<T> {
         }
         this.random = random;
         this.sampleSize = sampleSize;
+        this.streamSize = 0;
     }
 
     /**
@@ -50,5 +57,16 @@ public abstract class AbstractRandomSampling<T> implements RandomSampling<T> {
     public final int sampleSize() {
         assert this.sampleSize > 0;
         return this.sampleSize;
+    }
+
+    /**
+     * {@inheritDoc}
+     * <p>
+     * This method runs in constant time.
+     */
+    @Override
+    public final int streamSize() {
+        assert this.streamSize >= 0;
+        return this.streamSize;
     }
 }

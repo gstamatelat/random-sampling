@@ -11,7 +11,6 @@ import java.util.*;
  */
 public class VitterSampling<T> extends AbstractRandomSampling<T> implements UnweightedRandomSampling<T> {
     private final List<T> sample;
-    private int streamSize;
     private int skip;
 
     /**
@@ -93,16 +92,5 @@ public class VitterSampling<T> extends AbstractRandomSampling<T> implements Unwe
         final List<T> r = new ArrayList<>(sample);
         assert r.size() == Math.min(sampleSize(), streamSize());
         return Collections.unmodifiableList(r);
-    }
-
-    /**
-     * {@inheritDoc}
-     * <p>
-     * This method runs in constant time.
-     */
-    @Override
-    public int streamSize() {
-        assert this.streamSize >= 0;
-        return this.streamSize;
     }
 }
