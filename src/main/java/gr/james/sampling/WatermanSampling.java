@@ -11,6 +11,7 @@ import java.util.*;
  */
 public class WatermanSampling<T> extends AbstractRandomSampling<T> implements UnweightedRandomSampling<T> {
     private final List<T> sample;
+    private int skip;
 
     /**
      * Construct a new instance of {@link WatermanSampling} using the specified sample size and RNG. The implementation
@@ -25,12 +26,13 @@ public class WatermanSampling<T> extends AbstractRandomSampling<T> implements Un
     public WatermanSampling(int sampleSize, Random random) {
         super(sampleSize, random);
         this.sample = new ArrayList<>(sampleSize);
+        this.skip = generateRandom(sampleSize, sampleSize);
     }
 
     /**
      * {@inheritDoc}
      * <p>
-     * This method runs in constant time and generates exactly 1 random number.
+     * This method runs in constant time and generates 1 random number on average.
      */
     @Override
     public void feed(T item) {
@@ -46,17 +48,32 @@ public class WatermanSampling<T> extends AbstractRandomSampling<T> implements Un
         this.streamSize++;
         assert this.streamSize > 0;
 
-        // Add item to reservoir
+        // Skip items and add to reservoir
         if (sample.size() < sampleSize) {
             sample.add(item);
         } else {
             assert sample.size() == sampleSize;
-            int r = random.nextInt(streamSize);
-            if (r < sampleSize) {
-                sample.set(r, item);
+            if (skip > 0) {
+                skip--;
+            } else {
+                assert skip == 0;
+                sample.set(random.nextInt(sampleSize), item);
+                skip = generateRandom(streamSize, sampleSize);
             }
         }
+
         assert sample.size() == Math.min(sampleSize(), streamSize());
+        assert this.skip >= 0;
+    }
+
+    private int generateRandom(int streamSize, int sampleSize) {
+        streamSize++;
+        int skipCount = 0;
+        while (random.nextInt(streamSize) >= sampleSize) {
+            streamSize++;
+            skipCount++;
+        }
+        return skipCount;
     }
 
     /**
