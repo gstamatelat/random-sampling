@@ -37,19 +37,19 @@ System.out.println(rs.sample());
 
 ## Algorithms
 
-### Algorithm R by Waterman
+### 1 Algorithm R by Waterman
 
 The Art of Computer Programming, Vol II, Random Sampling and Shuffling.
 
 Signature: `WatermanSampling` implements `UnweightedRandomSampling`
 
-### Algorithm X by Vitter
+### 2 Algorithm X by Vitter
 
 [Vitter, Jeffrey S. "Random sampling with a reservoir." ACM Transactions on Mathematical Software (TOMS) 11.1 (1985): 37-57.](https://doi.org/10.1145/3147.3165)
 
 Signature: `VitterSampling` implements `UnweightedRandomSampling`
 
-### Algorithm A-ES by Efraimidis and Spirakis
+### 3 Algorithm A-ES by Efraimidis and Spirakis
 
 [Efraimidis, Pavlos S., and Paul G. Spirakis. "Weighted random sampling with a reservoir." Information Processing Letters 97.5 (2006): 181-185.](https://doi.org/10.1016/j.ipl.2005.11.003)
 
