@@ -5,15 +5,17 @@ import java.util.*;
 /**
  * Implementation of the algorithm from Efraimidis and Spirakis in "Weighted random sampling with a reservoir".
  * <p>
- * This algorithm accepts item weights in the range (0,+Inf), otherwise an {@link IllegalWeightException} is
- * thrown.
+ * This algorithm accepts item weights in the range (0,+Inf), otherwise an {@link IllegalWeightException} is thrown.
  *
  * @param <T> the item type
  * @author Giorgos Stamatelatos
  * @see <a href="https://doi.org/10.1016/j.ipl.2005.11.003">doi:10.1016/j.ipl.2005.11.003</a>
  */
-public class EfraimidisSampling<T> extends AbstractRandomSampling<T> implements WeightedRandomSampling<T> {
+public class EfraimidisSampling<T> implements WeightedRandomSampling<T> {
+    private final int sampleSize;
+    private final Random random;
     private final PriorityQueue<Weighted<T>> pq;
+    private int streamSize;
 
     /**
      * Construct a new instance of {@link EfraimidisSampling} using the specified sample size and RNG. The
@@ -26,9 +28,16 @@ public class EfraimidisSampling<T> extends AbstractRandomSampling<T> implements 
      * @throws IllegalArgumentException if {@code sampleSize} is less than 1
      */
     public EfraimidisSampling(int sampleSize, Random random) {
-        super(sampleSize, random);
-        this.pq = new PriorityQueue<>(sampleSize);
+        if (random == null) {
+            throw new NullPointerException("Random was null");
+        }
+        if (sampleSize < 1) {
+            throw new IllegalArgumentException("Sample size was less than 1");
+        }
+        this.random = random;
+        this.sampleSize = sampleSize;
         this.streamSize = 0;
+        this.pq = new PriorityQueue<>(sampleSize);
     }
 
     /**
@@ -90,5 +99,27 @@ public class EfraimidisSampling<T> extends AbstractRandomSampling<T> implements 
         }
         assert r.size() == Math.min(sampleSize(), streamSize());
         return Collections.unmodifiableList(r);
+    }
+
+    /**
+     * {@inheritDoc}
+     * <p>
+     * This method runs in constant time.
+     */
+    @Override
+    public final int sampleSize() {
+        assert this.sampleSize > 0;
+        return this.sampleSize;
+    }
+
+    /**
+     * {@inheritDoc}
+     * <p>
+     * This method runs in constant time.
+     */
+    @Override
+    public final int streamSize() {
+        assert this.streamSize >= 0;
+        return this.streamSize;
     }
 }
