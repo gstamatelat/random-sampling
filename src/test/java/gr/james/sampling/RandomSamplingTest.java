@@ -11,7 +11,7 @@ import java.util.Random;
 import java.util.function.Supplier;
 
 @RunWith(Parameterized.class)
-public class RandomSamplingTests {
+public class RandomSamplingTest {
 
     private static final Random RANDOM = new Random();
 
@@ -21,7 +21,7 @@ public class RandomSamplingTests {
 
     private final Supplier<RandomSampling<Integer>> impl;
 
-    public RandomSamplingTests(Supplier<RandomSampling<Integer>> impl) {
+    public RandomSamplingTest(Supplier<RandomSampling<Integer>> impl) {
         this.impl = impl;
     }
 
@@ -60,21 +60,7 @@ public class RandomSamplingTests {
         for (int c : d) {
             final double expected = (double) REPS * SAMPLE / STREAM;
             final double actual = (double) c;
-            Assert.assertEquals("RandomSamplingTests.correctness", 1, actual / expected, 1e-2);
-        }
-    }
-
-    @Test
-    public void performance() {
-        final RandomSampling<Integer> alg = impl.get();
-        if (alg instanceof UnweightedRandomSampling) {
-            for (int i = 0; i < 100000000; i++) {
-                ((UnweightedRandomSampling<Integer>) alg).feed(i);
-            }
-        } else if (alg instanceof WeightedRandomSampling) {
-            for (int i = 0; i < 100000000; i++) {
-                ((WeightedRandomSampling<Integer>) alg).feed(i, 1.0);
-            }
+            Assert.assertEquals("RandomSamplingTest.correctness", 1, actual / expected, 1e-2);
         }
     }
 
