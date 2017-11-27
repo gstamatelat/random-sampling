@@ -2,7 +2,7 @@
 
 A collection of algorithms in Java 8 for the problem of random sampling with a reservoir.
 
-Reservoir sampling is a family of randomized algorithms for randomly choosing a sample of `k` items from a list `S` containing `n` items, where `n` is either a very large or unknown number. Typically `n` is large enough that the list doesn't fit into main memory. [1] In this context, we will refer to the sample of `k` items as ***sample*** and the list `S` as ***stream***.
+Reservoir sampling is a family of randomized algorithms for randomly choosing a sample of `k` items from a list `S` containing `n` items, where `n` is either a very large or unknown number. Typically `n` is large enough that the list doesn't fit into main memory. [1] In this context, the sample of `k` items will be referred to as ***sample*** and the list `S` as ***stream***.
 
 This library distinguishes these algorithms into two main categories: the ones that assign a weight in each item of the source stream and the ones that don't. These will be referred to as weighted and unweighted random sampling algorithms respectively. In unweighted algorithms, each item in the stream has probability `k/n` in appearing in the sample. In weighted algorithms this probability depends on the extra parameter `weight`. Each algorithm may interpret this parameter in a different way, for example in [2] two possible interpretations are mentioned.
 
