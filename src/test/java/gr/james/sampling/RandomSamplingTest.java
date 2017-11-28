@@ -42,14 +42,8 @@ public class RandomSamplingTest {
         for (int reps = 0; reps < REPS; reps++) {
             final RandomSampling<Integer> alg = impl.get();
 
-            if (alg instanceof UnweightedRandomSampling) {
-                for (int i = 0; i < STREAM; i++) {
-                    ((UnweightedRandomSampling<Integer>) alg).feed(i);
-                }
-            } else if (alg instanceof WeightedRandomSampling) {
-                for (int i = 0; i < STREAM; i++) {
-                    ((WeightedRandomSampling<Integer>) alg).feed(i, 1.0);
-                }
+            for (int i = 0; i < STREAM; i++) {
+                alg.feed(i);
             }
 
             for (int s : alg.sample()) {

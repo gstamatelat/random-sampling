@@ -10,7 +10,7 @@ This library distinguishes these algorithms into two main categories: the ones t
 
 Select 10 numbers at random in the range [1,100]. Each number has a 10% probability of appearing in the sample.
 ```java
-final UnweightedRandomSampling<Integer> rs = new WatermanSampling<>(10, new Random());
+final RandomSampling<Integer> rs = new WatermanSampling<>(10, new Random());
 rs.feed(IntStream.rangeClosed(1, 100).boxed().iterator());
 Collection<Integer> sample = rs.sample();
 System.out.println(sample);
@@ -18,7 +18,7 @@ System.out.println(sample);
 
 Select 5 random tokens from an input stream.
 ```java
-final UnweightedRandomSampling<String> rs = new VitterXSampling<>(5, new Random());
+final RandomSampling<String> rs = new VitterXSampling<>(5, new Random());
 rs.feed(new Scanner(System.in));
 System.out.println(rs.sample());
 ```
@@ -41,19 +41,19 @@ System.out.println(rs.sample());
 
 The Art of Computer Programming, Vol II, Random Sampling and Shuffling.
 
-Signature: `WatermanSampling` implements `UnweightedRandomSampling`
+Signature: `WatermanSampling` implements `RandomSampling`
 
 ### 2 Algorithm X by Vitter
 
 [Vitter, Jeffrey S. "Random sampling with a reservoir." ACM Transactions on Mathematical Software (TOMS) 11.1 (1985): 37-57.](https://doi.org/10.1145/3147.3165)
 
-Signature: `VitterXSampling` implements `UnweightedRandomSampling`
+Signature: `VitterXSampling` implements `RandomSampling`
 
 ### 3 Algorithm Z by Vitter
 
 [Vitter, Jeffrey S. "Random sampling with a reservoir." ACM Transactions on Mathematical Software (TOMS) 11.1 (1985): 37-57.](https://doi.org/10.1145/3147.3165)
 
-Signature: `VitterZSampling` implements `UnweightedRandomSampling`
+Signature: `VitterZSampling` implements `RandomSampling`
 
 ### 4 Algorithm A-ES by Efraimidis and Spirakis
 

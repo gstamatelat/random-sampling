@@ -9,9 +9,9 @@ import java.util.Map;
  * <p>
  * More specifically, this exception targets the methods
  * <ul>
- * <li>{@link UnweightedRandomSampling#feed(Object)}</li>
- * <li>{@link UnweightedRandomSampling#feed(Iterator)}</li>
- * <li>{@link UnweightedRandomSampling#feed(Iterable)}</li>
+ * <li>{@link RandomSampling#feed(Object)}</li>
+ * <li>{@link RandomSampling#feed(Iterator)}</li>
+ * <li>{@link RandomSampling#feed(Iterable)}</li>
  * <li>{@link WeightedRandomSampling#feed(Object, double)}</li>
  * <li>{@link WeightedRandomSampling#feed(Iterator, Iterator)}</li>
  * <li>{@link WeightedRandomSampling#feed(Map)}</li>

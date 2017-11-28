@@ -1,17 +1,19 @@
 package gr.james.sampling;
 
 import java.util.Collection;
+import java.util.Iterator;
 
 /**
  * Represents a reservoir sampling algorithm.
  * <p>
  * A reservoir sampling algorithm randomly chooses a sample of {@code k} items from a list {@code S} containing
- * {@code n} items, where {@code n} may be unknown. A sampling algorithm can be weighted or unweighted.
+ * {@code n} items, where {@code n} may be unknown. A sampling algorithm may support weighted elements, in which case it
+ * is considered a weighted random sampling algorithm and implements {@link WeightedRandomSampling}, which is a
+ * subinterface of {@code RandomSampling}.
  *
  * @param <T> the item type
  * @author Giorgos Stamatelatos
  * @see <a href="https://en.wikipedia.org/wiki/Reservoir_sampling">Reservoir sampling @ Wikipedia</a>
- * @see UnweightedRandomSampling
  * @see WeightedRandomSampling
  */
 public interface RandomSampling<T> {
@@ -47,4 +49,45 @@ public interface RandomSampling<T> {
      * @return the sample of the items that have been feeded to this instance
      */
     Collection<T> sample();
+
+    /**
+     * Feed an item from the stream to the algorithm.
+     *
+     * @param item the item to feed to the algorithm
+     * @throws NullPointerException    if {@code item} is {@code null}
+     * @throws StreamOverflowException if the amount if items feeded to this algorithm has reached the maximum allowed
+     */
+    void feed(T item);
+
+    /**
+     * Feed an {@link Iterator} of items of type {@code T} to the algorithm.
+     * <p>
+     * This method is equivalent to invoking the method {@link #feed(Object)} for each item in {@code items}.
+     *
+     * @param items the items to feed to the algorithm
+     * @throws NullPointerException    if {@code items} is {@code null} or any item in {@code items} is {@code null}
+     * @throws StreamOverflowException if any subsequent calls to {@link #feed(Object)} causes
+     *                                 {@code StreamOverflowException}
+     */
+    default void feed(Iterator<T> items) {
+        while (items.hasNext()) {
+            feed(items.next());
+        }
+    }
+
+    /**
+     * Feed an {@link Iterable} of items of type {@code T} to the algorithm.
+     * <p>
+     * This method is equivalent to invoking the method {@link #feed(Object)} for each item in {@code items}.
+     *
+     * @param items the items to feed to the algorithm
+     * @throws NullPointerException    if {@code items} is {@code null} or any item in {@code items} is {@code null}
+     * @throws StreamOverflowException if any subsequent calls to {@link #feed(Object)} causes
+     *                                 {@code StreamOverflowException}
+     */
+    default void feed(Iterable<T> items) {
+        for (T item : items) {
+            feed(item);
+        }
+    }
 }

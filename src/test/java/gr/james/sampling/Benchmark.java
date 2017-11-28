@@ -20,14 +20,8 @@ public class Benchmark {
 
     private static long performance(RandomSampling<Object> alg) {
         final long start = System.nanoTime();
-        if (alg instanceof UnweightedRandomSampling) {
-            for (int i = 0; i < 100000000; i++) {
-                ((UnweightedRandomSampling<Object>) alg).feed(i);
-            }
-        } else if (alg instanceof WeightedRandomSampling) {
-            for (int i = 0; i < 100000000; i++) {
-                ((WeightedRandomSampling<Object>) alg).feed(i, 1.0);
-            }
+        for (int i = 0; i < 100000000; i++) {
+            alg.feed(i);
         }
         return System.nanoTime() - start;
     }

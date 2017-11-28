@@ -8,16 +8,27 @@ import java.util.Map;
  * <p>
  * A weighted reservoir sampling algorithm randomly chooses a sample of {@code k} items from a list {@code S} containing
  * {@code n} items, where {@code n} may be unknown. Additionally, a weight is assigned to each item of the stream. The
- * interpretation of the weight may be different for each algorithm. It is reasonable to assume that higher weight will
- * yield a higher probability to be included in the sample but this is not enforced.
+ * interpretation of the weight may be different for each algorithm. The contract, however, is that a higher value
+ * suggests a higher probability for an item to be included in the sample. Implementations may define certain
+ * restrictions on the values of weight. These restrictions must be mentioned in the documentation and an
+ * {@link IllegalWeightException} must be thrown to indicate violations of those.
  *
  * @param <T> the item type
  * @author Giorgos Stamatelatos
  * @see <a href="https://en.wikipedia.org/wiki/Reservoir_sampling">Reservoir sampling @ Wikipedia</a>
  * @see RandomSampling
- * @see UnweightedRandomSampling
  */
 public interface WeightedRandomSampling<T> extends RandomSampling<T> {
+    double DEFAULT_WEIGHT = 1.0;
+
+    /**
+     * Feed an item from the stream to the algorithm with the default weight {@link #DEFAULT_WEIGHT}.
+     */
+    @Override
+    default void feed(T item) {
+        feed(item, DEFAULT_WEIGHT);
+    }
+
     /**
      * Feed an item along with its weight from the stream to the algorithm.
      *
