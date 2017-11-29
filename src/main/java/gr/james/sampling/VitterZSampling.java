@@ -27,6 +27,7 @@ public class VitterZSampling<T> extends AbstractUnweightedRandomSampling<T> {
         this.W = Math.pow(random.nextDouble(), -1.0 / sampleSize);
     }
 
+    @Override
     protected int skipLength(int streamSize, int sampleSize, Random random) {
         double term = streamSize - sampleSize + 1;
         while (true) {

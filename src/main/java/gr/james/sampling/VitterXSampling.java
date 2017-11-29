@@ -24,6 +24,7 @@ public class VitterXSampling<T> extends AbstractUnweightedRandomSampling<T> {
         super(sampleSize, random);
     }
 
+    @Override
     protected int skipLength(int streamSize, int sampleSize, Random random) {
         int currentStream = streamSize + 1;
 
