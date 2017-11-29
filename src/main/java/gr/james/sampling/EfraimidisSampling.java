@@ -80,7 +80,8 @@ public class EfraimidisSampling<T> implements WeightedRandomSampling<T> {
         if (pq.size() < sampleSize) {
             pq.add(newItem);
         } else if (pq.peek().weight < newItem.weight) {
-            // TODO: Seems unfair for equal weight items to not have a chance to get in the sample
+            // Seems unfair for equal weight items to not have a chance to get in the sample
+            // Of course in the long run it hardly matters
             assert pq.size() == sampleSize();
             pq.poll();
             pq.add(newItem);
