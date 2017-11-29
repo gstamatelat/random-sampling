@@ -6,6 +6,8 @@ import java.util.*;
  * Implementation of the algorithm from Efraimidis and Spirakis in "Weighted random sampling with a reservoir".
  * <p>
  * This algorithm accepts item weights in the range (0,+Inf), otherwise an {@link IllegalWeightException} is thrown.
+ * <p>
+ * The default item weight of this algorithm when approached using the {@link RandomSampling} interface is {@code 1.0}.
  *
  * @param <T> the item type
  * @author Giorgos Stamatelatos
@@ -43,7 +45,7 @@ public class EfraimidisSampling<T> implements WeightedRandomSampling<T> {
     /**
      * {@inheritDoc}
      * <p>
-     * This method runs in time O(lgk) and generates exactly 1 random number.
+     * This method runs in time {@code O(lgk)} and generates exactly 1 random number.
      *
      * @throws IllegalWeightException if {@code weight} is outside the range (0,+Inf)
      */
@@ -121,5 +123,15 @@ public class EfraimidisSampling<T> implements WeightedRandomSampling<T> {
     public final int streamSize() {
         assert this.streamSize >= 0;
         return this.streamSize;
+    }
+
+    /**
+     * Feed an item from the stream to the algorithm with weight {@code 1.0}.
+     * <p>
+     * This method runs in time {@code O(lgk)} and generates exactly 1 random number.
+     */
+    @Override
+    public void feed(T item) {
+        feed(item, 1.0);
     }
 }

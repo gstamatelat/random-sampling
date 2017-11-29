@@ -23,6 +23,13 @@ rs.feed(new Scanner(System.in));
 System.out.println(rs.sample());
 ```
 
+Same example using Algorithm Z.
+```java
+final RandomSampling<String> rs = new VitterZSampling<>(5, new Random());
+rs.feed(new Scanner(System.in));
+System.out.println(rs.sample());
+```
+
 Select 2 terms from a vocabulary, based on their weight.
 ```java
 final WeightedRandomSampling<String> rs = new EfraimidisSampling<>(2, new Random());

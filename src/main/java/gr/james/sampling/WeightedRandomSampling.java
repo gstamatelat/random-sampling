@@ -11,7 +11,7 @@ import java.util.Map;
  * interpretation of the weight may be different for each algorithm. The contract, however, is that a higher value
  * suggests a higher probability for an item to be included in the sample. Implementations may define certain
  * restrictions on the values of weight. These restrictions must be mentioned in the documentation and an
- * {@link IllegalWeightException} must be thrown to indicate violations of those.
+ * {@link IllegalWeightException} must be thrown to indicate such violations.
  *
  * @param <T> the item type
  * @author Giorgos Stamatelatos
@@ -19,16 +19,6 @@ import java.util.Map;
  * @see RandomSampling
  */
 public interface WeightedRandomSampling<T> extends RandomSampling<T> {
-    double DEFAULT_WEIGHT = 1.0;
-
-    /**
-     * Feed an item from the stream to the algorithm with the default weight {@link #DEFAULT_WEIGHT}.
-     */
-    @Override
-    default void feed(T item) {
-        feed(item, DEFAULT_WEIGHT);
-    }
-
     /**
      * Feed an item along with its weight from the stream to the algorithm.
      *
