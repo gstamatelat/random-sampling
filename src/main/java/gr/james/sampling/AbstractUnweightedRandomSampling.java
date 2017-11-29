@@ -44,7 +44,7 @@ public abstract class AbstractUnweightedRandomSampling<T> implements RandomSampl
      * {@inheritDoc}
      */
     @Override
-    public final void feed(T item) {
+    public final RandomSampling<T> feed(T item) {
         // Checks
         if (item == null) {
             throw new NullPointerException("Item was null");
@@ -73,6 +73,8 @@ public abstract class AbstractUnweightedRandomSampling<T> implements RandomSampl
 
         assert sample.size() == Math.min(sampleSize(), streamSize());
         assert this.skip >= 0;
+
+        return this;
     }
 
     /**

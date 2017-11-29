@@ -24,11 +24,12 @@ public interface WeightedRandomSampling<T> extends RandomSampling<T> {
      *
      * @param item   the item to feed to the algorithm
      * @param weight the weight assigned to this item
+     * @return this instance
      * @throws NullPointerException    if {@code item} is {@code null}
      * @throws IllegalWeightException  if {@code weight} is incompatible with the algorithm
      * @throws StreamOverflowException if the amount if items feeded to this algorithm has reached the maximum allowed
      */
-    void feed(T item, double weight);
+    WeightedRandomSampling<T> feed(T item, double weight);
 
     /**
      * Feed an {@link Iterator} of items of type {@code T} along with their weights to the algorithm.
@@ -38,6 +39,7 @@ public interface WeightedRandomSampling<T> extends RandomSampling<T> {
      *
      * @param items   the items to feed to the algorithm
      * @param weights the weights assigned to the {@code items}
+     * @return this instance
      * @throws NullPointerException     if {@code items} is {@code null} or {@code weights} is {@code null} or any item
      *                                  in {@code items} is {@code null} or any weight in {@code weights} is
      *                                  {@code null}
@@ -46,13 +48,14 @@ public interface WeightedRandomSampling<T> extends RandomSampling<T> {
      * @throws StreamOverflowException  if any subsequent calls to {@link #feed(Object, double)} causes
      *                                  {@code StreamOverflowException}
      */
-    default void feed(Iterator<T> items, Iterator<Double> weights) {
+    default WeightedRandomSampling<T> feed(Iterator<T> items, Iterator<Double> weights) {
         while (items.hasNext() && weights.hasNext()) {
             feed(items.next(), weights.next());
         }
         if (items.hasNext() || weights.hasNext()) {
             throw new IllegalArgumentException("Items and weights size mismatch");
         }
+        return this;
     }
 
     /**
@@ -61,6 +64,7 @@ public interface WeightedRandomSampling<T> extends RandomSampling<T> {
      * This method is equivalent to invoking the method {@link #feed(Object, double)} for each entry in {@code items}.
      *
      * @param items the items to feed to the algorithm
+     * @return this instance
      * @throws NullPointerException    if {@code items} is {@code null} or any key or value in {@code items} is
      *                                 {@code null}
      * @throws IllegalWeightException  if any of the weights in the values of {@code items} is incompatible with the
@@ -68,9 +72,10 @@ public interface WeightedRandomSampling<T> extends RandomSampling<T> {
      * @throws StreamOverflowException if any subsequent calls to {@link #feed(Object, double)} causes
      *                                 {@code StreamOverflowException}
      */
-    default void feed(Map<T, Double> items) {
+    default WeightedRandomSampling<T> feed(Map<T, Double> items) {
         for (Map.Entry<T, Double> e : items.entrySet()) {
             feed(e.getKey(), e.getValue());
         }
+        return this;
     }
 }

@@ -33,12 +33,12 @@ System.out.println(rs.sample());
 Select 2 terms from a vocabulary, based on their weight.
 ```java
 final WeightedRandomSampling<String> rs = new EfraimidisSampling<>(2, new Random());
-rs.feed("collection", 1);
-rs.feed("algorithms", 2);
-rs.feed("java", 2);
-rs.feed("random", 3);
-rs.feed("sampling", 4);
-rs.feed("reservoir", 5);
+rs.feed("collection", 1)
+  .feed("algorithms", 2)
+  .feed("java", 2)
+  .feed("random", 3)
+  .feed("sampling", 4)
+  .feed("reservoir", 5);
 System.out.println(rs.sample());
 ```
 

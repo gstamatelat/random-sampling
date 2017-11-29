@@ -50,7 +50,7 @@ public class EfraimidisSampling<T> implements WeightedRandomSampling<T> {
      * @throws IllegalWeightException if {@code weight} is outside the range (0,+Inf)
      */
     @Override
-    public void feed(T item, double weight) {
+    public EfraimidisSampling<T> feed(T item, double weight) {
         // Checks
         if (item == null) {
             throw new NullPointerException("Item was null");
@@ -86,6 +86,8 @@ public class EfraimidisSampling<T> implements WeightedRandomSampling<T> {
             pq.add(newItem);
         }
         assert pq.size() == Math.min(sampleSize(), streamSize());
+
+        return this;
     }
 
     /**
@@ -131,7 +133,8 @@ public class EfraimidisSampling<T> implements WeightedRandomSampling<T> {
      * This method runs in time {@code O(lgk)} and generates exactly 1 random number.
      */
     @Override
-    public void feed(T item) {
+    public EfraimidisSampling<T> feed(T item) {
         feed(item, 1.0);
+        return this;
     }
 }

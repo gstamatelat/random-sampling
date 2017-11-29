@@ -54,10 +54,11 @@ public interface RandomSampling<T> {
      * Feed an item from the stream to the algorithm.
      *
      * @param item the item to feed to the algorithm
+     * @return this instance
      * @throws NullPointerException    if {@code item} is {@code null}
      * @throws StreamOverflowException if the amount if items feeded to this algorithm has reached the maximum allowed
      */
-    void feed(T item);
+    RandomSampling<T> feed(T item);
 
     /**
      * Feed an {@link Iterator} of items of type {@code T} to the algorithm.
@@ -65,14 +66,16 @@ public interface RandomSampling<T> {
      * This method is equivalent to invoking the method {@link #feed(Object)} for each item in {@code items}.
      *
      * @param items the items to feed to the algorithm
+     * @return this instance
      * @throws NullPointerException    if {@code items} is {@code null} or any item in {@code items} is {@code null}
      * @throws StreamOverflowException if any subsequent calls to {@link #feed(Object)} causes
      *                                 {@code StreamOverflowException}
      */
-    default void feed(Iterator<T> items) {
+    default RandomSampling<T> feed(Iterator<T> items) {
         while (items.hasNext()) {
             feed(items.next());
         }
+        return this;
     }
 
     /**
@@ -81,13 +84,15 @@ public interface RandomSampling<T> {
      * This method is equivalent to invoking the method {@link #feed(Object)} for each item in {@code items}.
      *
      * @param items the items to feed to the algorithm
+     * @return this instance
      * @throws NullPointerException    if {@code items} is {@code null} or any item in {@code items} is {@code null}
      * @throws StreamOverflowException if any subsequent calls to {@link #feed(Object)} causes
      *                                 {@code StreamOverflowException}
      */
-    default void feed(Iterable<T> items) {
+    default RandomSampling<T> feed(Iterable<T> items) {
         for (T item : items) {
             feed(item);
         }
+        return this;
     }
 }
