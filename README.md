@@ -68,6 +68,12 @@ Signature: `VitterZSampling` implements `RandomSampling`
 
 Signature: `EfraimidisSampling` implements `WeightedRandomSampling`
 
+### 4 Algorithm Chao by Chao
+
+[Chao, M. T. "A general purpose unequal probability sampling plan." Biometrika 69.3 (1982): 653-656.](https://doi.org/10.2307/2336002)
+
+Signature: `ChaoSampling` implements `WeightedRandomSampling`
+
 ## References
 
 [1] [Wikipedia contributors. "Reservoir sampling." Wikipedia, The Free Encyclopedia. Wikipedia, The Free Encyclopedia, 17 Oct. 2017. Web. 21 Nov. 2017.](https://en.wikipedia.org/wiki/Reservoir_sampling)
