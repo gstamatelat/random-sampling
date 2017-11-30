@@ -10,6 +10,9 @@ import java.util.Collection;
 import java.util.Random;
 import java.util.function.Supplier;
 
+/**
+ * Tests for unweighted algorithms (and weighted used as unweighted)
+ */
 @RunWith(Parameterized.class)
 public class RandomSamplingTest {
 
@@ -36,6 +39,9 @@ public class RandomSamplingTest {
         return implementations;
     }
 
+    /**
+     * All items must be selected with equal probability
+     */
     @Test
     public void correctness() {
         final int[] d = new int[STREAM];
