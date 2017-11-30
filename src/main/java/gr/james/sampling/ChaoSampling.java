@@ -67,6 +67,11 @@ public class ChaoSampling<T> implements WeightedRandomSampling<T> {
             throw new IllegalWeightException("Weight was infinite, must be in (0,+Inf)");
         }
 
+        // TODO: Remove
+        if (weight != 1.0) {
+            throw new UnsupportedOperationException("This algorithm does not support weights yet");
+        }
+
         // Increase stream size
         this.streamSize++;
         assert this.streamSize > 0;
