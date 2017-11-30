@@ -3,7 +3,7 @@ package gr.james.sampling;
 import java.util.*;
 
 /**
- * Implementation of the algorithm from Efraimidis and Spirakis in "Weighted random sampling with a reservoir".
+ * Implementation of the algorithm from Chao in "A general purpose unequal probability sampling plan".
  * <p>
  * This algorithm accepts item weights in the range (0,+Inf), otherwise an {@link IllegalWeightException} is thrown.
  * <p>
@@ -11,25 +11,26 @@ import java.util.*;
  *
  * @param <T> the item type
  * @author Giorgos Stamatelatos
- * @see <a href="https://doi.org/10.1016/j.ipl.2005.11.003">doi:10.1016/j.ipl.2005.11.003</a>
+ * @see <a href="https://doi.org/10.2307/2336002">doi:10.2307/2336002</a>
  */
-public class EfraimidisSampling<T> implements WeightedRandomSampling<T> {
+public class ChaoSampling<T> implements WeightedRandomSampling<T> {
     private final int sampleSize;
     private final Random random;
-    private final PriorityQueue<Weighted<T>> pq;
+    private final List<T> sample;
     private int streamSize;
+    private double weightSum;
 
     /**
-     * Construct a new instance of {@link EfraimidisSampling} using the specified sample size and RNG. The
-     * implementation assumes that {@code random} conforms to the contract of {@link Random} and will perform no checks
-     * to ensure that. If this contract is violated, the behavior is undefined.
+     * Construct a new instance of {@link ChaoSampling} using the specified sample size and RNG. The implementation
+     * assumes that {@code random} conforms to the contract of {@link Random} and will perform no checks to ensure that.
+     * If this contract is violated, the behavior is undefined.
      *
      * @param sampleSize the sample size
      * @param random     the RNG to use
      * @throws NullPointerException     if {@code random} is {@code null}
      * @throws IllegalArgumentException if {@code sampleSize} is less than 1
      */
-    public EfraimidisSampling(int sampleSize, Random random) {
+    public ChaoSampling(int sampleSize, Random random) {
         if (random == null) {
             throw new NullPointerException("Random was null");
         }
@@ -39,18 +40,19 @@ public class EfraimidisSampling<T> implements WeightedRandomSampling<T> {
         this.random = random;
         this.sampleSize = sampleSize;
         this.streamSize = 0;
-        this.pq = new PriorityQueue<>(sampleSize);
+        this.sample = new ArrayList<>(sampleSize);
+        this.weightSum = 0;
     }
 
     /**
      * {@inheritDoc}
      * <p>
-     * This method runs in time {@code O(lgk)} and generates exactly 1 random number.
+     * This method runs in time {@code O(1)} and generates 1 or 2 random numbers.
      *
      * @throws IllegalWeightException if {@code weight} is outside the range (0,+Inf)
      */
     @Override
-    public EfraimidisSampling<T> feed(T item, double weight) {
+    public ChaoSampling<T> feed(T item, double weight) {
         // Checks
         if (item == null) {
             throw new NullPointerException("Item was null");
@@ -65,28 +67,28 @@ public class EfraimidisSampling<T> implements WeightedRandomSampling<T> {
             throw new IllegalWeightException("Weight was infinite, must be in (0,+Inf)");
         }
 
-        // Produce a random value
-        final double r = RandomSamplingUtils.randomExclusive(random);
-
         // Increase stream size
         this.streamSize++;
         assert this.streamSize > 0;
 
-        // Calculate item weight
-        final Weighted<T> newItem = new Weighted<>(item, Math.pow(r, 1 / weight));
-        assert newItem.weight > 0.0 && newItem.weight < 1.0;
+        // Increase weight sum
+        this.weightSum += weight;
 
         // Add item to reservoir
-        if (pq.size() < sampleSize) {
-            pq.add(newItem);
-        } else if (pq.peek().weight < newItem.weight) {
-            // Seems unfair for equal weight items to not have a chance to get in the sample
-            // Of course in the long run it hardly matters
-            assert pq.size() == sampleSize();
-            pq.poll();
-            pq.add(newItem);
+        if (sample.size() < sampleSize) {
+            sample.add(item);
+        } else {
+            assert sample.size() == sampleSize();
+            final double r = random.nextDouble();
+            final double itemProbability = sampleSize * weight / weightSum;
+            if (itemProbability > 1) {
+                throw new UnsupportedOperationException(); // TODO
+            }
+            if (itemProbability > r) {
+                sample.set(random.nextInt(sampleSize), item);
+            }
         }
-        assert pq.size() == Math.min(sampleSize(), streamSize());
+        assert sample.size() == Math.min(sampleSize(), streamSize());
 
         return this;
     }
@@ -98,10 +100,7 @@ public class EfraimidisSampling<T> implements WeightedRandomSampling<T> {
      */
     @Override
     public Collection<T> sample() {
-        final List<T> r = new ArrayList<>(pq.size());
-        for (Weighted<T> t : pq) {
-            r.add(t.object);
-        }
+        final List<T> r = new ArrayList<>(sample);
         assert r.size() == Math.min(sampleSize(), streamSize());
         return Collections.unmodifiableList(r);
     }
@@ -134,7 +133,7 @@ public class EfraimidisSampling<T> implements WeightedRandomSampling<T> {
      * This method runs in time {@code O(lgk)} and generates exactly 1 random number.
      */
     @Override
-    public EfraimidisSampling<T> feed(T item) {
+    public ChaoSampling<T> feed(T item) {
         feed(item, 1.0);
         return this;
     }

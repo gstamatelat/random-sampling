@@ -32,6 +32,7 @@ public class RandomSamplingTest {
         implementations.add(() -> new VitterXSampling<>(SAMPLE, RANDOM));
         implementations.add(() -> new VitterZSampling<>(SAMPLE, RANDOM));
         implementations.add(() -> new EfraimidisSampling<>(SAMPLE, RANDOM));
+        implementations.add(() -> new ChaoSampling<>(SAMPLE, RANDOM));
         return implementations;
     }
 
