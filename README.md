@@ -62,13 +62,13 @@ Signature: `VitterXSampling` implements `RandomSampling`
 
 Signature: `VitterZSampling` implements `RandomSampling`
 
-### 4 Algorithm A-ES by Efraimidis and Spirakis
+### 4 Algorithm A-Res by Efraimidis and Spirakis
 
 [Efraimidis, Pavlos S., and Paul G. Spirakis. "Weighted random sampling with a reservoir." Information Processing Letters 97.5 (2006): 181-185.](https://doi.org/10.1016/j.ipl.2005.11.003)
 
 Signature: `EfraimidisSampling` implements `WeightedRandomSampling`
 
-### 5 Algorithm Chao by Chao
+### 5 Algorithm by Chao
 
 [Chao, M. T. "A general purpose unequal probability sampling plan." Biometrika 69.3 (1982): 653-656.](https://doi.org/10.2307/2336002)
 
