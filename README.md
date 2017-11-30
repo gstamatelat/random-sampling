@@ -68,7 +68,7 @@ Signature: `VitterZSampling` implements `RandomSampling`
 
 Signature: `EfraimidisSampling` implements `WeightedRandomSampling`
 
-### 4 Algorithm Chao by Chao
+### 5 Algorithm Chao by Chao
 
 [Chao, M. T. "A general purpose unequal probability sampling plan." Biometrika 69.3 (1982): 653-656.](https://doi.org/10.2307/2336002)
 
