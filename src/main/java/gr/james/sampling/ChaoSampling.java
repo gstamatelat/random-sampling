@@ -12,6 +12,7 @@ import java.util.*;
  * @param <T> the item type
  * @author Giorgos Stamatelatos
  * @see <a href="https://doi.org/10.2307/2336002">doi:10.2307/2336002</a>
+ * @see <a href="https://doi.org/10.1080/02664769624152">doi:10.1080/02664769624152</a>
  */
 public class ChaoSampling<T> implements WeightedRandomSampling<T> {
     private final int sampleSize;

@@ -72,6 +72,8 @@ Signature: `EfraimidisSampling` implements `WeightedRandomSampling`
 
 [Chao, M. T. "A general purpose unequal probability sampling plan." Biometrika 69.3 (1982): 653-656.](https://doi.org/10.2307/2336002)
 
+Additional reference: [Sugden, R. A. "Chao's list sequential scheme for unequal probability sampling." Journal of Applied Statistics 23.4 (1996): 413-421.](https://doi.org/10.1080/02664769624152)
+
 Signature: `ChaoSampling` implements `WeightedRandomSampling`
 
 ## References
