@@ -47,12 +47,11 @@ class Weighted<T> implements Comparable<Weighted<T>> {
      */
     @Override
     public int compareTo(Weighted<T> o) {
-        if (weight > o.weight) {
-            return 1;
-        } else if (weight < o.weight) {
-            return -1;
-        } else {
+        final int c = Double.compare(weight, o.weight);
+        if (c == 0) {
             return Integer.compare(System.identityHashCode(this), System.identityHashCode(o));
+        } else {
+            return c;
         }
     }
 
