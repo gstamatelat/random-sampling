@@ -17,6 +17,7 @@ public class ChaoSampling<T> implements WeightedRandomSampling<T> {
     private final int sampleSize;
     private final Random random;
     private final List<T> sample;
+    private final TreeSet<Weighted<T>> impossible;
     private int streamSize;
     private double weightSum;
 
@@ -41,13 +42,12 @@ public class ChaoSampling<T> implements WeightedRandomSampling<T> {
         this.sampleSize = sampleSize;
         this.streamSize = 0;
         this.sample = new ArrayList<>(sampleSize);
+        this.impossible = new TreeSet<>();
         this.weightSum = 0;
     }
 
     /**
      * {@inheritDoc}
-     * <p>
-     * This method runs in time {@code O(1)} and generates 1 or 2 random numbers.
      *
      * @throws IllegalWeightException if {@code weight} is outside the range (0,+Inf)
      */
@@ -67,33 +67,76 @@ public class ChaoSampling<T> implements WeightedRandomSampling<T> {
             throw new IllegalWeightException("Weight was infinite, must be in (0,+Inf)");
         }
 
-        // TODO: Remove
-        if (weight != 1.0) {
-            throw new UnsupportedOperationException("This algorithm does not support weights yet");
-        }
-
         // Increase stream size
         this.streamSize++;
         assert this.streamSize > 0;
 
         // Increase weight sum
         this.weightSum += weight;
+        assert this.weightSum > 0;
 
-        // Add item to reservoir
-        if (sample.size() < sampleSize) {
-            sample.add(item);
-        } else {
-            assert sample.size() == sampleSize();
-            final double r = random.nextDouble();
-            final double itemProbability = sampleSize * weight / weightSum;
-            if (itemProbability > 1) {
-                throw new UnsupportedOperationException(); // TODO
-            }
-            if (itemProbability > r) {
-                sample.set(random.nextInt(sampleSize), item);
+        // The first k items go straight into the A list
+        if (streamSize <= sampleSize) {
+            this.impossible.add(new Weighted<>(item, weight));
+            return this;
+        }
+
+        // First order inclusion probability of the new item
+        final double w = weight * sampleSize / weightSum;
+        final boolean newItemInA = w >= 1;
+
+        // Create B list
+        final List<T> possible = new ArrayList<>();
+        final List<Double> possibleDist = new ArrayList<>();
+        int impossibleCount = newItemInA ? 1 : 0;
+        double impossibleSum = newItemInA ? weight : 0;
+        final Iterator<Weighted<T>> it = impossible.descendingIterator();
+        while (it.hasNext()) {
+            final Weighted<T> next = it.next();
+            final double fo = next.weight * (sampleSize - impossibleCount) / (weightSum - impossibleSum);
+            if (fo >= 1) {
+                impossibleCount++;
+                impossibleSum += next.weight;
+            } else {
+                possible.add(next.object);
+                possibleDist.add((1 - fo) / Math.min(w, 1));
+                it.remove();
             }
         }
-        assert sample.size() == Math.min(sampleSize(), streamSize());
+
+        assert possibleDist.stream().allMatch(p -> p >= 0 && p <= 1);
+        assert possibleDist.stream().mapToDouble(p -> p).sum() >= 0;
+        assert possibleDist.stream().mapToDouble(p -> p).sum() <= 1 + 1e-4;
+
+        // Inclusion random
+        final double add = random.nextDouble();
+
+        // If the item has to be added, remove one element
+        if (w > add) {
+            final int index = RandomSamplingUtils.weightedRandomSelection(possibleDist, random.nextDouble());
+            if (index > -1) {
+                // Remove index from possible
+                possible.set(index, possible.get(possible.size() - 1));
+                possible.remove(possible.size() - 1);
+            } else {
+                // Remove a random element from sample
+                sample.set(random.nextInt(sample.size()), sample.get(sample.size() - 1));
+                sample.remove(sample.size() - 1);
+            }
+        }
+
+        if (w >= 1) {
+            // New item is overweight and will be placed in A
+            this.impossible.add(new Weighted<>(item, weight));
+        } else if (w > add) {
+            // New item is feasible and will be placed in C
+            this.sample.add(item);
+        }
+
+        // Transfer B list into the sample
+        sample.addAll(possible);
+
+        assert impossible.size() + sample.size() == sampleSize;
 
         return this;
     }
@@ -105,7 +148,11 @@ public class ChaoSampling<T> implements WeightedRandomSampling<T> {
      */
     @Override
     public Collection<T> sample() {
-        final List<T> r = new ArrayList<>(sample);
+        final List<T> r = new ArrayList<>(sample.size() + impossible.size());
+        r.addAll(sample);
+        for (Weighted<T> w : impossible) {
+            r.add(w.object);
+        }
         assert r.size() == Math.min(sampleSize(), streamSize());
         return Collections.unmodifiableList(r);
     }
@@ -134,8 +181,6 @@ public class ChaoSampling<T> implements WeightedRandomSampling<T> {
 
     /**
      * Feed an item from the stream to the algorithm with weight {@code 1.0}.
-     * <p>
-     * This method runs in time {@code O(lgk)} and generates exactly 1 random number.
      */
     @Override
     public ChaoSampling<T> feed(T item) {

@@ -17,17 +17,17 @@ class Weighted<T> implements Comparable<Weighted<T>> {
     /**
      * The weight associated with the {@link #object}.
      */
-    public final Double weight;
+    public final double weight;
 
     /**
      * Construct a new {@link Weighted} from a given object and weight.
      * <p>
-     * For performance reasons, no checks are being made on the inputs.
+     * For performance reasons, no checks are performed on the inputs.
      *
      * @param object the object
      * @param weight the weight of the object
      */
-    public Weighted(T object, Double weight) {
+    public Weighted(T object, double weight) {
         this.object = object;
         this.weight = weight;
     }
@@ -36,15 +36,33 @@ class Weighted<T> implements Comparable<Weighted<T>> {
      * Compares this object with the specified object for order. Returns a negative integer, zero, or a positive integer
      * as this object is less than, equal to, or greater than the specified object.
      * <p>
-     * The comparison is based on the {@link #weight} values of the two {@link Weighted} objects.
+     * The comparison is based on the {@link #weight} values of the two {@link Weighted} objects. If the weights are of
+     * the same value, the comparison is based on {@link System#identityHashCode(Object)}. This means that
+     * {@code a.equals(b)} will evaluate to {@code 0} if and only if {@code a == b}.
      *
      * @param o the object to be compared
-     * @return a negative integer, zero, or a positive integer as the weight of the object is less than, equal to, or
-     * greater than the weight of the specified object.
-     * @see Double#compareTo(Object)
+     * @return a negative integer, zero, or a positive integer as the object is less than, equal to, or greater than the
+     * specified object
+     * @throws NullPointerException if {@code o} is {@code null}
      */
     @Override
     public int compareTo(Weighted<T> o) {
-        return Double.compare(weight, o.weight);
+        if (weight > o.weight) {
+            return 1;
+        } else if (weight < o.weight) {
+            return -1;
+        } else {
+            return Integer.compare(System.identityHashCode(this), System.identityHashCode(o));
+        }
+    }
+
+    /**
+     * Returns a string representation of this object.
+     *
+     * @return a string representation of this object
+     */
+    @Override
+    public String toString() {
+        return String.format("{%s, %f}", object, weight);
     }
 }
