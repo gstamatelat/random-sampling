@@ -42,6 +42,9 @@ public abstract class AbstractUnweightedRandomSampling<T> implements RandomSampl
 
     /**
      * {@inheritDoc}
+     *
+     * @throws NullPointerException    {@inheritDoc}
+     * @throws StreamOverflowException {@inheritDoc}
      */
     @Override
     public final RandomSampling<T> feed(T item) {

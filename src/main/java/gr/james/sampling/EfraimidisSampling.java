@@ -47,7 +47,9 @@ public class EfraimidisSampling<T> implements WeightedRandomSampling<T> {
      * <p>
      * This method runs in time {@code O(lgk)} and generates exactly 1 random number.
      *
-     * @throws IllegalWeightException if {@code weight} is outside the range (0,+Inf)
+     * @throws NullPointerException    {@inheritDoc}
+     * @throws IllegalWeightException  if {@code weight} is outside the range (0,+Inf)
+     * @throws StreamOverflowException {@inheritDoc}
      */
     @Override
     public EfraimidisSampling<T> feed(T item, double weight) {
@@ -132,6 +134,9 @@ public class EfraimidisSampling<T> implements WeightedRandomSampling<T> {
      * Feed an item from the stream to the algorithm with weight {@code 1.0}.
      * <p>
      * This method runs in time {@code O(lgk)} and generates exactly 1 random number.
+     *
+     * @throws NullPointerException    {@inheritDoc}
+     * @throws StreamOverflowException {@inheritDoc}
      */
     @Override
     public EfraimidisSampling<T> feed(T item) {

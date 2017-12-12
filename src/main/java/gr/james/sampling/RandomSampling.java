@@ -43,8 +43,8 @@ public interface RandomSampling<T> {
      * This method returns an unmodifiable {@link Collection} of the items in the sample which is not backed by the
      * instance; subsequent modification of the instance (using any of the {@code feed} methods) will not reflect on
      * this collection. The items returned are in no particular order unless otherwise specified. The {@link Collection}
-     * returned cannot be {@code null} but it can be empty iff {@link #streamSize()} ()} {@code = 0}. The size of the
-     * sample {@code sample().size()} is equal to the minimum of {@link #sampleSize()} and {@link #streamSize()}.
+     * returned cannot be {@code null} but it can be empty iff {@link #streamSize()} {@code = 0}. The size of the sample
+     * {@code sample().size()} is equal to the minimum of {@link #sampleSize()} and {@link #streamSize()}.
      *
      * @return the sample of the items that have been feeded to this instance
      */
@@ -56,7 +56,7 @@ public interface RandomSampling<T> {
      * @param item the item to feed to the algorithm
      * @return this instance
      * @throws NullPointerException    if {@code item} is {@code null}
-     * @throws StreamOverflowException if the amount if items feeded to this algorithm has reached the maximum allowed
+     * @throws StreamOverflowException if the amount of items feeded to this algorithm has reached the maximum allowed
      */
     RandomSampling<T> feed(T item);
 

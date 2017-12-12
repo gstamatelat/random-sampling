@@ -50,7 +50,9 @@ public class ChaoSampling<T> implements WeightedRandomSampling<T> {
     /**
      * {@inheritDoc}
      *
-     * @throws IllegalWeightException if {@code weight} is outside the range (0,+Inf)
+     * @throws NullPointerException    {@inheritDoc}
+     * @throws IllegalWeightException  if {@code weight} is outside the range (0,+Inf)
+     * @throws StreamOverflowException {@inheritDoc}
      */
     @Override
     public ChaoSampling<T> feed(T item, double weight) {
@@ -182,6 +184,9 @@ public class ChaoSampling<T> implements WeightedRandomSampling<T> {
 
     /**
      * Feed an item from the stream to the algorithm with weight {@code 1.0}.
+     *
+     * @throws NullPointerException    {@inheritDoc}
+     * @throws StreamOverflowException {@inheritDoc}
      */
     @Override
     public ChaoSampling<T> feed(T item) {
