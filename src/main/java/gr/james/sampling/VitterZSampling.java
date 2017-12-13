@@ -10,7 +10,7 @@ import java.util.Random;
  * @see <a href="https://doi.org/10.1145/3147.3165">doi:10.1145/3147.3165</a>
  */
 public class VitterZSampling<T> extends AbstractUnweightedRandomSampling<T> {
-    private double W;
+    private double W = Double.NaN;
 
     /**
      * Construct a new instance of {@link VitterZSampling} using the specified sample size and RNG. The implementation
@@ -24,11 +24,13 @@ public class VitterZSampling<T> extends AbstractUnweightedRandomSampling<T> {
      */
     public VitterZSampling(int sampleSize, Random random) {
         super(sampleSize, random);
-        this.W = Math.pow(random.nextDouble(), -1.0 / sampleSize);
     }
 
     @Override
     protected int skipLength(int streamSize, int sampleSize, Random random) {
+        if (Double.isNaN(this.W)) {
+            this.W = Math.pow(random.nextDouble(), -1.0 / sampleSize);
+        }
         double term = streamSize - sampleSize + 1;
         while (true) {
             // Generate U and X
