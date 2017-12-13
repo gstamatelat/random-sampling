@@ -56,6 +56,31 @@ class Weighted<T> implements Comparable<Weighted<T>> {
     }
 
     /**
+     * Indicates whether some other object is "equal to" this one.
+     * <p>
+     * The implementation delegates to an invocation of {@link Object#equals(Object)}.
+     *
+     * @param obj the reference object with which to compare
+     * @return {@code true} if this object is the same as the {@code obj} argument; {@code false} otherwise
+     */
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
+
+    /**
+     * Returns a hash code value for the object.
+     * <p>
+     * The implementation delegates to an invocation of {@link Object#hashCode()}.
+     *
+     * @return a hash code value for this object
+     */
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+    /**
      * Returns a string representation of this object.
      *
      * @return a string representation of this object
