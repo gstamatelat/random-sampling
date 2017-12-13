@@ -35,7 +35,7 @@ public interface RandomSampling<T> {
      *
      * @return the number of items that have been feeded to the algorithm
      */
-    int streamSize();
+    long streamSize();
 
     /**
      * Get the sample of all the items that have been feeded to the algorithm during the lifetime of the instance.

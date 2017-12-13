@@ -19,7 +19,7 @@ public class ChaoSampling<T> implements WeightedRandomSampling<T> {
     private final Random random;
     private final List<T> sample;
     private final TreeSet<Weighted<T>> impossible;
-    private int streamSize;
+    private long streamSize;
     private double weightSum;
 
     /**
@@ -60,7 +60,7 @@ public class ChaoSampling<T> implements WeightedRandomSampling<T> {
         if (item == null) {
             throw new NullPointerException("Item was null");
         }
-        if (streamSize == Integer.MAX_VALUE) {
+        if (streamSize == Long.MAX_VALUE) {
             throw new StreamOverflowException();
         }
         if (weight <= 0) {
@@ -177,7 +177,7 @@ public class ChaoSampling<T> implements WeightedRandomSampling<T> {
      * This method runs in constant time.
      */
     @Override
-    public final int streamSize() {
+    public final long streamSize() {
         assert this.streamSize >= 0;
         return this.streamSize;
     }

@@ -25,11 +25,11 @@ public class VitterXSampling<T> extends AbstractUnweightedRandomSampling<T> {
     }
 
     @Override
-    protected int skipLength(int streamSize, int sampleSize, Random random) {
-        int currentStream = streamSize + 1;
+    protected long skipLength(long streamSize, int sampleSize, Random random) {
+        long currentStream = streamSize + 1;
 
         final double r = random.nextDouble();
-        int gamma = 0;
+        long gamma = 0;
 
         double quot = (currentStream - sampleSize) / (double) currentStream;
         while (quot > r && currentStream > 0) {

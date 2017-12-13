@@ -13,8 +13,8 @@ public abstract class AbstractUnweightedRandomSampling<T> implements RandomSampl
     private final int sampleSize;
     private final Random random;
     private final List<T> sample;
-    private int streamSize;
-    private int skip;
+    private long streamSize;
+    private long skip;
 
     /**
      * Construct a new instance of this class using the specified sample size and RNG. The implementation assumes that
@@ -52,7 +52,7 @@ public abstract class AbstractUnweightedRandomSampling<T> implements RandomSampl
         if (item == null) {
             throw new NullPointerException("Item was null");
         }
-        if (streamSize == Integer.MAX_VALUE) {
+        if (streamSize == Long.MAX_VALUE) {
             throw new StreamOverflowException();
         }
 
@@ -97,7 +97,7 @@ public abstract class AbstractUnweightedRandomSampling<T> implements RandomSampl
      * This method runs in constant time.
      */
     @Override
-    public final int streamSize() {
+    public final long streamSize() {
         assert this.streamSize >= 0;
         return this.streamSize;
     }
@@ -124,5 +124,5 @@ public abstract class AbstractUnweightedRandomSampling<T> implements RandomSampl
      * @param random     the {@link Random} instance to use
      * @return how many items to skip
      */
-    protected abstract int skipLength(int streamSize, int sampleSize, Random random);
+    protected abstract long skipLength(long streamSize, int sampleSize, Random random);
 }

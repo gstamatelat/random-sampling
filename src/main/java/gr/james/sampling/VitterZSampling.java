@@ -27,7 +27,7 @@ public class VitterZSampling<T> extends AbstractUnweightedRandomSampling<T> {
     }
 
     @Override
-    protected int skipLength(int streamSize, int sampleSize, Random random) {
+    protected long skipLength(long streamSize, int sampleSize, Random random) {
         if (Double.isNaN(this.W)) {
             this.W = Math.pow(random.nextDouble(), -1.0 / sampleSize);
         }
@@ -36,7 +36,7 @@ public class VitterZSampling<T> extends AbstractUnweightedRandomSampling<T> {
             // Generate U and X
             double U = RandomSamplingUtils.randomExclusive(random);
             double X = streamSize * (this.W - 1.0);
-            int G = (int) X;
+            long G = (long) X;
             // Test if U <= h(G) / cg(X)
             double lhs = Math.pow(((U * Math.pow(((streamSize + 1) / term), 2)) * (term + G)) / (streamSize + X), 1.0 / sampleSize);
             double rhs = (((streamSize + X) / (term + G)) * term) / streamSize;
