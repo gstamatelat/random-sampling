@@ -44,37 +44,51 @@ System.out.println(rs.sample());
 
 ## Algorithms
 
-### 1 Algorithm R by Waterman
+### Summary
 
-The Art of Computer Programming, Vol II, Random Sampling and Shuffling.
+| Class                | Algorithm                     | Weighted |
+| -------------------- | ----------------------------- | -------- |
+| `WatermanSampling`   | Algorithm R by Waterman       |          |
+| `VitterXSampling`    | Algorithm X by Vitter         |          |
+| `VitterZSampling`    | Algorithm Z by Vitter         |          |
+| `EfraimidisSampling` | Algorithm A-Res by Efraimidis | &#10004; |
+| `ChaoSampling`       | Algorithm by Chao             | &#10004; |
+
+### 1 Algorithm R by Waterman
 
 Signature: `WatermanSampling` implements `RandomSampling`
 
-### 2 Algorithm X by Vitter
+#### References
+- The Art of Computer Programming, Vol II, Random Sampling and Shuffling.
 
-[Vitter, Jeffrey S. "Random sampling with a reservoir." ACM Transactions on Mathematical Software (TOMS) 11.1 (1985): 37-57.](https://doi.org/10.1145/3147.3165)
+### 2 Algorithm X by Vitter
 
 Signature: `VitterXSampling` implements `RandomSampling`
 
-### 3 Algorithm Z by Vitter
+#### References
+- [Vitter, Jeffrey S. "Random sampling with a reservoir." ACM Transactions on Mathematical Software (TOMS) 11.1 (1985): 37-57.](https://doi.org/10.1145/3147.3165)
 
-[Vitter, Jeffrey S. "Random sampling with a reservoir." ACM Transactions on Mathematical Software (TOMS) 11.1 (1985): 37-57.](https://doi.org/10.1145/3147.3165)
+### 3 Algorithm Z by Vitter
 
 Signature: `VitterZSampling` implements `RandomSampling`
 
-### 4 Algorithm A-Res by Efraimidis and Spirakis
+#### References
+- [Vitter, Jeffrey S. "Random sampling with a reservoir." ACM Transactions on Mathematical Software (TOMS) 11.1 (1985): 37-57.](https://doi.org/10.1145/3147.3165)
 
-[Efraimidis, Pavlos S., and Paul G. Spirakis. "Weighted random sampling with a reservoir." Information Processing Letters 97.5 (2006): 181-185.](https://doi.org/10.1016/j.ipl.2005.11.003)
+### 4 Algorithm A-Res by Efraimidis
 
 Signature: `EfraimidisSampling` implements `WeightedRandomSampling`
 
+#### References
+- [Efraimidis, Pavlos S., and Paul G. Spirakis. "Weighted random sampling with a reservoir." Information Processing Letters 97.5 (2006): 181-185.](https://doi.org/10.1016/j.ipl.2005.11.003)
+
 ### 5 Algorithm by Chao
 
-[Chao, M. T. "A general purpose unequal probability sampling plan." Biometrika 69.3 (1982): 653-656.](https://doi.org/10.2307/2336002)
-
-Additional reference: [Sugden, R. A. "Chao's list sequential scheme for unequal probability sampling." Journal of Applied Statistics 23.4 (1996): 413-421.](https://doi.org/10.1080/02664769624152)
-
 Signature: `ChaoSampling` implements `WeightedRandomSampling`
+
+#### References
+- [Chao, M. T. "A general purpose unequal probability sampling plan." Biometrika 69.3 (1982): 653-656.](https://doi.org/10.2307/2336002)
+- [Sugden, R. A. "Chao's list sequential scheme for unequal probability sampling." Journal of Applied Statistics 23.4 (1996): 413-421.](https://doi.org/10.1080/02664769624152)
 
 ## References
 
