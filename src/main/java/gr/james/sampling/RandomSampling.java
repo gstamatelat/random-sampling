@@ -40,9 +40,9 @@ public interface RandomSampling<T> {
     /**
      * Get the sample of all the items that have been feeded to the algorithm during the lifetime of the instance.
      * <p>
-     * This method returns an unmodifiable {@link Collection} of the items in the sample which is not backed by the
-     * instance; subsequent modification of the instance (using any of the {@code feed} methods) will not reflect on
-     * this collection. The items returned are in no particular order unless otherwise specified. The {@link Collection}
+     * This method returns a {@link Collection} of the items in the sample which is not backed by the instance;
+     * subsequent modification of the instance (using any of the {@code feed} methods) will not reflect on this
+     * collection. The items returned are in no particular order unless otherwise specified. The {@link Collection}
      * returned cannot be {@code null} but it can be empty iff {@link #streamSize()} {@code = 0}. The size of the sample
      * {@code sample().size()} is equal to the minimum of {@link #sampleSize()} and {@link #streamSize()}.
      *

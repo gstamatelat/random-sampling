@@ -105,7 +105,7 @@ public class EfraimidisSampling<T> implements WeightedRandomSampling<T> {
             r.add(t.object);
         }
         assert r.size() == Math.min(sampleSize(), streamSize());
-        return Collections.unmodifiableList(r);
+        return r;
     }
 
     /**

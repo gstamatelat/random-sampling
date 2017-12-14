@@ -1,6 +1,9 @@
 package gr.james.sampling;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Random;
 
 /**
  * This class provides a skeletal implementation of the {@link RandomSampling} interface to minimize the effort required
@@ -111,7 +114,7 @@ public abstract class AbstractUnweightedRandomSampling<T> implements RandomSampl
     public Collection<T> sample() {
         final List<T> r = new ArrayList<>(sample);
         assert r.size() == Math.min(sampleSize(), streamSize());
-        return Collections.unmodifiableList(r);
+        return r;
     }
 
     /**

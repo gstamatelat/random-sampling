@@ -157,7 +157,7 @@ public class ChaoSampling<T> implements WeightedRandomSampling<T> {
             r.add(w.object);
         }
         assert r.size() == Math.min(sampleSize(), streamSize());
-        return Collections.unmodifiableList(r);
+        return r;
     }
 
     /**
