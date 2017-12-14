@@ -1,0 +1,25 @@
+apply plugin: 'java'
+apply plugin: 'findbugs'
+
+sourceCompatibility = 1.8
+
+repositories {
+    jcenter()
+}
+
+findbugs {
+    sourceSets = [sourceSets.main]
+    effort = "max"
+}
+
+wrapper {
+    gradleVersion = '4.4'
+}
+
+build {
+    dependsOn(javadoc)
+}
+
+dependencies {
+    testCompile 'junit:junit:4.12'
+}
