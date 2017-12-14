@@ -10,7 +10,7 @@ This library distinguishes these algorithms into two main categories: the ones t
 
 Select 10 numbers at random in the range [1,100]. Each number has a 10% probability of appearing in the sample.
 ```java
-final RandomSampling<Integer> rs = new WatermanSampling<>(10, new Random());
+RandomSampling<Integer> rs = new WatermanSampling<>(10, new Random());
 rs.feed(IntStream.rangeClosed(1, 100).boxed().iterator());
 Collection<Integer> sample = rs.sample();
 System.out.println(sample);
@@ -18,21 +18,21 @@ System.out.println(sample);
 
 Select 5 random tokens from an input stream.
 ```java
-final RandomSampling<String> rs = new VitterXSampling<>(5, new Random());
+RandomSampling<String> rs = new VitterXSampling<>(5, new Random());
 rs.feed(new Scanner(System.in));
 System.out.println(rs.sample());
 ```
 
 Same example using Algorithm Z.
 ```java
-final RandomSampling<String> rs = new VitterZSampling<>(5, new Random());
+RandomSampling<String> rs = new VitterZSampling<>(5, new Random());
 rs.feed(new Scanner(System.in));
 System.out.println(rs.sample());
 ```
 
 Select 2 terms from a vocabulary, based on their weight.
 ```java
-final WeightedRandomSampling<String> rs = new EfraimidisSampling<>(2, new Random());
+WeightedRandomSampling<String> rs = new EfraimidisSampling<>(2, new Random());
 rs.feed("collection", 1)
   .feed("algorithms", 2)
   .feed("java", 2)
@@ -44,10 +44,8 @@ System.out.println(rs.sample());
 
 ## Algorithms
 
-### Summary
-
 | Class                | Algorithm                     | Weighted |
-| -------------------- | ----------------------------- | -------- |
+| :------------------- | :---------------------------- | :------- |
 | `WatermanSampling`   | Algorithm R by Waterman       |          |
 | `VitterXSampling`    | Algorithm X by Vitter         |          |
 | `VitterZSampling`    | Algorithm Z by Vitter         |          |
