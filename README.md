@@ -6,6 +6,26 @@ Reservoir sampling is a family of randomized algorithms for randomly choosing a 
 
 This library distinguishes these algorithms into two main categories: the ones that assign a weight in each item of the source stream and the ones that don't. These will be referred to as weighted and unweighted random sampling algorithms respectively. In unweighted algorithms, each item in the stream has probability `k/n` in appearing in the sample. In weighted algorithms this probability depends on the extra parameter `weight`. Each algorithm may interpret this parameter in a different way, for example in [2] two possible interpretations are mentioned.
 
+## Using
+
+Random Sampling is published to [jcenter](https://bintray.com/gstamatelat/random-sampling/random-sampling). You can add a dependency from your project as follows:
+
+Using Maven
+
+```xml
+<dependency>
+  <groupId>gr.james</groupId>
+  <artifactId>random-sampling</artifactId>
+  <version>0.1</version>
+</dependency>
+```
+
+Using Gradle
+
+```
+compile 'gr.james:random-sampling:0.1'
+```
+
 ## Examples
 
 Select 10 numbers at random in the range [1,100]. Each number has a 10% probability of appearing in the sample.
