@@ -36,6 +36,7 @@ public abstract class AbstractUnweightedRandomSampling<T> implements RandomSampl
         if (sampleSize < 1) {
             throw new IllegalArgumentException("Sample size was less than 1");
         }
+        init(sampleSize, random);
         this.random = random;
         this.sampleSize = sampleSize;
         this.streamSize = 0;
@@ -128,4 +129,15 @@ public abstract class AbstractUnweightedRandomSampling<T> implements RandomSampl
      * @return how many items to skip
      */
     protected abstract long skipLength(long streamSize, int sampleSize, Random random);
+
+    /**
+     * Performs initialization logic.
+     * <p>
+     * This method is invoked in the constructor.
+     *
+     * @param sampleSize expected sample size
+     * @param random     the {@link Random} instance assigned to this instance
+     */
+    protected void init(int sampleSize, Random random) {
+    }
 }
