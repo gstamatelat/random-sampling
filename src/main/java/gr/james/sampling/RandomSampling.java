@@ -16,6 +16,8 @@ import java.util.Iterator;
  * Classes that implement this interface must have a static method with signature
  * <pre>{@code public static RandomSamplingCollector<?> collector(int sampleSize, Random random)}</pre>
  * that returns a {@link RandomSamplingCollector} to use with the Java 8 stream API.
+ * <p>
+ * Classes that implement this interface must have constant space complexity in respect to the stream size.
  *
  * @param <T> the item type
  * @author Giorgos Stamatelatos
