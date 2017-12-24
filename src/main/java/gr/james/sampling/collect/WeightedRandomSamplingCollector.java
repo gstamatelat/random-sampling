@@ -22,7 +22,7 @@ public class WeightedRandomSamplingCollector<E> implements Collector<Map.Entry<E
     private final Supplier<WeightedRandomSampling<E>> supplier;
 
     /**
-     * Construct a new {@link RandomSamplingCollector} from the given supplier.
+     * Construct a new {@link WeightedRandomSamplingCollector} from the given supplier.
      *
      * @param supplier the {@link Supplier} of {@link WeightedRandomSampling} to use
      * @throws NullPointerException if {@code supplier} is {@code null}
