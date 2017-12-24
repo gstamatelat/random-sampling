@@ -1,5 +1,8 @@
 package gr.james.sampling;
 
+import gr.james.sampling.collect.RandomSamplingCollector;
+import gr.james.sampling.collect.WeightedRandomSamplingCollector;
+
 import java.util.*;
 
 /**
@@ -45,6 +48,28 @@ public class ChaoSampling<T> implements WeightedRandomSampling<T> {
         this.sample = new ArrayList<>(sampleSize);
         this.impossible = new TreeSet<>();
         this.weightSum = 0;
+    }
+
+    /**
+     * Get a {@link RandomSamplingCollector} from this class.
+     *
+     * @param sampleSize the sample size
+     * @param random     the RNG to use
+     * @return a {@link RandomSamplingCollector} from this class
+     */
+    public static RandomSamplingCollector<?> collector(int sampleSize, Random random) {
+        return new RandomSamplingCollector<>(() -> new ChaoSampling<>(sampleSize, random));
+    }
+
+    /**
+     * Get a {@link WeightedRandomSamplingCollector} from this class.
+     *
+     * @param sampleSize the sample size
+     * @param random     the RNG to use
+     * @return a {@link WeightedRandomSamplingCollector} from this class
+     */
+    public static WeightedRandomSamplingCollector<?> weightedCollector(int sampleSize, Random random) {
+        return new WeightedRandomSamplingCollector<>(() -> new ChaoSampling<>(sampleSize, random));
     }
 
     /**

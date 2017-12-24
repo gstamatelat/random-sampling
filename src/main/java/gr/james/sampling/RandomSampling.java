@@ -1,5 +1,7 @@
 package gr.james.sampling;
 
+import gr.james.sampling.collect.RandomSamplingCollector;
+
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -10,6 +12,10 @@ import java.util.Iterator;
  * {@code n} items, where {@code n} may be unknown. A sampling algorithm may support weighted elements, in which case it
  * is considered a weighted random sampling algorithm and implements {@link WeightedRandomSampling}, which is a
  * subinterface of {@code RandomSampling}.
+ * <p>
+ * Classes that implement this interface must have a static method with signature
+ * <pre>{@code public static RandomSamplingCollector<?> collector(int sampleSize, Random random)}</pre>
+ * that returns a {@link RandomSamplingCollector} to use with the Java 8 stream API.
  *
  * @param <T> the item type
  * @author Giorgos Stamatelatos

@@ -1,5 +1,7 @@
 package gr.james.sampling;
 
+import gr.james.sampling.collect.RandomSamplingCollector;
+
 import java.util.Random;
 
 /**
@@ -24,6 +26,17 @@ public class VitterZSampling<T> extends AbstractUnweightedRandomSampling<T> {
      */
     public VitterZSampling(int sampleSize, Random random) {
         super(sampleSize, random);
+    }
+
+    /**
+     * Get a {@link RandomSamplingCollector} from this class.
+     *
+     * @param sampleSize the sample size
+     * @param random     the RNG to use
+     * @return a {@link RandomSamplingCollector} from this class
+     */
+    public static RandomSamplingCollector<?> collector(int sampleSize, Random random) {
+        return new RandomSamplingCollector<>(() -> new VitterZSampling<>(sampleSize, random));
     }
 
     @Override

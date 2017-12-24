@@ -1,5 +1,7 @@
 package gr.james.sampling;
 
+import gr.james.sampling.collect.WeightedRandomSamplingCollector;
+
 import java.util.Iterator;
 import java.util.Map;
 
@@ -12,6 +14,10 @@ import java.util.Map;
  * suggests a higher probability for an item to be included in the sample. Implementations may define certain
  * restrictions on the values of weight. These restrictions must be mentioned in the documentation and an
  * {@link IllegalWeightException} must be thrown to indicate such violations.
+ * <p>
+ * Classes that implement this interface must have a static method with signature
+ * <pre>{@code public static WeightedRandomSamplingCollector<?> weightedCollector(int sampleSize, Random random)}</pre>
+ * that returns a {@link WeightedRandomSamplingCollector} to use with the Java 8 stream API.
  *
  * @param <T> the item type
  * @author Giorgos Stamatelatos

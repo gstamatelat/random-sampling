@@ -1,5 +1,7 @@
 package gr.james.sampling;
 
+import gr.james.sampling.collect.RandomSamplingCollector;
+
 import java.util.Random;
 
 /**
@@ -22,6 +24,17 @@ public class WatermanSampling<T> extends AbstractUnweightedRandomSampling<T> {
      */
     public WatermanSampling(int sampleSize, Random random) {
         super(sampleSize, random);
+    }
+
+    /**
+     * Get a {@link RandomSamplingCollector} from this class.
+     *
+     * @param sampleSize the sample size
+     * @param random     the RNG to use
+     * @return a {@link RandomSamplingCollector} from this class
+     */
+    public static RandomSamplingCollector<?> collector(int sampleSize, Random random) {
+        return new RandomSamplingCollector<>(() -> new WatermanSampling<>(sampleSize, random));
     }
 
     @Override
