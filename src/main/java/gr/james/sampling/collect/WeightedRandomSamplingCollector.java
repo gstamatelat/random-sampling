@@ -18,7 +18,8 @@ import java.util.stream.Collector;
  *
  * @param <E> the type of input elements
  */
-public class WeightedRandomSamplingCollector<E> implements Collector<Map.Entry<E, Double>, WeightedRandomSampling<E>, Collection<E>> {
+public class WeightedRandomSamplingCollector<E>
+        implements Collector<Map.Entry<E, Double>, WeightedRandomSampling<E>, Collection<E>> {
     private final Supplier<WeightedRandomSampling<E>> supplier;
 
     /**

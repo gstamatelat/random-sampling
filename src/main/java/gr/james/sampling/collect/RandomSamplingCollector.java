@@ -17,7 +17,8 @@ import java.util.stream.Collector;
  *
  * @param <E> the type of input elements
  */
-public class RandomSamplingCollector<E> implements Collector<E, RandomSampling<E>, Collection<E>> {
+public class RandomSamplingCollector<E>
+        implements Collector<E, RandomSampling<E>, Collection<E>> {
     private final Supplier<RandomSampling<E>> supplier;
 
     /**
