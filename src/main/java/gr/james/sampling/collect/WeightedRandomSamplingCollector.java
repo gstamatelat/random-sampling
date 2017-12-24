@@ -17,6 +17,7 @@ import java.util.stream.Collector;
  * the accumulated result into a final sample {@link Collection} after all input elements have been processed.
  *
  * @param <E> the type of input elements
+ * @author Giorgos Stamatelatos
  */
 public class WeightedRandomSamplingCollector<E>
         implements Collector<Map.Entry<E, Double>, WeightedRandomSampling<E>, Collection<E>> {

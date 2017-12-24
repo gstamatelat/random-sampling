@@ -16,6 +16,7 @@ import java.util.stream.Collector;
  * accumulated result into a final sample {@link Collection} after all input elements have been processed.
  *
  * @param <E> the type of input elements
+ * @author Giorgos Stamatelatos
  */
 public class RandomSamplingCollector<E>
         implements Collector<E, RandomSampling<E>, Collection<E>> {
