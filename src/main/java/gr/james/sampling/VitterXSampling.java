@@ -6,6 +6,8 @@ import java.util.Random;
 
 /**
  * Implementation of the algorithm "Algorithm X" by Vitter in "Random Sampling with a Reservoir".
+ * <p>
+ * The space complexity of this class is {@code O(k)}, where {@code k} is the sample size.
  *
  * @param <T> the item type
  * @author Giorgos Stamatelatos

@@ -11,6 +11,8 @@ import java.util.*;
  * This algorithm accepts item weights in the range (0,+Inf), otherwise an {@link IllegalWeightException} is thrown.
  * <p>
  * The default item weight of this algorithm when approached using the {@link RandomSampling} interface is {@code 1.0}.
+ * <p>
+ * The space complexity of this class is {@code O(k)}, where {@code k} is the sample size.
  *
  * @param <T> the item type
  * @author Giorgos Stamatelatos
