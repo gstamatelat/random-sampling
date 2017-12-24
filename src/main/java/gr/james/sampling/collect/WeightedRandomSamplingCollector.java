@@ -62,7 +62,7 @@ public class WeightedRandomSamplingCollector<E>
      * <p>
      * This operation is not supported by this implementation because it is not a meaningful operation to combine two
      * instances of type {@link WeightedRandomSampling}. Thus, this method returns a {@link BinaryOperator} that always
-     * hrows {@link UnsupportedOperationException}.
+     * throws {@link UnsupportedOperationException}.
      *
      * @return a function which throws {@link UnsupportedOperationException}
      */
