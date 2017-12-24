@@ -64,13 +64,13 @@ System.out.println(rs.sample());
 
 ## Algorithms
 
-| Class                | Algorithm                     | Weighted |
-| :------------------- | :---------------------------- | :------- |
-| `WatermanSampling`   | Algorithm R by Waterman       |          |
-| `VitterXSampling`    | Algorithm X by Vitter         |          |
-| `VitterZSampling`    | Algorithm Z by Vitter         |          |
-| `EfraimidisSampling` | Algorithm A-Res by Efraimidis | &#10004; |
-| `ChaoSampling`       | Algorithm by Chao             | &#10004; |
+| Class                | Algorithm                     | Space  | Weighted |
+| :------------------- | :---------------------------- | :----- | :------- |
+| `WatermanSampling`   | Algorithm R by Waterman       | `O(k)` |          |
+| `VitterXSampling`    | Algorithm X by Vitter         | `O(k)` |          |
+| `VitterZSampling`    | Algorithm Z by Vitter         | `O(k)` |          |
+| `EfraimidisSampling` | Algorithm A-Res by Efraimidis | `O(k)` | &#10004; |
+| `ChaoSampling`       | Algorithm by Chao             | `O(k)` | &#10004; |
 
 ### 1 Algorithm R by Waterman
 
