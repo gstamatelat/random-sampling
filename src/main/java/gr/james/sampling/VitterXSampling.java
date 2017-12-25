@@ -33,9 +33,10 @@ public class VitterXSampling<T> extends AbstractUnweightedRandomSampling<T> {
      *
      * @param sampleSize the sample size
      * @param random     the RNG to use
+     * @param <E>        the type of elements
      * @return a {@link RandomSamplingCollector} from this class
      */
-    public static RandomSamplingCollector<?> collector(int sampleSize, Random random) {
+    public static <E> RandomSamplingCollector<E> collector(int sampleSize, Random random) {
         return new RandomSamplingCollector<>(() -> new VitterXSampling<>(sampleSize, random));
     }
 

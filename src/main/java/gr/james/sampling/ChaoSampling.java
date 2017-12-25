@@ -57,9 +57,10 @@ public class ChaoSampling<T> implements WeightedRandomSampling<T> {
      *
      * @param sampleSize the sample size
      * @param random     the RNG to use
+     * @param <E>        the type of elements
      * @return a {@link RandomSamplingCollector} from this class
      */
-    public static RandomSamplingCollector<?> collector(int sampleSize, Random random) {
+    public static <E> RandomSamplingCollector<E> collector(int sampleSize, Random random) {
         return new RandomSamplingCollector<>(() -> new ChaoSampling<>(sampleSize, random));
     }
 
@@ -68,9 +69,10 @@ public class ChaoSampling<T> implements WeightedRandomSampling<T> {
      *
      * @param sampleSize the sample size
      * @param random     the RNG to use
+     * @param <E>        the type of elements
      * @return a {@link WeightedRandomSamplingCollector} from this class
      */
-    public static WeightedRandomSamplingCollector<?> weightedCollector(int sampleSize, Random random) {
+    public static <E> WeightedRandomSamplingCollector<E> weightedCollector(int sampleSize, Random random) {
         return new WeightedRandomSamplingCollector<>(() -> new ChaoSampling<>(sampleSize, random));
     }
 
