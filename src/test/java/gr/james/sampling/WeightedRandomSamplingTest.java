@@ -43,11 +43,11 @@ public class WeightedRandomSamplingTest {
     public void correctness() {
         final int[] d = new int[STREAM];
         for (int reps = 0; reps < REPS; reps++) {
-            final WeightedRandomSampling<Integer> es = impl.get();
+            final WeightedRandomSampling<Integer> alg = impl.get();
             for (int i = 0; i < STREAM; i++) {
-                es.feed(i, i + 1);
+                alg.feed(i, i + 1);
             }
-            for (int s : es.sample()) {
+            for (int s : alg.sample()) {
                 d[s]++;
             }
         }

@@ -23,11 +23,11 @@ public class ChaoSamplingTest {
     public void correctness() {
         final int[] d = new int[STREAM];
         for (int reps = 0; reps < REPS; reps++) {
-            final ChaoSampling<Integer> es = new ChaoSampling<>(SAMPLE, RANDOM);
+            final ChaoSampling<Integer> chao = new ChaoSampling<>(SAMPLE, RANDOM);
             for (int i = 0; i < STREAM; i++) {
-                es.feed(i, i + 1);
+                chao.feed(i, i + 1);
             }
-            for (int s : es.sample()) {
+            for (int s : chao.sample()) {
                 d[s]++;
             }
         }
