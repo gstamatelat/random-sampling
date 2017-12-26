@@ -3,6 +3,9 @@ package gr.james.sampling;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 public class ChaoSamplingTest {
@@ -31,6 +34,30 @@ public class ChaoSamplingTest {
         final double diff = 2.0 * (REPS * SAMPLE) / (STREAM * (STREAM + 1));
         for (int i = 0; i < d.length - 1; i++) {
             Assert.assertEquals("ChaoSamplingTest.correctness",
+                    1.0, (d[i + 1] - d[i]) / diff, 1e-2);
+        }
+    }
+
+    /**
+     * Same test as {@link #correctness()} but with the stream API.
+     */
+    @Test
+    public void stream() {
+        final int[] d = new int[STREAM];
+        for (int reps = 0; reps < REPS; reps++) {
+            final Map<Integer, Double> map = new HashMap<>();
+            for (int i = 0; i < STREAM; i++) {
+                map.put(i, (double) (i + 1));
+            }
+            final Collection<Integer> sample =
+                    map.entrySet().stream().collect(ChaoSampling.weightedCollector(SAMPLE, RANDOM));
+            for (int s : sample) {
+                d[s]++;
+            }
+        }
+        final double diff = 2.0 * (REPS * SAMPLE) / (STREAM * (STREAM + 1));
+        for (int i = 0; i < d.length - 1; i++) {
+            Assert.assertEquals("ChaoSamplingTest.stream",
                     1.0, (d[i + 1] - d[i]) / diff, 1e-2);
         }
     }
