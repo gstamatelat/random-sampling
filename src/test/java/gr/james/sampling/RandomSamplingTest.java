@@ -1,5 +1,6 @@
 package gr.james.sampling;
 
+import gr.james.sampling.collect.RandomSamplingCollector;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Random;
 import java.util.function.Supplier;
+import java.util.stream.IntStream;
 
 /**
  * Tests for unweighted algorithms (and weighted used as unweighted)
@@ -62,6 +64,45 @@ public class RandomSamplingTest {
             final double expected = (double) REPS * SAMPLE / STREAM;
             final double actual = (double) c;
             Assert.assertEquals("RandomSamplingTest.correctness", 1, actual / expected, 1e-2);
+        }
+    }
+
+    /**
+     * Same test as {@link #correctness()} but with the stream API.
+     */
+    @Test
+    public void stream() {
+        final int[] d = new int[STREAM];
+
+        for (int reps = 0; reps < REPS; reps++) {
+            final RandomSamplingCollector<Integer> collector;
+
+            final RandomSampling<Integer> alg = impl.get();
+            if (alg instanceof WatermanSampling) {
+                collector = WatermanSampling.collector(SAMPLE, RANDOM);
+            } else if (alg instanceof VitterXSampling) {
+                collector = VitterXSampling.collector(SAMPLE, RANDOM);
+            } else if (alg instanceof VitterZSampling) {
+                collector = VitterZSampling.collector(SAMPLE, RANDOM);
+            } else if (alg instanceof EfraimidisSampling) {
+                collector = EfraimidisSampling.collector(SAMPLE, RANDOM);
+            } else if (alg instanceof ChaoSampling) {
+                collector = ChaoSampling.collector(SAMPLE, RANDOM);
+            } else {
+                throw new AssertionError("RandomSamplingTest.stream");
+            }
+
+            final Collection<Integer> sample = IntStream.range(0, STREAM).boxed().collect(collector);
+
+            for (int s : sample) {
+                d[s]++;
+            }
+        }
+
+        for (int c : d) {
+            final double expected = (double) REPS * SAMPLE / STREAM;
+            final double actual = (double) c;
+            Assert.assertEquals("RandomSamplingTest.stream", 1, actual / expected, 1e-2);
         }
     }
 
