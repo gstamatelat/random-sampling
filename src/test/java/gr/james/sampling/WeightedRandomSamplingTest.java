@@ -1,5 +1,6 @@
 package gr.james.sampling;
 
+import gr.james.sampling.collect.WeightedRandomSamplingCollector;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,6 +10,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Random;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * Tests for weighted algorithms
@@ -53,6 +56,36 @@ public class WeightedRandomSamplingTest {
         }
         for (int i = 0; i < d.length - 1; i++) {
             Assert.assertTrue("WeightedRandomSamplingTest.correctness", d[i] < d[i + 1]);
+        }
+    }
+
+    @Test
+    public void stream() {
+        final int[] d = new int[STREAM];
+
+        for (int reps = 0; reps < REPS; reps++) {
+            final WeightedRandomSamplingCollector<Integer> collector;
+
+            final WeightedRandomSampling<Integer> alg = impl.get();
+            if (alg instanceof EfraimidisSampling) {
+                collector = EfraimidisSampling.weightedCollector(SAMPLE, RANDOM);
+            } else if (alg instanceof ChaoSampling) {
+                collector = ChaoSampling.weightedCollector(SAMPLE, RANDOM);
+            } else {
+                throw new AssertionError("WeightedRandomSamplingTest.stream");
+            }
+
+            final Collection<Integer> sample = IntStream.range(0, STREAM).boxed()
+                    .collect(Collectors.toMap(o -> o, o -> (double) (o + 1)))
+                    .entrySet().stream().collect(collector);
+
+            for (int s : sample) {
+                d[s]++;
+            }
+        }
+
+        for (int i = 0; i < d.length - 1; i++) {
+            Assert.assertTrue("WeightedRandomSamplingTest.stream", d[i] < d[i + 1]);
         }
     }
 
