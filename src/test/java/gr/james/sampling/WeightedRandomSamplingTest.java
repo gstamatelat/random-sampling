@@ -59,6 +59,9 @@ public class WeightedRandomSamplingTest {
         }
     }
 
+    /**
+     * Same test as {@link #correctness()} but with the stream API.
+     */
     @Test
     public void stream() {
         final int[] d = new int[STREAM];
