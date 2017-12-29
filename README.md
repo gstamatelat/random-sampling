@@ -62,6 +62,27 @@ rs.feed("collection", 1)
 System.out.println(rs.sample());
 ```
 
+Unweighted random sampling using the Java 8 stream API.
+```java
+RandomSamplingCollector<Integer> collector = WatermanSampling.collector(5, new Random());
+Collection<Integer> sample = IntStream.range(0, 20).boxed().collect(collector);
+System.out.println(sample);
+```
+
+Weighted random sampling using the Java 8 stream API.
+```java
+WeightedRandomSamplingCollector<String> collector = ChaoSampling.weightedCollector(2, new Random());
+Map<String, Double> map = new HashMap<>();
+map.put("collection", 1.0);
+map.put("algorithms", 2.0);
+map.put("java", 2.0);
+map.put("random", 3.0);
+map.put("sampling", 4.0);
+map.put("reservoir", 5.0);
+Collection<String> sample = map.entrySet().stream().collect(collector);
+System.out.println(sample);
+```
+
 ## Algorithms
 
 | Class                | Algorithm                     | Space  | Weighted |
