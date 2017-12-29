@@ -1,7 +1,5 @@
 package gr.james.sampling;
 
-import gr.james.sampling.collect.RandomSamplingCollector;
-
 import java.util.Random;
 
 /**

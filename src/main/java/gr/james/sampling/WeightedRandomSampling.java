@@ -1,7 +1,5 @@
 package gr.james.sampling;
 
-import gr.james.sampling.collect.WeightedRandomSamplingCollector;
-
 import java.util.Iterator;
 import java.util.Map;
 

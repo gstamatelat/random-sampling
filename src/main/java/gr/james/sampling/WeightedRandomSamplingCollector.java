@@ -1,6 +1,4 @@
-package gr.james.sampling.collect;
-
-import gr.james.sampling.WeightedRandomSampling;
+package gr.james.sampling;
 
 import java.util.Collection;
 import java.util.EnumSet;

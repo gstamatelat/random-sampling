@@ -1,6 +1,5 @@
 package gr.james.sampling;
 
-import gr.james.sampling.collect.WeightedRandomSamplingCollector;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
