@@ -30,14 +30,14 @@ Using Maven
 <dependency>
   <groupId>gr.james</groupId>
   <artifactId>random-sampling</artifactId>
-  <version>0.3</version>
+  <version>0.4</version>
 </dependency>
 ```
 
 Using Gradle
 
 ```
-compile 'gr.james:random-sampling:0.3'
+compile 'gr.james:random-sampling:0.4'
 ```
 
 ## Examples
