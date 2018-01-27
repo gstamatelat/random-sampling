@@ -12,7 +12,7 @@ import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
 /**
- * Tests for unweighted algorithms (and weighted used as unweighted)
+ * Tests for unweighted algorithms (and weighted used as unweighted).
  */
 @RunWith(Parameterized.class)
 public class RandomSamplingTest {
@@ -41,7 +41,7 @@ public class RandomSamplingTest {
     }
 
     /**
-     * All items must be selected with equal probability
+     * All items must be selected with equal probability.
      */
     @Test
     public void correctness() {

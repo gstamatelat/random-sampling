@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
- * Tests for weighted algorithms
+ * Tests for weighted algorithms.
  */
 @RunWith(Parameterized.class)
 public class WeightedRandomSamplingTest {
@@ -39,20 +39,24 @@ public class WeightedRandomSamplingTest {
     }
 
     /**
-     * Increased weight means more occurrences
+     * Increased weight means more occurrences.
      */
     @Test
     public void correctness() {
         final int[] d = new int[STREAM];
+
         for (int reps = 0; reps < REPS; reps++) {
             final WeightedRandomSampling<Integer> alg = impl.get();
+
             for (int i = 0; i < STREAM; i++) {
                 alg.feed(i, i + 1);
             }
+
             for (int s : alg.sample()) {
                 d[s]++;
             }
         }
+
         for (int i = 0; i < d.length - 1; i++) {
             Assert.assertTrue("WeightedRandomSamplingTest.correctness", d[i] < d[i + 1]);
         }

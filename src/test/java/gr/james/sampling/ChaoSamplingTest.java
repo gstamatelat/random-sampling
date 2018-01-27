@@ -17,7 +17,7 @@ public class ChaoSamplingTest {
     private static final int REPS = 10000000;
 
     /**
-     * In {@link ChaoSampling} the appearance probability must be proportional to the item weight
+     * In {@link ChaoSampling} the appearance probability must be proportional to the item weight.
      */
     @Test
     public void correctness() {
