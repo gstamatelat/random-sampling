@@ -102,7 +102,7 @@ public class EfraimidisSampling<T> implements WeightedRandomSampling<T> {
 
         // Calculate item weight
         final Weighted<T> newItem = new Weighted<>(item, Math.pow(r, 1 / weight));
-        assert newItem.weight > 0.0 && newItem.weight < 1.0;
+        assert newItem.weight >= 0.0 && newItem.weight <= 1.0; // weight can also be 0.0 or 1.0 because of double precision
 
         // Add item to reservoir
         if (pq.size() < sampleSize) {
