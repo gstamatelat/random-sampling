@@ -1,14 +1,28 @@
 # Random Sampling
 
-A collection of algorithms in Java 8 for the problem of random sampling with a reservoir.
+A collection of algorithms in Java 8 for the problem of random sampling with a
+reservoir.
 
-Reservoir sampling is a family of randomized algorithms for randomly choosing a sample of `k` items from a list `S` containing `n` items, where `n` is either a very large or unknown number. Typically `n` is large enough that the list doesn't fit into main memory. [1] In this context, the sample of `k` items will be referred to as ***sample*** and the list `S` as ***stream***.
+Reservoir sampling is a family of randomized algorithms for randomly choosing a
+sample of `k` items from a list `S` containing `n` items, where `n` is either a
+very large or unknown number. Typically `n` is large enough that the list
+doesn't fit into main memory. [1] In this context, the sample of `k` items will
+be referred to as ***sample*** and the list `S` as ***stream***.
 
-This package distinguishes these algorithms into two main categories: the ones that assign a weight in each item of the source stream and the ones that don't. These will be referred to as weighted and unweighted random sampling algorithms respectively. In unweighted algorithms, each item in the stream has probability `k/n` in appearing in the sample. In weighted algorithms this probability depends on the extra parameter `weight`. Each algorithm may interpret this parameter in a different way, for example in [2] two possible interpretations are mentioned.
+This package distinguishes these algorithms into two main categories: the ones
+that assign a weight in each item of the source stream and the ones that don't.
+These will be referred to as weighted and unweighted random sampling algorithms
+respectively. In unweighted algorithms, each item in the stream has probability
+`k/n` in appearing in the sample. In weighted algorithms this probability
+depends on the extra parameter `weight`. Each algorithm may interpret this
+parameter in a different way, for example in [2] two possible interpretations
+are mentioned.
 
 ## Using
 
-Random Sampling is published to [jcenter](https://bintray.com/gstamatelat/random-sampling/random-sampling). You can add a dependency from your project as follows:
+Random Sampling is published to
+[jcenter](https://bintray.com/gstamatelat/random-sampling/random-sampling). You
+can add a dependency from your project as follows:
 
 Using Maven
 
@@ -28,7 +42,9 @@ compile 'gr.james:random-sampling:0.3'
 
 ## Examples
 
-Select 10 numbers at random in the range [1,100]. Each number has a 10% probability of appearing in the sample.
+Select 10 numbers at random in the range [1,100]. Each number has a 10%
+probability of appearing in the sample.
+
 ```java
 RandomSampling<Integer> rs = new WatermanSampling<>(10, new Random());
 rs.feed(IntStream.rangeClosed(1, 100).boxed().iterator());
@@ -37,6 +53,7 @@ System.out.println(sample);
 ```
 
 Select 5 random tokens from an input stream.
+
 ```java
 RandomSampling<String> rs = new VitterXSampling<>(5, new Random());
 rs.feed(new Scanner(System.in));
@@ -44,6 +61,7 @@ System.out.println(rs.sample());
 ```
 
 Same example using Algorithm Z.
+
 ```java
 RandomSampling<String> rs = new VitterZSampling<>(5, new Random());
 rs.feed(new Scanner(System.in));
@@ -51,6 +69,7 @@ System.out.println(rs.sample());
 ```
 
 Select 2 terms from a vocabulary, based on their weight.
+
 ```java
 WeightedRandomSampling<String> rs = new EfraimidisSampling<>(2, new Random());
 rs.feed("collection", 1)
@@ -63,6 +82,7 @@ System.out.println(rs.sample());
 ```
 
 Unweighted random sampling using the Java 8 stream API.
+
 ```java
 RandomSamplingCollector<Integer> collector = WatermanSampling.collector(5, new Random());
 Collection<Integer> sample = IntStream.range(0, 20).boxed().collect(collector);
@@ -70,6 +90,7 @@ System.out.println(sample);
 ```
 
 Weighted random sampling using the Java 8 stream API.
+
 ```java
 WeightedRandomSamplingCollector<String> collector = ChaoSampling.weightedCollector(2, new Random());
 Map<String, Double> map = new HashMap<>();
