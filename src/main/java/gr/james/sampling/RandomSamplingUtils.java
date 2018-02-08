@@ -9,6 +9,9 @@ import java.util.Random;
  * @author Giorgos Stamatelatos
  */
 public final class RandomSamplingUtils {
+    private RandomSamplingUtils() {
+    }
+
     /**
      * Returns a pseudorandom double value in (0,1) exclusive.
      * <p>
