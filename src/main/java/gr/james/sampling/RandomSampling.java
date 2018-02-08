@@ -13,7 +13,7 @@ import java.util.Iterator;
  * <p>
  * Classes that implement this interface must have a static method with signature
  * <pre><code>
- * public static <E> RandomSamplingCollector<E> collector(int sampleSize, Random random)
+ * public static &lt;E&gt; RandomSamplingCollector&lt;E&gt; collector(int sampleSize, Random random)
  * </code></pre>
  * that returns a {@link RandomSamplingCollector} to use with the Java 8 stream API.
  * <p>
@@ -25,39 +25,6 @@ import java.util.Iterator;
  * @see WeightedRandomSampling
  */
 public interface RandomSampling<T> {
-    /**
-     * Get the expected reservoir size associated with this algorithm.
-     * <p>
-     * The size is an {@code int} greater than zero that represents the number of items that the algorithm will select
-     * from the source stream. The sample size remains constant during the lifetime of the instance. The actual size of
-     * the sample returned by {@link #sample()} may be less than this number if the items processed from the stream are
-     * less than {@code sampleSize()} but not greater.
-     *
-     * @return the expected sample size
-     */
-    int sampleSize();
-
-    /**
-     * Get the number of items that have been feeded to the algorithm during the lifetime of this instance. This number
-     * is greater or equal than zero.
-     *
-     * @return the number of items that have been feeded to the algorithm
-     */
-    long streamSize();
-
-    /**
-     * Get the sample of all the items that have been feeded to the algorithm during the lifetime of the instance.
-     * <p>
-     * This method returns a {@link Collection} of the items in the sample which is not backed by the instance;
-     * subsequent modification of the instance (using any of the {@code feed} methods) will not reflect on this
-     * collection. The items returned are in no particular order unless otherwise specified. The {@link Collection}
-     * returned cannot be {@code null} but it can be empty iff {@link #streamSize()} {@code = 0}. The size of the sample
-     * {@code sample().size()} is equal to the minimum of {@link #sampleSize()} and {@link #streamSize()}.
-     *
-     * @return the sample of the items that have been feeded to this instance
-     */
-    Collection<T> sample();
-
     /**
      * Feed an item from the stream to the algorithm.
      *
@@ -103,4 +70,37 @@ public interface RandomSampling<T> {
         }
         return this;
     }
+
+    /**
+     * Get the expected reservoir size associated with this algorithm.
+     * <p>
+     * The size is an {@code int} greater than zero that represents the number of items that the algorithm will select
+     * from the source stream. The sample size remains constant during the lifetime of the instance. The actual size of
+     * the sample returned by {@link #sample()} may be less than this number if the items processed from the stream are
+     * less than {@code sampleSize()} but not greater.
+     *
+     * @return the expected sample size
+     */
+    int sampleSize();
+
+    /**
+     * Get the number of items that have been feeded to the algorithm during the lifetime of this instance. This number
+     * is greater or equal than zero.
+     *
+     * @return the number of items that have been feeded to the algorithm
+     */
+    long streamSize();
+
+    /**
+     * Get the sample of all the items that have been feeded to the algorithm during the lifetime of the instance.
+     * <p>
+     * This method returns a {@link Collection} of the items in the sample which is not backed by the instance;
+     * subsequent modification of the instance (using any of the {@code feed} methods) will not reflect on this
+     * collection. The items returned are in no particular order unless otherwise specified. The {@link Collection}
+     * returned cannot be {@code null} but it can be empty iff {@link #streamSize()} {@code = 0}. The size of the sample
+     * {@code sample().size()} is equal to the minimum of {@link #sampleSize()} and {@link #streamSize()}.
+     *
+     * @return the sample of the items that have been feeded to this instance
+     */
+    Collection<T> sample();
 }

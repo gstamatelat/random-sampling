@@ -1,5 +1,6 @@
 package gr.james.sampling;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -15,7 +16,7 @@ import java.util.Map;
  * <p>
  * Classes that implement this interface must have a static method with signature
  * <pre><code>
- * public static <E> WeightedRandomSamplingCollector<E> weightedCollector(int sampleSize, Random random)
+ * public static &lt;E&gt; WeightedRandomSamplingCollector&lt;E&gt; weightedCollector(int sampleSize, Random random)
  * </code></pre>
  * that returns a {@link WeightedRandomSamplingCollector} to use with the Java 8 stream API.
  * <p>
@@ -86,4 +87,77 @@ public interface WeightedRandomSampling<T> extends RandomSampling<T> {
         }
         return this;
     }
+
+    /**
+     * {@inheritDoc}
+     * <p>
+     * The weight assigned to the item is set to a constant value for each weighted algorithm, typically {@code 1.0}.
+     *
+     * @param item {@inheritDoc}
+     * @return {@inheritDoc}
+     * @throws NullPointerException    {@inheritDoc}
+     * @throws StreamOverflowException {@inheritDoc}
+     */
+    @Override
+    RandomSampling<T> feed(T item);
+
+    /**
+     * {@inheritDoc}
+     * <p>
+     * The weight assigned to the items is set to a constant value for each weighted algorithm, typically {@code 1.0}.
+     *
+     * @param items {@inheritDoc}
+     * @return {@inheritDoc}
+     * @throws NullPointerException    {@inheritDoc}
+     * @throws StreamOverflowException {@inheritDoc}
+     */
+    @Override
+    default RandomSampling<T> feed(Iterator<T> items) {
+        while (items.hasNext()) {
+            feed(items.next());
+        }
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     * <p>
+     * The weight assigned to the items is set to a constant value for each weighted algorithm, typically {@code 1.0}.
+     *
+     * @param items {@inheritDoc}
+     * @return {@inheritDoc}
+     * @throws NullPointerException    {@inheritDoc}
+     * @throws StreamOverflowException {@inheritDoc}
+     */
+    @Override
+    default RandomSampling<T> feed(Iterable<T> items) {
+        for (T item : items) {
+            feed(item);
+        }
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return {@inheritDoc}
+     */
+    @Override
+    int sampleSize();
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return {@inheritDoc}
+     */
+    @Override
+    long streamSize();
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return {@inheritDoc}
+     */
+    @Override
+    Collection<T> sample();
 }
