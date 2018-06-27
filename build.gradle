@@ -20,6 +20,12 @@ wrapper {
     gradleVersion = '4.4'
 }
 
+javadoc {
+    doLast {
+        new File(destinationDir, 'stylesheet.css').append(file('src/javadoc/stylesheet.css').text)
+    }
+}
+
 task sourcesJar(type: Jar, dependsOn: classes) {
     classifier = 'sources'
     from sourceSets.main.allSource
