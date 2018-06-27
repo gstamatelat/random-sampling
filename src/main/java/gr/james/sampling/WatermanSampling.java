@@ -39,7 +39,7 @@ public class WatermanSampling<T> extends AbstractUnweightedRandomSampling<T> {
     }
 
     @Override
-    protected long skipLength(long streamSize, int sampleSize, Random random) {
+    long skipLength(long streamSize, int sampleSize, Random random) {
         streamSize++;
         long skipCount = 0;
         while (random.nextDouble() * streamSize >= sampleSize && streamSize > 0) {

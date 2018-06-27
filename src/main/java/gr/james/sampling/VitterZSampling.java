@@ -41,12 +41,12 @@ public class VitterZSampling<T> extends AbstractUnweightedRandomSampling<T> {
     }
 
     @Override
-    protected void init(int sampleSize, Random random) {
+    void init(int sampleSize, Random random) {
         W = Math.pow(random.nextDouble(), -1.0 / sampleSize);
     }
 
     @Override
-    protected long skipLength(long streamSize, int sampleSize, Random random) {
+    long skipLength(long streamSize, int sampleSize, Random random) {
         double term = streamSize - sampleSize + 1;
         while (true) {
             // Generate U and X

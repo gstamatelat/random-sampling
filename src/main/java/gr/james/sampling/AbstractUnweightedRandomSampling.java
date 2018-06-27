@@ -12,7 +12,7 @@ import java.util.Random;
  * @param <T> the item type
  * @author Giorgos Stamatelatos
  */
-public abstract class AbstractUnweightedRandomSampling<T> implements RandomSampling<T> {
+abstract class AbstractUnweightedRandomSampling<T> implements RandomSampling<T> {
     private final int sampleSize;
     private final Random random;
     private final List<T> sample;
@@ -29,7 +29,7 @@ public abstract class AbstractUnweightedRandomSampling<T> implements RandomSampl
      * @throws NullPointerException     if {@code random} is {@code null}
      * @throws IllegalArgumentException if {@code sampleSize} is less than 1
      */
-    public AbstractUnweightedRandomSampling(int sampleSize, Random random) {
+    AbstractUnweightedRandomSampling(int sampleSize, Random random) {
         if (random == null) {
             throw new NullPointerException("Random was null");
         }
@@ -128,7 +128,7 @@ public abstract class AbstractUnweightedRandomSampling<T> implements RandomSampl
      * @param random     the {@link Random} instance to use
      * @return how many items to skip
      */
-    protected abstract long skipLength(long streamSize, int sampleSize, Random random);
+    abstract long skipLength(long streamSize, int sampleSize, Random random);
 
     /**
      * Performs initialization logic.
@@ -138,6 +138,6 @@ public abstract class AbstractUnweightedRandomSampling<T> implements RandomSampl
      * @param sampleSize expected sample size
      * @param random     the {@link Random} instance assigned to this instance
      */
-    protected void init(int sampleSize, Random random) {
+    void init(int sampleSize, Random random) {
     }
 }
