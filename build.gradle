@@ -24,6 +24,7 @@ javadoc {
     doLast {
         new File(destinationDir, 'stylesheet.css').append(file('src/javadoc/stylesheet.css').text)
     }
+    options.overview('src/javadoc/overview.html')
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
