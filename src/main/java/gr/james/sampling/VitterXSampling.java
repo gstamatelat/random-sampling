@@ -4,13 +4,13 @@ import java.util.Iterator;
 import java.util.Random;
 
 /**
- * Implementation of the algorithm "Algorithm X" by Vitter in "Random Sampling with a Reservoir".
+ * Implementation of <i>Algorithm X</i> by Vitter in <b>Random Sampling with a Reservoir</b>.
  * <p>
  * The space complexity of this class is {@code O(k)}, where {@code k} is the sample size.
  *
  * @param <T> the item type
  * @author Giorgos Stamatelatos
- * @see <a href="https://doi.org/10.1145/3147.3165">doi:10.1145/3147.3165</a>
+ * @see <a href="https://doi.org/10.1145/3147.3165">Random Sampling with a Reservoir</a>
  */
 public class VitterXSampling<T> extends AbstractUnweightedRandomSampling<T> {
     /**

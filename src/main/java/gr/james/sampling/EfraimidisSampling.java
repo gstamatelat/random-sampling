@@ -3,7 +3,7 @@ package gr.james.sampling;
 import java.util.*;
 
 /**
- * Implementation of the algorithm from Efraimidis and Spirakis in "Weighted random sampling with a reservoir".
+ * Implementation of the algorithm by Efraimidis and Spirakis in <b>Weighted random sampling with a reservoir</b>.
  * <p>
  * This algorithm accepts item weights in the range (0,+Inf), otherwise an {@link IllegalWeightException} is thrown.
  * <p>
@@ -11,7 +11,7 @@ import java.util.*;
  *
  * @param <T> the item type
  * @author Giorgos Stamatelatos
- * @see <a href="https://doi.org/10.1016/j.ipl.2005.11.003">doi:10.1016/j.ipl.2005.11.003</a>
+ * @see <a href="https://doi.org/10.1016/j.ipl.2005.11.003">Weighted random sampling with a reservoir</a>
  */
 public class EfraimidisSampling<T> implements WeightedRandomSampling<T> {
     private final int sampleSize;

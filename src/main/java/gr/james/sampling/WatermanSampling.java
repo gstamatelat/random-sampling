@@ -4,8 +4,8 @@ import java.util.Iterator;
 import java.util.Random;
 
 /**
- * Implementation of the algorithm "Algorithm R" credited to Alan Waterman in "The Art of Computer Programming, Vol II,
- * Random Sampling and Shuffling".
+ * Implementation of <i>Algorithm R</i> credited to Alan Waterman in <b>The Art of Computer Programming, Vol II, Random
+ * Sampling and Shuffling</b>.
  * <p>
  * The space complexity of this class is {@code O(k)}, where {@code k} is the sample size.
  *

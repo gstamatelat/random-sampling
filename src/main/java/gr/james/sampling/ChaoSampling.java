@@ -3,7 +3,7 @@ package gr.james.sampling;
 import java.util.*;
 
 /**
- * Implementation of the algorithm from Chao in "A general purpose unequal probability sampling plan".
+ * Implementation of the algorithm by Chao in <b>A general purpose unequal probability sampling plan</b>.
  * <p>
  * This algorithm accepts item weights in the range (0,+Inf), otherwise an {@link IllegalWeightException} is thrown.
  * <p>
@@ -11,8 +11,9 @@ import java.util.*;
  *
  * @param <T> the item type
  * @author Giorgos Stamatelatos
- * @see <a href="https://doi.org/10.2307/2336002">doi:10.2307/2336002</a>
- * @see <a href="https://doi.org/10.1080/02664769624152">doi:10.1080/02664769624152</a>
+ * @see <a href="https://doi.org/10.2307/2336002">A general purpose unequal probability sampling plan</a>
+ * @see <a href="https://doi.org/10.1080/02664769624152">Chao's list sequential scheme for unequal probability sampling
+ * </a>
  */
 public class ChaoSampling<T> implements WeightedRandomSampling<T> {
     private final int sampleSize;
