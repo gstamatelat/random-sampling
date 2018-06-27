@@ -14,13 +14,13 @@ import java.util.Map;
  * restrictions on the values of weight. These restrictions must be mentioned in the documentation and an
  * {@link IllegalWeightException} must be thrown to indicate such violations.
  * <p>
- * Classes that implement this interface must have a static method with signature
+ * Classes that implement this interface have a static method with signature
  * <pre><code>
  * public static &lt;E&gt; WeightedRandomSamplingCollector&lt;E&gt; weightedCollector(int sampleSize, Random random)
  * </code></pre>
  * that returns a {@link WeightedRandomSamplingCollector} to use with the Java 8 stream API.
  * <p>
- * Classes that implement this interface must have constant space complexity in respect to the stream size.
+ * Classes that implement this interface have constant space complexity in respect to the stream size.
  *
  * @param <T> the item type
  * @author Giorgos Stamatelatos
