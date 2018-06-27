@@ -47,8 +47,10 @@ abstract class AbstractUnweightedRandomSampling<T> implements RandomSampling<T> 
     /**
      * {@inheritDoc}
      *
+     * @param item {@inheritDoc}
+     * @return {@inheritDoc}
      * @throws NullPointerException    {@inheritDoc}
-     * @throws StreamOverflowException {@inheritDoc}
+     * @throws StreamOverflowException if the number of items feeded exceeds {@link Long#MAX_VALUE}
      */
     @Override
     public final RandomSampling<T> feed(T item) {
@@ -86,8 +88,8 @@ abstract class AbstractUnweightedRandomSampling<T> implements RandomSampling<T> 
 
     /**
      * {@inheritDoc}
-     * <p>
-     * This method runs in constant time.
+     *
+     * @return {@inheritDoc}
      */
     @Override
     public final int sampleSize() {
@@ -97,8 +99,8 @@ abstract class AbstractUnweightedRandomSampling<T> implements RandomSampling<T> 
 
     /**
      * {@inheritDoc}
-     * <p>
-     * This method runs in constant time.
+     *
+     * @return {@inheritDoc}
      */
     @Override
     public final long streamSize() {
@@ -108,8 +110,8 @@ abstract class AbstractUnweightedRandomSampling<T> implements RandomSampling<T> 
 
     /**
      * {@inheritDoc}
-     * <p>
-     * This method runs in time O(k).
+     *
+     * @return {@inheritDoc}
      */
     @Override
     public Collection<T> sample() {

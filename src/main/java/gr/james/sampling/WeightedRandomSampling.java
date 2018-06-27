@@ -91,7 +91,10 @@ public interface WeightedRandomSampling<T> extends RandomSampling<T> {
     /**
      * {@inheritDoc}
      * <p>
-     * The weight assigned to the item is set to a constant value for each weighted algorithm, typically {@code 1.0}.
+     * This method uses the value {@code 1.0} as weight and is equivalent to
+     * <pre><code>
+     * feed(item, 1.0);
+     * </code></pre>
      *
      * @param item {@inheritDoc}
      * @return {@inheritDoc}
@@ -104,7 +107,7 @@ public interface WeightedRandomSampling<T> extends RandomSampling<T> {
     /**
      * {@inheritDoc}
      * <p>
-     * The weight assigned to the items is set to a constant value for each weighted algorithm, typically {@code 1.0}.
+     * This method uses the value {@code 1.0} as weight.
      *
      * @param items {@inheritDoc}
      * @return {@inheritDoc}
@@ -122,7 +125,7 @@ public interface WeightedRandomSampling<T> extends RandomSampling<T> {
     /**
      * {@inheritDoc}
      * <p>
-     * The weight assigned to the items is set to a constant value for each weighted algorithm, typically {@code 1.0}.
+     * This method uses the value {@code 1.0} as weight.
      *
      * @param items {@inheritDoc}
      * @return {@inheritDoc}

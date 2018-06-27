@@ -7,8 +7,6 @@ import java.util.*;
  * <p>
  * This algorithm accepts item weights in the range (0,+Inf), otherwise an {@link IllegalWeightException} is thrown.
  * <p>
- * The default item weight of this algorithm when approached using the {@link RandomSampling} interface is {@code 1.0}.
- * <p>
  * The space complexity of this class is {@code O(k)}, where {@code k} is the sample size.
  *
  * @param <T> the item type
@@ -76,6 +74,9 @@ public class ChaoSampling<T> implements WeightedRandomSampling<T> {
     /**
      * {@inheritDoc}
      *
+     * @param item   {@inheritDoc}
+     * @param weight {@inheritDoc}
+     * @return {@inheritDoc}
      * @throws NullPointerException    {@inheritDoc}
      * @throws IllegalWeightException  if {@code weight} is outside the range (0,+Inf)
      * @throws StreamOverflowException {@inheritDoc}
@@ -175,8 +176,8 @@ public class ChaoSampling<T> implements WeightedRandomSampling<T> {
 
     /**
      * {@inheritDoc}
-     * <p>
-     * This method runs in time O(k).
+     *
+     * @return {@inheritDoc}
      */
     @Override
     public Collection<T> sample() {
@@ -191,8 +192,8 @@ public class ChaoSampling<T> implements WeightedRandomSampling<T> {
 
     /**
      * {@inheritDoc}
-     * <p>
-     * This method runs in constant time.
+     *
+     * @return {@inheritDoc}
      */
     @Override
     public final int sampleSize() {
@@ -202,8 +203,8 @@ public class ChaoSampling<T> implements WeightedRandomSampling<T> {
 
     /**
      * {@inheritDoc}
-     * <p>
-     * This method runs in constant time.
+     *
+     * @return {@inheritDoc}
      */
     @Override
     public final long streamSize() {
@@ -212,8 +213,10 @@ public class ChaoSampling<T> implements WeightedRandomSampling<T> {
     }
 
     /**
-     * Feed an item from the stream to the algorithm with weight {@code 1.0}.
+     * {@inheritDoc}
      *
+     * @param item {@inheritDoc}
+     * @return {@inheritDoc}
      * @throws NullPointerException    {@inheritDoc}
      * @throws StreamOverflowException {@inheritDoc}
      */
