@@ -73,18 +73,14 @@ public class EfraimidisSampling<T> implements WeightedRandomSampling<T> {
      * <p>
      * This method runs in time {@code O(lgk)} and generates exactly 1 random number.
      *
-     * @throws NullPointerException    {@inheritDoc}
-     * @throws IllegalWeightException  if {@code weight} is outside the range (0,+Inf)
-     * @throws StreamOverflowException {@inheritDoc}
+     * @throws NullPointerException   {@inheritDoc}
+     * @throws IllegalWeightException if {@code weight} is outside the range (0,+Inf)
      */
     @Override
     public EfraimidisSampling<T> feed(T item, double weight) {
         // Checks
         if (item == null) {
             throw new NullPointerException("Item was null");
-        }
-        if (streamSize == Long.MAX_VALUE) {
-            throw new StreamOverflowException();
         }
         if (weight <= 0) {
             throw new IllegalWeightException("Weight was not positive, must be in (0,+Inf)");
@@ -98,7 +94,6 @@ public class EfraimidisSampling<T> implements WeightedRandomSampling<T> {
 
         // Increase stream size
         this.streamSize++;
-        assert this.streamSize > 0;
 
         // Calculate item weight
         final Weighted<T> newItem = new Weighted<>(item, Math.pow(r, 1 / weight));
@@ -114,7 +109,9 @@ public class EfraimidisSampling<T> implements WeightedRandomSampling<T> {
             pq.poll();
             pq.add(newItem);
         }
-        assert pq.size() == Math.min(sampleSize(), streamSize());
+
+        assert !pq.isEmpty();
+        assert pq.stream().allMatch(Objects::nonNull);
 
         return this;
     }
@@ -130,7 +127,6 @@ public class EfraimidisSampling<T> implements WeightedRandomSampling<T> {
         for (Weighted<T> t : pq) {
             r.add(t.object);
         }
-        assert r.size() == Math.min(sampleSize(), streamSize());
         return r;
     }
 
@@ -152,7 +148,6 @@ public class EfraimidisSampling<T> implements WeightedRandomSampling<T> {
      */
     @Override
     public final long streamSize() {
-        assert this.streamSize >= 0;
         return this.streamSize;
     }
 

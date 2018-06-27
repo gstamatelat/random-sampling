@@ -102,6 +102,9 @@ public class ChaoSampling<T> implements WeightedRandomSampling<T> {
 
         // Increase weight sum
         this.weightSum += weight;
+        if (Double.isInfinite(this.weightSum)) {
+            throw new StreamOverflowException();
+        }
         assert this.weightSum > 0;
 
         // The first k items go straight into the A list
