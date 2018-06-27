@@ -31,7 +31,7 @@ public interface RandomSampling<T> {
      * @param item the item to feed to the algorithm
      * @return this instance
      * @throws NullPointerException    if {@code item} is {@code null}
-     * @throws StreamOverflowException if the amount of items feeded to this algorithm has reached the maximum allowed
+     * @throws StreamOverflowException if the internal state of the algorithm has overflown
      */
     RandomSampling<T> feed(T item);
 

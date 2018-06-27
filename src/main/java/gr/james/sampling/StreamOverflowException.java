@@ -4,8 +4,10 @@ import java.util.Iterator;
 import java.util.Map;
 
 /**
- * A {@code StreamOverflowException} indicates that the amount of items feeded to a random sampling algorithm exceeds
- * the maximum allowed.
+ * A {@code StreamOverflowException} indicates that the internal state of the algorithm has overflown.
+ * <p>
+ * The exception may occur when the amount of items feeded to a random sampling algorithm exceeds the maximum allowed or
+ * when the internal state has overflown in a way that would otherwise cause the algorithm to behave inconsistently.
  * <p>
  * More specifically, this exception targets the methods
  * <ul>

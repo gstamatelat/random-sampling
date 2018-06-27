@@ -36,7 +36,7 @@ public interface WeightedRandomSampling<T> extends RandomSampling<T> {
      * @return this instance
      * @throws NullPointerException    if {@code item} is {@code null}
      * @throws IllegalWeightException  if {@code weight} is incompatible with the algorithm
-     * @throws StreamOverflowException if the amount of items feeded to this algorithm has reached the maximum allowed
+     * @throws StreamOverflowException if the internal state of the algorithm has overflown
      */
     WeightedRandomSampling<T> feed(T item, double weight);
 
