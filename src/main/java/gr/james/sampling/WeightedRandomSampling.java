@@ -102,7 +102,10 @@ public interface WeightedRandomSampling<T> extends RandomSampling<T> {
      * @throws StreamOverflowException {@inheritDoc}
      */
     @Override
-    RandomSampling<T> feed(T item);
+    default WeightedRandomSampling<T> feed(T item) {
+        feed(item, 1.0);
+        return this;
+    }
 
     /**
      * {@inheritDoc}
@@ -115,7 +118,7 @@ public interface WeightedRandomSampling<T> extends RandomSampling<T> {
      * @throws StreamOverflowException {@inheritDoc}
      */
     @Override
-    default RandomSampling<T> feed(Iterator<T> items) {
+    default WeightedRandomSampling<T> feed(Iterator<T> items) {
         while (items.hasNext()) {
             feed(items.next());
         }
@@ -133,7 +136,7 @@ public interface WeightedRandomSampling<T> extends RandomSampling<T> {
      * @throws StreamOverflowException {@inheritDoc}
      */
     @Override
-    default RandomSampling<T> feed(Iterable<T> items) {
+    default WeightedRandomSampling<T> feed(Iterable<T> items) {
         for (T item : items) {
             feed(item);
         }

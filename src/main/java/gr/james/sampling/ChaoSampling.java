@@ -177,6 +177,38 @@ public class ChaoSampling<T> implements WeightedRandomSampling<T> {
     /**
      * {@inheritDoc}
      *
+     * @param items   {@inheritDoc}
+     * @param weights {@inheritDoc}
+     * @return {@inheritDoc}
+     * @throws NullPointerException     {@inheritDoc}
+     * @throws IllegalArgumentException {@inheritDoc}
+     * @throws IllegalWeightException   {@inheritDoc}
+     * @throws StreamOverflowException  {@inheritDoc}
+     */
+    @Override
+    public ChaoSampling<T> feed(Iterator<T> items, Iterator<Double> weights) {
+        WeightedRandomSampling.super.feed(items, weights);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param items {@inheritDoc}
+     * @return {@inheritDoc}
+     * @throws NullPointerException    {@inheritDoc}
+     * @throws IllegalWeightException  {@inheritDoc}
+     * @throws StreamOverflowException {@inheritDoc}
+     */
+    @Override
+    public ChaoSampling<T> feed(Map<T, Double> items) {
+        WeightedRandomSampling.super.feed(items);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
      * @return {@inheritDoc}
      */
     @Override
@@ -223,6 +255,34 @@ public class ChaoSampling<T> implements WeightedRandomSampling<T> {
     @Override
     public ChaoSampling<T> feed(T item) {
         feed(item, 1.0);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param items {@inheritDoc}
+     * @return {@inheritDoc}
+     * @throws NullPointerException    {@inheritDoc}
+     * @throws StreamOverflowException {@inheritDoc}
+     */
+    @Override
+    public ChaoSampling<T> feed(Iterator<T> items) {
+        WeightedRandomSampling.super.feed(items);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param items {@inheritDoc}
+     * @return {@inheritDoc}
+     * @throws NullPointerException    {@inheritDoc}
+     * @throws StreamOverflowException {@inheritDoc}
+     */
+    @Override
+    public ChaoSampling<T> feed(Iterable<T> items) {
+        WeightedRandomSampling.super.feed(items);
         return this;
     }
 }
