@@ -11,13 +11,13 @@ import java.util.Iterator;
  * is considered a weighted random sampling algorithm and implements {@link WeightedRandomSampling}, which is a
  * subinterface of {@code RandomSampling}.
  * <p>
- * Classes that implement this interface must have a static method with signature
+ * Classes that implement this interface have a static method with signature
  * <pre><code>
  * public static &lt;E&gt; RandomSamplingCollector&lt;E&gt; collector(int sampleSize, Random random)
  * </code></pre>
  * that returns a {@link RandomSamplingCollector} to use with the Java 8 stream API.
  * <p>
- * Classes that implement this interface must have constant space complexity in respect to the stream size.
+ * Classes that implement this interface have constant space complexity in respect to the stream size.
  *
  * @param <T> the item type
  * @author Giorgos Stamatelatos
@@ -38,7 +38,12 @@ public interface RandomSampling<T> {
     /**
      * Feed an {@link Iterator} of items of type {@code T} to the algorithm.
      * <p>
-     * This method is equivalent to invoking the method {@link #feed(Object)} for each item in {@code items}.
+     * This method is equivalent to invoking the method {@link #feed(Object)} for each item in {@code items}:
+     * <pre><code>
+     * while (items.hasNext()) {
+     *     feed(items.next());
+     * }
+     * </code></pre>
      *
      * @param items the items to feed to the algorithm
      * @return this instance
@@ -56,7 +61,12 @@ public interface RandomSampling<T> {
     /**
      * Feed an {@link Iterable} of items of type {@code T} to the algorithm.
      * <p>
-     * This method is equivalent to invoking the method {@link #feed(Object)} for each item in {@code items}.
+     * This method is equivalent to invoking the method {@link #feed(Object)} for each item in {@code items}:
+     * <pre><code>
+     * for (T item : items) {
+     *     feed(item);
+     * }
+     * </code></pre>
      *
      * @param items the items to feed to the algorithm
      * @return this instance
@@ -84,8 +94,10 @@ public interface RandomSampling<T> {
     int sampleSize();
 
     /**
-     * Get the number of items that have been feeded to the algorithm during the lifetime of this instance. This number
-     * is greater or equal than zero.
+     * Get the number of items that have been feeded to the algorithm during the lifetime of this instance.
+     * <p>
+     * If more than {@link Long#MAX_VALUE} items has been feeded to the instance, this method may return
+     * {@link Long#MAX_VALUE} or any other undefined {@link Long} value.
      *
      * @return the number of items that have been feeded to the algorithm
      */
