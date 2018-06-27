@@ -49,8 +49,10 @@ class Weighted<T> implements Comparable<Weighted<T>> {
     public int compareTo(Weighted<T> o) {
         final int c = Double.compare(weight, o.weight);
         if (c == 0) {
+            assert (Integer.compare(System.identityHashCode(this), System.identityHashCode(o)) == 0) == (this.equals(o));
             return Integer.compare(System.identityHashCode(this), System.identityHashCode(o));
         } else {
+            assert !this.equals(o);
             return c;
         }
     }
@@ -65,6 +67,7 @@ class Weighted<T> implements Comparable<Weighted<T>> {
      */
     @Override
     public boolean equals(Object obj) {
+        assert !super.equals(obj) || super.hashCode() == obj.hashCode();
         return super.equals(obj);
     }
 
