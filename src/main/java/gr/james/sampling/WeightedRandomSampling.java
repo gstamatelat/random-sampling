@@ -8,11 +8,18 @@ import java.util.Map;
  * Represents a weighted reservoir sampling algorithm.
  * <p>
  * A weighted reservoir sampling algorithm randomly chooses a sample of {@code k} items from a list {@code S} containing
- * {@code n} items, where {@code n} may be unknown. Additionally, a weight is assigned to each item of the stream. The
- * interpretation of the weight may be different for each algorithm. The contract, however, is that a higher value
- * suggests a higher probability for an item to be included in the sample. Implementations may define certain
- * restrictions on the values of weight. These restrictions must be mentioned in the documentation and an
- * {@link IllegalWeightException} must be thrown to indicate such violations.
+ * {@code n} items, where {@code n} may be unknown. Additionally, a weight is assigned to each item of the stream and
+ * affects the probability of the item to be placed in the reservoir.
+ * <p>
+ * The interpretation of the weight may be different for each implementation. For example, in <b>Weighted Random
+ * Sampling over Data Streams</b> two possible interpretations are mentioned. In the first case, the probability of an
+ * item to be in the final sample is proportional to its relative weight (implemented in {@link ChaoSampling}). In the
+ * second, the relative weight determines the probability that the item is selected in each of the explicit or implicit
+ * item selections of the sampling procedure (implemented in {@link EfraimidisSampling}). As a result, implementations
+ * of this interface may not exhibit identical behavior, as opposed to the {@link RandomSampling} interface. The
+ * contract of this interface is, however, that a higher weight value suggests a higher probability for an item to be
+ * included in the sample. Implementations may also define certain restrictions on the values of weight and violations
+ * will result in {@link IllegalWeightException}.
  * <p>
  * Classes that implement this interface have a static method with signature
  * <pre><code>
@@ -20,12 +27,12 @@ import java.util.Map;
  * </code></pre>
  * that returns a {@link WeightedRandomSamplingCollector} to use with the Java 8 stream API.
  * <p>
- * Classes that implement this interface have constant space complexity in respect to the stream size.
+ * Implementations of this interface have constant space complexity in respect to the stream size.
  *
  * @param <T> the item type
  * @author Giorgos Stamatelatos
- * @see <a href="https://en.wikipedia.org/wiki/Reservoir_sampling">Reservoir sampling @ Wikipedia</a>
  * @see RandomSampling
+ * @see <a href="https://doi.org/10.1007/978-3-319-24024-4_12">Weighted Random Sampling over Data Streams</a>
  */
 public interface WeightedRandomSampling<T> extends RandomSampling<T> {
     /**
@@ -68,7 +75,7 @@ public interface WeightedRandomSampling<T> extends RandomSampling<T> {
     }
 
     /**
-     * Feed an {@link Map} of items of type {@code T} along with their weights to the algorithm.
+     * Feed a {@link Map} of items of type {@code T} along with their weights to the algorithm.
      * <p>
      * This method is equivalent to invoking the method {@link #feed(Object, double)} for each entry in {@code items}.
      *

@@ -11,17 +11,19 @@ import java.util.Iterator;
  * is considered a weighted random sampling algorithm and implements {@link WeightedRandomSampling}, which is a
  * subinterface of {@code RandomSampling}.
  * <p>
+ * All classes implementing {@code RandomSampling} have equivalent behavior and are differentiated only on their
+ * performance characteristics.
+ * <p>
  * Classes that implement this interface have a static method with signature
  * <pre><code>
  * public static &lt;E&gt; RandomSamplingCollector&lt;E&gt; collector(int sampleSize, Random random)
  * </code></pre>
  * that returns a {@link RandomSamplingCollector} to use with the Java 8 stream API.
  * <p>
- * Classes that implement this interface have constant space complexity in respect to the stream size.
+ * Implementations of this interface have constant space complexity in respect to the stream size.
  *
  * @param <T> the item type
  * @author Giorgos Stamatelatos
- * @see <a href="https://en.wikipedia.org/wiki/Reservoir_sampling">Reservoir sampling @ Wikipedia</a>
  * @see WeightedRandomSampling
  */
 public interface RandomSampling<T> {
