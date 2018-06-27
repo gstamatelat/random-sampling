@@ -1,9 +1,6 @@
 package gr.james.sampling;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 /**
  * This class provides a skeletal implementation of the {@link RandomSampling} interface to minimize the effort required
@@ -53,7 +50,7 @@ abstract class AbstractUnweightedRandomSampling<T> implements RandomSampling<T> 
      * @throws StreamOverflowException if the number of items feeded exceeds {@link Long#MAX_VALUE}
      */
     @Override
-    public final RandomSampling<T> feed(T item) {
+    public RandomSampling<T> feed(T item) {
         // Checks
         if (item == null) {
             throw new NullPointerException("Item was null");
@@ -89,6 +86,34 @@ abstract class AbstractUnweightedRandomSampling<T> implements RandomSampling<T> 
     /**
      * {@inheritDoc}
      *
+     * @param items {@inheritDoc}
+     * @return {@inheritDoc}
+     * @throws NullPointerException    {@inheritDoc}
+     * @throws StreamOverflowException {@inheritDoc}
+     */
+    @Override
+    public RandomSampling<T> feed(Iterator<T> items) {
+        RandomSampling.super.feed(items);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param items {@inheritDoc}
+     * @return {@inheritDoc}
+     * @throws NullPointerException    {@inheritDoc}
+     * @throws StreamOverflowException {@inheritDoc}
+     */
+    @Override
+    public RandomSampling<T> feed(Iterable<T> items) {
+        RandomSampling.super.feed(items);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
      * @return {@inheritDoc}
      */
     @Override
@@ -114,7 +139,7 @@ abstract class AbstractUnweightedRandomSampling<T> implements RandomSampling<T> 
      * @return {@inheritDoc}
      */
     @Override
-    public Collection<T> sample() {
+    public final Collection<T> sample() {
         final List<T> r = new ArrayList<>(sample);
         assert r.size() == Math.min(sampleSize(), streamSize());
         return r;

@@ -1,5 +1,6 @@
 package gr.james.sampling;
 
+import java.util.Iterator;
 import java.util.Random;
 
 /**
@@ -53,5 +54,47 @@ public class VitterXSampling<T> extends AbstractUnweightedRandomSampling<T> {
         }
 
         return gamma;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param item {@inheritDoc}
+     * @return {@inheritDoc}
+     * @throws NullPointerException    {@inheritDoc}
+     * @throws StreamOverflowException {@inheritDoc}
+     */
+    @Override
+    public VitterXSampling<T> feed(T item) {
+        super.feed(item);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param items {@inheritDoc}
+     * @return {@inheritDoc}
+     * @throws NullPointerException    {@inheritDoc}
+     * @throws StreamOverflowException {@inheritDoc}
+     */
+    @Override
+    public VitterXSampling<T> feed(Iterator<T> items) {
+        super.feed(items);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param items {@inheritDoc}
+     * @return {@inheritDoc}
+     * @throws NullPointerException    {@inheritDoc}
+     * @throws StreamOverflowException {@inheritDoc}
+     */
+    @Override
+    public VitterXSampling<T> feed(Iterable<T> items) {
+        super.feed(items);
+        return this;
     }
 }
