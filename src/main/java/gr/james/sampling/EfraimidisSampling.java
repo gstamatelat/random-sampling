@@ -5,7 +5,9 @@ import java.util.*;
 /**
  * Implementation of the algorithm by Efraimidis and Spirakis in <b>Weighted random sampling with a reservoir</b>.
  * <p>
- * This algorithm accepts item weights in the range (0,+Inf), otherwise an {@link IllegalWeightException} is thrown.
+ * According to this algorithm, the relative weight determines the probability that the item is selected in each of the
+ * explicit or implicit item selections of the sampling procedure. Weights are the range (0,+Inf), otherwise an
+ * {@link IllegalWeightException} is thrown.
  * <p>
  * The space complexity of this class is {@code O(k)}, where {@code k} is the sample size.
  *

@@ -7,6 +7,11 @@ import java.util.Random;
  * Implementation of <i>Algorithm R</i> credited to Alan Waterman in <b>The Art of Computer Programming, Vol II, Random
  * Sampling and Shuffling</b>.
  * <p>
+ * The implementation is the simplest unweighted sampling algorithm that each time a new element is feeded, it
+ * determines whether is should be accepted in the sample by producing a random number. The more efficient
+ * {@link VitterXSampling} and {@link VitterZSampling} decide how many items to skip, rather than deciding whether or
+ * not to skip an item each time it is feeded.
+ * <p>
  * The space complexity of this class is {@code O(k)}, where {@code k} is the sample size.
  *
  * @param <T> the item type

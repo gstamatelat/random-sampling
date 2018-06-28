@@ -5,7 +5,8 @@ import java.util.*;
 /**
  * Implementation of the algorithm by Chao in <b>A general purpose unequal probability sampling plan</b>.
  * <p>
- * This algorithm accepts item weights in the range (0,+Inf), otherwise an {@link IllegalWeightException} is thrown.
+ * According to this algorithm, the probability of an item to be in the final sample is proportional to its relative
+ * weight. Weights are the range (0,+Inf), otherwise an {@link IllegalWeightException} is thrown.
  * <p>
  * The space complexity of this class is {@code O(k)}, where {@code k} is the sample size.
  *

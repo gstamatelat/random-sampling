@@ -6,6 +6,11 @@ import java.util.Random;
 /**
  * Implementation of <i>Algorithm Z</i> by Vitter in <b>Random Sampling with a Reservoir</b>.
  * <p>
+ * Unlike {@link WatermanSampling}, the {@link VitterXSampling} and {@code VitterZSampling} algorithms decide how many
+ * items to skip, rather than deciding whether or not to skip an item each time it is feeded. This property allows these
+ * algorithms to perform better by efficiently calculating the number of items that need to be skipped, while making
+ * fewer calls to the RNG.
+ * <p>
  * The space complexity of this class is {@code O(k)}, where {@code k} is the sample size.
  *
  * @param <T> the item type
