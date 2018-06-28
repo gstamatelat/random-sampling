@@ -116,7 +116,12 @@ public interface RandomSampling<T> {
      * instance; subsequent modification of the instance (using any of the {@code feed} methods) will reflect on this
      * collection. The items returned are in no particular order unless otherwise specified. The {@link Collection}
      * returned cannot be {@code null} but it can be empty if and only if no items have been feeded to the
-     * implementation.
+     * implementation. The {@link Collection} may also contain duplicate elements if an object has been feeded multiple
+     * times.
+     * <p>
+     * Because the {@link Collection} interface adds no stipulations to the contract for the
+     * {@link Collection#equals(Object)} method, the {@code equals} method of the returned {@link Collection} is not a
+     * reliable way to query the contents of the sample.
      * <p>
      * This method runs in constant time.
      *
