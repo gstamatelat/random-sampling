@@ -1,5 +1,6 @@
 package gr.james.sampling;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EnumSet;
 import java.util.Set;
@@ -81,7 +82,7 @@ public class RandomSamplingCollector<E>
      */
     @Override
     public Function<RandomSampling<E>, Collection<E>> finisher() {
-        return RandomSampling::sample;
+        return rs -> new ArrayList<>(rs.sample());
     }
 
     /**

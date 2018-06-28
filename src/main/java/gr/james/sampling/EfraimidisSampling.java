@@ -152,11 +152,29 @@ public class EfraimidisSampling<T> implements WeightedRandomSampling<T> {
      */
     @Override
     public Collection<T> sample() {
-        final List<T> r = new ArrayList<>(pq.size());
-        for (Weighted<T> t : pq) {
-            r.add(t.object);
-        }
-        return r;
+        return new AbstractCollection<T>() {
+            @Override
+            public Iterator<T> iterator() {
+                return new Iterator<T>() {
+                    final Iterator<Weighted<T>> it = pq.iterator();
+
+                    @Override
+                    public boolean hasNext() {
+                        return it.hasNext();
+                    }
+
+                    @Override
+                    public T next() {
+                        return it.next().object;
+                    }
+                };
+            }
+
+            @Override
+            public int size() {
+                return pq.size();
+            }
+        };
     }
 
     /**

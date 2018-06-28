@@ -214,13 +214,36 @@ public class ChaoSampling<T> implements WeightedRandomSampling<T> {
      */
     @Override
     public Collection<T> sample() {
-        final List<T> r = new ArrayList<>(sample.size() + impossible.size());
-        r.addAll(sample);
-        for (Weighted<T> w : impossible) {
-            r.add(w.object);
-        }
-        assert r.size() == Math.min(sampleSize(), streamSize());
-        return r;
+        return new AbstractCollection<T>() {
+            @Override
+            public Iterator<T> iterator() {
+                return new Iterator<T>() {
+                    final Iterator<T> sampleIt = sample.iterator();
+                    final Iterator<Weighted<T>> impossibleIt = impossible.iterator();
+
+                    @Override
+                    public boolean hasNext() {
+                        return sampleIt.hasNext() || impossibleIt.hasNext();
+                    }
+
+                    @Override
+                    public T next() {
+                        if (sampleIt.hasNext()) {
+                            return sampleIt.next();
+                        } else if (impossibleIt.hasNext()) {
+                            return impossibleIt.next().object;
+                        } else {
+                            throw new NoSuchElementException();
+                        }
+                    }
+                };
+            }
+
+            @Override
+            public int size() {
+                return sample.size() + impossible.size();
+            }
+        };
     }
 
     /**

@@ -140,9 +140,7 @@ abstract class AbstractUnweightedRandomSampling<T> implements RandomSampling<T> 
      */
     @Override
     public final Collection<T> sample() {
-        final List<T> r = new ArrayList<>(sample);
-        assert r.size() == Math.min(sampleSize(), streamSize());
-        return r;
+        return Collections.unmodifiableList(sample);
     }
 
     /**
