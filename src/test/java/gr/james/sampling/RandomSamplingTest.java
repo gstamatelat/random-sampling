@@ -134,4 +134,17 @@ public class RandomSamplingTest {
         Assert.assertTrue(RandomSamplingUtils.samplesEquals(sample, new HashSet<>(Arrays.asList(1, 2))));
     }
 
+    /**
+     * {@link RandomSampling#streamSize()} correctness.
+     */
+    @Test
+    public void streamSize() {
+        final int size = 1024;
+        final RandomSampling<Integer> rs = impl.get();
+        for (int i = 0; i < size; i++) {
+            rs.feed(0);
+        }
+        Assert.assertEquals(size, rs.streamSize());
+    }
+
 }
