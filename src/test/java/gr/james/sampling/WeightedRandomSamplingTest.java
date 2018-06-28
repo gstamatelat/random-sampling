@@ -120,11 +120,8 @@ public class WeightedRandomSamplingTest {
         }
         rs3.feed(map.keySet().iterator(), map.values().iterator());
         rs2.feed(map);
-        Assert.assertEquals(SAMPLE, rs1.sample().size());
-        Assert.assertEquals(SAMPLE, rs2.sample().size());
-        Assert.assertEquals(SAMPLE, rs3.sample().size());
-        Assert.assertTrue(rs1.sample().containsAll(rs2.sample()));
-        Assert.assertTrue(rs2.sample().containsAll(rs3.sample()));
+        Assert.assertTrue(RandomSamplingUtils.samplesEquals(rs1.sample(), rs2.sample()));
+        Assert.assertTrue(RandomSamplingUtils.samplesEquals(rs2.sample(), rs3.sample()));
     }
 
 }

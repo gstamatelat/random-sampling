@@ -1,7 +1,6 @@
 package gr.james.sampling;
 
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 /**
  * Global utility methods used throughout the package.
@@ -59,5 +58,40 @@ public final class RandomSamplingUtils {
             }
         }
         return -1;
+    }
+
+    /**
+     * Returns a value indicating whether two {@link Collection Collections} contain the same elements.
+     * <p>
+     * More specifically, returns {@code true} if the two collections are of the same size, contain the same distinct
+     * elements, and each element has equal appearance frequency on both collections.
+     * <p>
+     * This static method is useful when checking for equality between two samples.
+     * <p>
+     * This method runs in time proportional to the size of the arguments and uses extra space that is also proportional
+     * to the size of the arguments.
+     *
+     * @param a   one collection
+     * @param b   the other collection
+     * @param <E> the element type
+     * @return {@code true} if {@code a} and {@code b} contain the same elements, otherwise {@code false}
+     * @throws NullPointerException if {@code a} or {@code b} is {@code null}
+     */
+    public static <E> boolean samplesEquals(Collection<E> a, Collection<E> b) {
+        if (a.size() != b.size()) {
+            return false;
+        }
+        if (a == b) {
+            return true;
+        }
+        final Map<E, Integer> multiA = new HashMap<>();
+        final Map<E, Integer> multiB = new HashMap<>();
+        for (E e : a) {
+            multiA.merge(e, 1, (x, y) -> x + y);
+        }
+        for (E e : b) {
+            multiB.merge(e, 1, (x, y) -> x + y);
+        }
+        return multiA.equals(multiB);
     }
 }

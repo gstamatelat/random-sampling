@@ -119,11 +119,8 @@ public class RandomSamplingTest {
         }
         rs2.feed(set.iterator());
         rs3.feed(set);
-        Assert.assertEquals(SAMPLE, rs1.sample().size());
-        Assert.assertEquals(SAMPLE, rs2.sample().size());
-        Assert.assertEquals(SAMPLE, rs3.sample().size());
-        Assert.assertTrue(rs1.sample().containsAll(rs2.sample()));
-        Assert.assertTrue(rs2.sample().containsAll(rs3.sample()));
+        Assert.assertTrue(RandomSamplingUtils.samplesEquals(rs1.sample(), rs2.sample()));
+        Assert.assertTrue(RandomSamplingUtils.samplesEquals(rs2.sample(), rs3.sample()));
     }
 
     /**
@@ -134,8 +131,7 @@ public class RandomSamplingTest {
         final RandomSampling<Integer> rs = impl.get();
         Collection<Integer> sample = rs.sample();
         rs.feed(1).feed(2);
-        Assert.assertEquals(2, sample.size());
-        Assert.assertTrue(sample.containsAll(Arrays.asList(1, 2)));
+        Assert.assertTrue(RandomSamplingUtils.samplesEquals(sample, new HashSet<>(Arrays.asList(1, 2))));
     }
 
 }

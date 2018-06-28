@@ -121,7 +121,9 @@ public interface RandomSampling<T> {
      * <p>
      * Because the {@link Collection} interface adds no stipulations to the contract for the
      * {@link Collection#equals(Object)} method, the {@code sample().equals} method is not a reliable way to query the
-     * contents of the sample.
+     * contents of the sample. You can, however, use the
+     * {@link RandomSamplingUtils#samplesEquals(Collection, Collection)} method to check if the contents of the
+     * sample match another {@link Collection}.
      * <p>
      * This method runs in constant time.
      *
