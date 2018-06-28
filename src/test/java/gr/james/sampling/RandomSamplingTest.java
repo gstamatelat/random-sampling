@@ -5,10 +5,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Random;
+import java.util.*;
 import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
@@ -104,6 +101,29 @@ public class RandomSamplingTest {
             final double actual = (double) c;
             Assert.assertEquals("RandomSamplingTest.stream", 1, actual / expected, 1e-2);
         }
+    }
+
+    /**
+     * Equivalence between {@link RandomSampling#feed(Object)}, {@link RandomSampling#feed(Iterator)} and
+     * {@link RandomSampling#feed(Iterable)}.
+     */
+    @Test
+    public void feedAlternative() {
+        final RandomSampling<Integer> rs1 = impl.get();
+        final RandomSampling<Integer> rs2 = impl.get();
+        final RandomSampling<Integer> rs3 = impl.get();
+        final Set<Integer> set = new HashSet<>();
+        for (int i = 0; i < SAMPLE; i++) {
+            set.add(i);
+            rs1.feed(i);
+        }
+        rs2.feed(set.iterator());
+        rs3.feed(set);
+        Assert.assertEquals(SAMPLE, rs1.sample().size());
+        Assert.assertEquals(SAMPLE, rs2.sample().size());
+        Assert.assertEquals(SAMPLE, rs3.sample().size());
+        Assert.assertTrue(rs1.sample().containsAll(rs2.sample()));
+        Assert.assertTrue(rs2.sample().containsAll(rs3.sample()));
     }
 
     /**
