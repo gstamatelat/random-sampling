@@ -120,8 +120,8 @@ public interface RandomSampling<T> {
      * times.
      * <p>
      * Because the {@link Collection} interface adds no stipulations to the contract for the
-     * {@link Collection#equals(Object)} method, the {@code equals} method of the returned {@link Collection} is not a
-     * reliable way to query the contents of the sample.
+     * {@link Collection#equals(Object)} method, the {@code sample().equals} method is not a reliable way to query the
+     * contents of the sample.
      * <p>
      * This method runs in constant time.
      *
