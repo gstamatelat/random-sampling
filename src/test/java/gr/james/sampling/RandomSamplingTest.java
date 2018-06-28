@@ -6,6 +6,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Random;
 import java.util.function.Supplier;
@@ -103,6 +104,18 @@ public class RandomSamplingTest {
             final double actual = (double) c;
             Assert.assertEquals("RandomSamplingTest.stream", 1, actual / expected, 1e-2);
         }
+    }
+
+    /**
+     * The {@link RandomSampling#sample()} method can be invoked before feeding since it returns a view.
+     */
+    @Test
+    public void sampleView() {
+        final RandomSampling<Integer> rs = impl.get();
+        Collection<Integer> sample = rs.sample();
+        rs.feed(1).feed(2);
+        Assert.assertEquals(2, sample.size());
+        Assert.assertTrue(sample.containsAll(Arrays.asList(1, 2)));
     }
 
 }
