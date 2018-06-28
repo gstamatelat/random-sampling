@@ -121,6 +121,10 @@ public class RandomSamplingTest {
         rs3.feed(set);
         Assert.assertTrue(RandomSamplingUtils.samplesEquals(rs1.sample(), rs2.sample()));
         Assert.assertTrue(RandomSamplingUtils.samplesEquals(rs2.sample(), rs3.sample()));
+        Assert.assertEquals(rs1.streamSize(), rs2.streamSize());
+        Assert.assertEquals(rs2.streamSize(), rs3.streamSize());
+        Assert.assertEquals(rs1.sample().size(), rs2.sample().size());
+        Assert.assertEquals(rs2.sample().size(), rs3.sample().size());
     }
 
     /**
