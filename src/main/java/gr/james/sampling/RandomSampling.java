@@ -18,7 +18,8 @@ import java.util.Iterator;
  * memory complexity. Thus, it is valid to feed the same element multiple times in the same instance. For example it is
  * possible to feed both {@code x} and {@code y}, where {@code x.equals(y)}. The algorithm will treat these items as
  * distinct, even if they are reference-equals ({@code x == y}). As a result, the final sample {@link Collection} may
- * contain duplicate elements.
+ * contain duplicate elements. Furthermore, elements need not be immutable and the sampling process does not rely on the
+ * elements' {@code hashCode()} and {@code equals()} methods.
  * <p>
  * Classes that implement this interface have a static method with signature
  * <pre><code>
