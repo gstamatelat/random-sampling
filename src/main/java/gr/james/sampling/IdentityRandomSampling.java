@@ -4,6 +4,12 @@ import java.util.*;
 
 /**
  * A {@link RandomSampling} decorator that doesn't permit duplicate items.
+ * <p>
+ * Example:
+ * <pre><code>
+ * IdentityRandomSampling&lt;Integer, WatermanSampling&lt;Integer&gt;&gt; irs =
+ *     new IdentityRandomSampling&lt;&gt;(new WatermanSampling&lt;&gt;(10, new Random()));
+ * </code></pre>
  *
  * @param <T>  the element type
  * @param <RS> the {@link RandomSampling} implementation type
