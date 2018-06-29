@@ -91,12 +91,16 @@ public interface RandomSampling<T> {
     }
 
     /**
-     * Get the expected reservoir size associated with this algorithm.
+     * Get the expected reservoir size that this algorithm was created with.
      * <p>
-     * The size is an {@code int} greater than zero that represents the number of items that the algorithm will select
-     * from the source stream. The sample size remains constant during the lifetime of the instance. The actual size of
-     * the sample returned by {@link #sample()} may be less than this number if the items processed from the stream are
-     * less than {@code sampleSize()} but not greater.
+     * The size is an {@code int} greater than zero that represents the number of items that the algorithm will try to
+     * select from the source stream. The sample size remains constant during the lifetime of the instance.
+     * <p>
+     * The value of {@code sampleSize()} may not necessarily reflect the size of the collection returned by
+     * {@link #sample()}, that is {@code sampleSize()} and {@code sample().size()} may not be equal. This occurs when
+     * the items processed from the stream are less than {@code sampleSize()}, in which case there weren't enough items
+     * to fill the reservoir yet. More specifically, it holds that
+     * {@code sample().size() == min(sampleSize(), streamSize())} assuming that {@code streamSize()} does not overflow.
      * <p>
      * This method runs in constant time.
      *
@@ -121,10 +125,12 @@ public interface RandomSampling<T> {
      * <p>
      * This method returns a readonly {@link Collection} view of the items in the sample which is backed by the
      * instance; subsequent modification of the instance (using any of the {@code feed} methods) will reflect on this
-     * collection. The items returned are in no particular order unless otherwise specified. The {@link Collection}
-     * returned cannot be {@code null} but it can be empty if and only if no items have been feeded to the
-     * implementation. The {@link Collection} may also contain duplicate elements if an object has been feeded multiple
-     * times.
+     * collection. The items returned are in no particular order unless otherwise specified.
+     * <p>
+     * The {@link Collection} returned cannot be {@code null} but it can be empty if and only if no items have been
+     * feeded to the implementation. The {@link Collection} may also contain duplicate elements if an object has been
+     * feeded multiple times. It, furthermore, holds that {@code sample().size() == min(sampleSize(), streamSize())},
+     * assuming that {@code streamSize()} does not overflow.
      * <p>
      * Because the {@link Collection} interface adds no stipulations to the contract for the
      * {@link Collection#equals(Object)} method, the {@code sample().equals} method is not a reliable way to query the
