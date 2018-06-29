@@ -1,0 +1,24 @@
+apply plugin: 'java'
+apply plugin: 'findbugs'
+
+sourceCompatibility = 1.8
+
+repositories {
+    jcenter()
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src']
+        }
+    }
+}
+
+findbugs {
+    effort = "max"
+}
+
+dependencies {
+    compile rootProject
+}
