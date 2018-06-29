@@ -151,4 +151,18 @@ public class RandomSamplingTest {
         Assert.assertEquals(size, rs.streamSize());
     }
 
+    /**
+     * The first elements must go directly in the sample.
+     */
+    @Test
+    public void firstElements() {
+        final RandomSampling<Integer> rs = impl.get();
+        final Set<Integer> feeded = new HashSet<>();
+        for (int i = 0; i < rs.sampleSize(); i++) {
+            rs.feed(i);
+            feeded.add(i);
+            Assert.assertTrue(RandomSamplingUtils.samplesEquals(rs.sample(), feeded));
+        }
+    }
+
 }
