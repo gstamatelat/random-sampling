@@ -94,4 +94,28 @@ public final class RandomSamplingUtils {
         }
         return multiA.equals(multiB);
     }
+
+    /**
+     * Returns a value indicating whether two {@link Iterator iterators} contain equal elements and in the same order.
+     * <p>
+     * More specifically, returns {@code true} if {@code a} and {@code b} contain the same number of elements and every
+     * element of {@code a} is equal to the corresponding element of {@code b}.
+     * <p>
+     * This method will advance the argument iterators.
+     *
+     * @param a   one iterator
+     * @param b   the other iterator
+     * @param <E> the element type
+     * @return {@code true} if {@code a} and {@code b} contain the same number of elements and every
+     * element of {@code a} is equal to the corresponding element of {@code b}, otherwise {@code false}
+     * @throws NullPointerException if {@code a} or {@code b} is {@code null}
+     */
+    public static <E> boolean iteratorsEquals(Iterator<E> a, Iterator<E> b) {
+        while (a.hasNext() && b.hasNext()) {
+            if (!a.next().equals(b.next())) {
+                return false;
+            }
+        }
+        return !a.hasNext() && !b.hasNext();
+    }
 }
