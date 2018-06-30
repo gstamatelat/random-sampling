@@ -17,7 +17,7 @@ import java.util.Random;
  * @author Giorgos Stamatelatos
  * @see <a href="https://doi.org/10.1145/3147.3165">Random Sampling with a Reservoir</a>
  */
-public class VitterZSampling<T> extends AbstractUnweightedRandomSampling<T> {
+public class VitterZSampling<T> extends AbstractRandomSampling<T> {
     private double W;
 
     /**

@@ -9,7 +9,7 @@ import java.util.*;
  * @param <T> the item type
  * @author Giorgos Stamatelatos
  */
-abstract class AbstractUnweightedRandomSampling<T> implements RandomSampling<T> {
+abstract class AbstractRandomSampling<T> implements RandomSampling<T> {
     private final int sampleSize;
     private final Random random;
     private final List<T> sample;
@@ -27,7 +27,7 @@ abstract class AbstractUnweightedRandomSampling<T> implements RandomSampling<T> 
      * @throws NullPointerException     if {@code random} is {@code null}
      * @throws IllegalArgumentException if {@code sampleSize} is less than 1
      */
-    AbstractUnweightedRandomSampling(int sampleSize, Random random) {
+    AbstractRandomSampling(int sampleSize, Random random) {
         if (random == null) {
             throw new NullPointerException("Random was null");
         }

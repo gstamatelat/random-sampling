@@ -17,7 +17,7 @@ import java.util.Random;
  * @param <T> the item type
  * @author Giorgos Stamatelatos
  */
-public class WatermanSampling<T> extends AbstractUnweightedRandomSampling<T> {
+public class WatermanSampling<T> extends AbstractRandomSampling<T> {
     /**
      * Construct a new instance of {@link WatermanSampling} using the specified sample size and RNG. The implementation
      * assumes that {@code random} conforms to the contract of {@link Random} and will perform no checks to ensure that.
