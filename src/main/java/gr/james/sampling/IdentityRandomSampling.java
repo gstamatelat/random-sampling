@@ -16,8 +16,9 @@ import java.util.*;
  */
 @Deprecated
 class IdentityRandomSampling<T, RS extends RandomSampling<T>> implements RandomSampling<T> {
-    private RS source;
-    private Set<T> set;
+    private final RS source;
+    private final Set<T> set;
+    private final Set<T> unmodifiableSample;
 
     /**
      * Decorates {@code source} as an {@link IdentityRandomSampling}.
@@ -37,6 +38,19 @@ class IdentityRandomSampling<T, RS extends RandomSampling<T>> implements RandomS
         }
         this.source = source;
         this.set = new HashSet<>();
+        this.unmodifiableSample = new AbstractSet<T>() {
+            final Collection<T> sample = source.sample();
+
+            @Override
+            public Iterator<T> iterator() {
+                return sample.iterator();
+            }
+
+            @Override
+            public int size() {
+                return sample.size();
+            }
+        };
     }
 
     @Override
@@ -76,18 +90,6 @@ class IdentityRandomSampling<T, RS extends RandomSampling<T>> implements RandomS
     @Override
     public Set<T> sample() {
         assert source.sample().stream().distinct().count() == source.sample().stream().distinct().count();
-        return new AbstractSet<T>() {
-            final Collection<T> sample = source.sample();
-
-            @Override
-            public Iterator<T> iterator() {
-                return sample.iterator();
-            }
-
-            @Override
-            public int size() {
-                return sample.size();
-            }
-        };
+        return this.unmodifiableSample;
     }
 }
