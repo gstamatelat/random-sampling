@@ -13,6 +13,7 @@ abstract class AbstractUnweightedRandomSampling<T> implements RandomSampling<T> 
     private final int sampleSize;
     private final Random random;
     private final List<T> sample;
+    private final Collection<T> unmodifiableSample;
     private long streamSize;
     private long skip;
 
@@ -39,6 +40,7 @@ abstract class AbstractUnweightedRandomSampling<T> implements RandomSampling<T> 
         this.streamSize = 0;
         this.sample = new ArrayList<>(sampleSize);
         this.skip = skipLength(sampleSize, sampleSize, random);
+        this.unmodifiableSample = Collections.unmodifiableList(sample);
     }
 
     /**
@@ -140,7 +142,7 @@ abstract class AbstractUnweightedRandomSampling<T> implements RandomSampling<T> 
      */
     @Override
     public final Collection<T> sample() {
-        return Collections.unmodifiableList(sample);
+        return this.unmodifiableSample;
     }
 
     /**

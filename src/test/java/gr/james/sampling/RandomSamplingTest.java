@@ -165,4 +165,17 @@ public class RandomSamplingTest {
         }
     }
 
+    /**
+     * The {@link RandomSampling#sample()} method must always return the same reference.
+     */
+    @Test
+    public void sampleOnDifferentTime() {
+        final RandomSampling<Integer> rs = impl.get();
+        final Collection<Integer> sample = rs.sample();
+        for (int i = 0; i < 1000; i++) {
+            rs.feed(i);
+            Assert.assertSame(sample, rs.sample());
+        }
+    }
+
 }

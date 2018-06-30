@@ -21,6 +21,7 @@ public class ChaoSampling<T> implements WeightedRandomSampling<T> {
     private final Random random;
     private final List<T> sample;
     private final TreeSet<Weighted<T>> impossible;
+    private final Collection<T> unmodifiableSample;
     private long streamSize;
     private double weightSum;
 
@@ -47,6 +48,36 @@ public class ChaoSampling<T> implements WeightedRandomSampling<T> {
         this.sample = new ArrayList<>(sampleSize);
         this.impossible = new TreeSet<>();
         this.weightSum = 0;
+        this.unmodifiableSample = new AbstractCollection<T>() {
+            @Override
+            public Iterator<T> iterator() {
+                return new Iterator<T>() {
+                    final Iterator<T> sampleIt = sample.iterator();
+                    final Iterator<Weighted<T>> impossibleIt = impossible.iterator();
+
+                    @Override
+                    public boolean hasNext() {
+                        return sampleIt.hasNext() || impossibleIt.hasNext();
+                    }
+
+                    @Override
+                    public T next() {
+                        if (sampleIt.hasNext()) {
+                            return sampleIt.next();
+                        } else if (impossibleIt.hasNext()) {
+                            return impossibleIt.next().object;
+                        } else {
+                            throw new NoSuchElementException();
+                        }
+                    }
+                };
+            }
+
+            @Override
+            public int size() {
+                return sample.size() + impossible.size();
+            }
+        };
     }
 
     /**
@@ -215,36 +246,7 @@ public class ChaoSampling<T> implements WeightedRandomSampling<T> {
      */
     @Override
     public Collection<T> sample() {
-        return new AbstractCollection<T>() {
-            @Override
-            public Iterator<T> iterator() {
-                return new Iterator<T>() {
-                    final Iterator<T> sampleIt = sample.iterator();
-                    final Iterator<Weighted<T>> impossibleIt = impossible.iterator();
-
-                    @Override
-                    public boolean hasNext() {
-                        return sampleIt.hasNext() || impossibleIt.hasNext();
-                    }
-
-                    @Override
-                    public T next() {
-                        if (sampleIt.hasNext()) {
-                            return sampleIt.next();
-                        } else if (impossibleIt.hasNext()) {
-                            return impossibleIt.next().object;
-                        } else {
-                            throw new NoSuchElementException();
-                        }
-                    }
-                };
-            }
-
-            @Override
-            public int size() {
-                return sample.size() + impossible.size();
-            }
-        };
+        return this.unmodifiableSample;
     }
 
     /**

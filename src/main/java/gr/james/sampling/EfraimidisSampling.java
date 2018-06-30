@@ -19,6 +19,7 @@ public class EfraimidisSampling<T> implements WeightedRandomSampling<T> {
     private final int sampleSize;
     private final Random random;
     private final PriorityQueue<Weighted<T>> pq;
+    private final Collection<T> unmodifiableSample;
     private long streamSize;
 
     /**
@@ -42,6 +43,29 @@ public class EfraimidisSampling<T> implements WeightedRandomSampling<T> {
         this.sampleSize = sampleSize;
         this.streamSize = 0;
         this.pq = new PriorityQueue<>(sampleSize);
+        this.unmodifiableSample = new AbstractCollection<T>() {
+            @Override
+            public Iterator<T> iterator() {
+                return new Iterator<T>() {
+                    final Iterator<Weighted<T>> it = pq.iterator();
+
+                    @Override
+                    public boolean hasNext() {
+                        return it.hasNext();
+                    }
+
+                    @Override
+                    public T next() {
+                        return it.next().object;
+                    }
+                };
+            }
+
+            @Override
+            public int size() {
+                return pq.size();
+            }
+        };
     }
 
     /**
@@ -154,29 +178,7 @@ public class EfraimidisSampling<T> implements WeightedRandomSampling<T> {
      */
     @Override
     public Collection<T> sample() {
-        return new AbstractCollection<T>() {
-            @Override
-            public Iterator<T> iterator() {
-                return new Iterator<T>() {
-                    final Iterator<Weighted<T>> it = pq.iterator();
-
-                    @Override
-                    public boolean hasNext() {
-                        return it.hasNext();
-                    }
-
-                    @Override
-                    public T next() {
-                        return it.next().object;
-                    }
-                };
-            }
-
-            @Override
-            public int size() {
-                return pq.size();
-            }
-        };
+        return this.unmodifiableSample;
     }
 
     /**

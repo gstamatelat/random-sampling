@@ -125,7 +125,18 @@ public interface RandomSampling<T> {
      * <p>
      * This method returns a readonly {@link Collection} view of the items in the sample which is backed by the
      * instance; subsequent modification of the instance (using any of the {@code feed} methods) will reflect on this
-     * collection. The items returned are in no particular order unless otherwise specified.
+     * collection. In fact you can treat {@code sample()} as a read-only (i.e. {@code final}) field as it will always
+     * return the same reference:
+     * <pre><code>
+     * final RandomSampling&lt;T&gt; rs = ...;
+     * // Do anything with rs
+     * Collection&lt;T&gt; sample1 = rs.sample();
+     * // Do anything with rs
+     * Collection&lt;T&gt; sample2 = rs.sample();
+     * // Do anything with rs
+     * assert sample1 == sample2;
+     * </code></pre>
+     * The items returned are in no particular order inside the sample collection unless otherwise specified.
      * <p>
      * The {@link Collection} returned cannot be {@code null} but it can be empty if and only if no items have been
      * feeded to the implementation. The {@link Collection} may also contain duplicate elements if an object has been
