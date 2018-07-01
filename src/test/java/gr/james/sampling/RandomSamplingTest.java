@@ -181,7 +181,7 @@ public class RandomSamplingTest {
 
     /**
      * If {@link RandomSampling#feed(Object)} returned {@code true}, than the sample has definitely changed, assuming
-     * unique stream elements.
+     * unique stream elements. Furthermore, the new sample has to contain the new element.
      */
     @Test
     public void feedReturnValue() {
@@ -190,6 +190,7 @@ public class RandomSamplingTest {
         for (int i = 0; i < 65536; i++) {
             final boolean changed = rs.feed(i);
             Assert.assertEquals(changed, !RandomSamplingUtils.samplesEquals(sample, rs.sample()));
+            Assert.assertEquals(changed, rs.sample().contains(i));
             sample = new ArrayList<>(rs.sample());
         }
     }
