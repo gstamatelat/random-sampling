@@ -112,10 +112,11 @@ public class ChaoSampling<T> implements WeightedRandomSampling<T> {
      * @return {@inheritDoc}
      * @throws NullPointerException    {@inheritDoc}
      * @throws IllegalWeightException  if {@code weight} is outside the range (0,+Inf)
-     * @throws StreamOverflowException {@inheritDoc}
+     * @throws StreamOverflowException if the number of items feeded exceeds {@link Long#MAX_VALUE} or if the sum of the
+     *                                 weights of the items feeded is {@link Double#POSITIVE_INFINITY}
      */
     @Override
-    public ChaoSampling<T> feed(T item, double weight) {
+    public boolean feed(T item, double weight) {
         // Checks
         if (item == null) {
             throw new NullPointerException("Item was null");
@@ -144,7 +145,7 @@ public class ChaoSampling<T> implements WeightedRandomSampling<T> {
         // The first k items go straight into the A list
         if (streamSize <= sampleSize) {
             this.impossible.add(new Weighted<>(item, weight));
-            return this;
+            return true;
         }
 
         // First order inclusion probability of the new item
@@ -204,7 +205,7 @@ public class ChaoSampling<T> implements WeightedRandomSampling<T> {
 
         assert impossible.size() + sample.size() == sampleSize;
 
-        return this;
+        return w > add;
     }
 
     /**
@@ -215,13 +216,13 @@ public class ChaoSampling<T> implements WeightedRandomSampling<T> {
      * @return {@inheritDoc}
      * @throws NullPointerException     {@inheritDoc}
      * @throws IllegalArgumentException {@inheritDoc}
-     * @throws IllegalWeightException   {@inheritDoc}
-     * @throws StreamOverflowException  {@inheritDoc}
+     * @throws IllegalWeightException   if {@code weight} is outside the range (0,+Inf)
+     * @throws StreamOverflowException  if the number of items feeded exceeds {@link Long#MAX_VALUE} or if the sum of
+     *                                  the weights of the items feeded is {@link Double#POSITIVE_INFINITY}
      */
     @Override
-    public ChaoSampling<T> feed(Iterator<T> items, Iterator<Double> weights) {
-        WeightedRandomSampling.super.feed(items, weights);
-        return this;
+    public boolean feed(Iterator<T> items, Iterator<Double> weights) {
+        return WeightedRandomSampling.super.feed(items, weights);
     }
 
     /**
@@ -230,13 +231,13 @@ public class ChaoSampling<T> implements WeightedRandomSampling<T> {
      * @param items {@inheritDoc}
      * @return {@inheritDoc}
      * @throws NullPointerException    {@inheritDoc}
-     * @throws IllegalWeightException  {@inheritDoc}
-     * @throws StreamOverflowException {@inheritDoc}
+     * @throws IllegalWeightException  if {@code weight} is outside the range (0,+Inf)
+     * @throws StreamOverflowException if the number of items feeded exceeds {@link Long#MAX_VALUE} or if the sum of the
+     *                                 weights of the items feeded is {@link Double#POSITIVE_INFINITY}
      */
     @Override
-    public ChaoSampling<T> feed(Map<T, Double> items) {
-        WeightedRandomSampling.super.feed(items);
-        return this;
+    public boolean feed(Map<T, Double> items) {
+        return WeightedRandomSampling.super.feed(items);
     }
 
     /**
@@ -277,12 +278,12 @@ public class ChaoSampling<T> implements WeightedRandomSampling<T> {
      * @param item {@inheritDoc}
      * @return {@inheritDoc}
      * @throws NullPointerException    {@inheritDoc}
-     * @throws StreamOverflowException {@inheritDoc}
+     * @throws StreamOverflowException if the number of items feeded exceeds {@link Long#MAX_VALUE} or if the sum of the
+     *                                 weights of the items feeded is {@link Double#POSITIVE_INFINITY}
      */
     @Override
-    public ChaoSampling<T> feed(T item) {
-        feed(item, 1.0);
-        return this;
+    public boolean feed(T item) {
+        return WeightedRandomSampling.super.feed(item);
     }
 
     /**
@@ -291,12 +292,12 @@ public class ChaoSampling<T> implements WeightedRandomSampling<T> {
      * @param items {@inheritDoc}
      * @return {@inheritDoc}
      * @throws NullPointerException    {@inheritDoc}
-     * @throws StreamOverflowException {@inheritDoc}
+     * @throws StreamOverflowException if the number of items feeded exceeds {@link Long#MAX_VALUE} or if the sum of the
+     *                                 weights of the items feeded is {@link Double#POSITIVE_INFINITY}
      */
     @Override
-    public ChaoSampling<T> feed(Iterator<T> items) {
-        WeightedRandomSampling.super.feed(items);
-        return this;
+    public boolean feed(Iterator<T> items) {
+        return WeightedRandomSampling.super.feed(items);
     }
 
     /**
@@ -305,11 +306,11 @@ public class ChaoSampling<T> implements WeightedRandomSampling<T> {
      * @param items {@inheritDoc}
      * @return {@inheritDoc}
      * @throws NullPointerException    {@inheritDoc}
-     * @throws StreamOverflowException {@inheritDoc}
+     * @throws StreamOverflowException if the number of items feeded exceeds {@link Long#MAX_VALUE} or if the sum of the
+     *                                 weights of the items feeded is {@link Double#POSITIVE_INFINITY}
      */
     @Override
-    public ChaoSampling<T> feed(Iterable<T> items) {
-        WeightedRandomSampling.super.feed(items);
-        return this;
+    public boolean feed(Iterable<T> items) {
+        return WeightedRandomSampling.super.feed(items);
     }
 }

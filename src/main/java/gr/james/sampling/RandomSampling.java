@@ -38,11 +38,11 @@ public interface RandomSampling<T> {
      * Feed an item from the stream to the algorithm.
      *
      * @param item the item to feed to the algorithm
-     * @return this instance
+     * @return {@code true} if the sample was modified as a result of this operation
      * @throws NullPointerException    if {@code item} is {@code null}
      * @throws StreamOverflowException if the internal state of the algorithm has overflown
      */
-    RandomSampling<T> feed(T item);
+    boolean feed(T item);
 
     /**
      * Feed an {@link Iterator} of items of type {@code T} to the algorithm.
@@ -55,16 +55,17 @@ public interface RandomSampling<T> {
      * </code></pre>
      *
      * @param items the items to feed to the algorithm
-     * @return this instance
+     * @return {@code true} if the sample was modified as a result of this operation
      * @throws NullPointerException    if {@code items} is {@code null} or any item in {@code items} is {@code null}
      * @throws StreamOverflowException if any subsequent calls to {@link #feed(Object)} causes
      *                                 {@code StreamOverflowException}
      */
-    default RandomSampling<T> feed(Iterator<T> items) {
+    default boolean feed(Iterator<T> items) {
+        boolean r = false;
         while (items.hasNext()) {
-            feed(items.next());
+            r = feed(items.next()) || r;
         }
-        return this;
+        return r;
     }
 
     /**
@@ -78,16 +79,17 @@ public interface RandomSampling<T> {
      * </code></pre>
      *
      * @param items the items to feed to the algorithm
-     * @return this instance
+     * @return {@code true} if the sample was modified as a result of this operation
      * @throws NullPointerException    if {@code items} is {@code null} or any item in {@code items} is {@code null}
      * @throws StreamOverflowException if any subsequent calls to {@link #feed(Object)} causes
      *                                 {@code StreamOverflowException}
      */
-    default RandomSampling<T> feed(Iterable<T> items) {
+    default boolean feed(Iterable<T> items) {
+        boolean r = false;
         for (T item : items) {
-            feed(item);
+            r = feed(item) || r;
         }
-        return this;
+        return r;
     }
 
     /**

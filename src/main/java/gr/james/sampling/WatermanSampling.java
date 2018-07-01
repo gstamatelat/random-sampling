@@ -1,6 +1,5 @@
 package gr.james.sampling;
 
-import java.util.Iterator;
 import java.util.Random;
 
 /**
@@ -53,47 +52,5 @@ public class WatermanSampling<T> extends AbstractRandomSampling<T> {
             skipCount++;
         }
         return skipCount;
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @param item {@inheritDoc}
-     * @return {@inheritDoc}
-     * @throws NullPointerException    {@inheritDoc}
-     * @throws StreamOverflowException {@inheritDoc}
-     */
-    @Override
-    public WatermanSampling<T> feed(T item) {
-        super.feed(item);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @param items {@inheritDoc}
-     * @return {@inheritDoc}
-     * @throws NullPointerException    {@inheritDoc}
-     * @throws StreamOverflowException {@inheritDoc}
-     */
-    @Override
-    public WatermanSampling<T> feed(Iterator<T> items) {
-        super.feed(items);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @param items {@inheritDoc}
-     * @return {@inheritDoc}
-     * @throws NullPointerException    {@inheritDoc}
-     * @throws StreamOverflowException {@inheritDoc}
-     */
-    @Override
-    public WatermanSampling<T> feed(Iterable<T> items) {
-        super.feed(items);
-        return this;
     }
 }

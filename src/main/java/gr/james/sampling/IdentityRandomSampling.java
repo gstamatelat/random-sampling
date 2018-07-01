@@ -54,27 +54,24 @@ class IdentityRandomSampling<T, RS extends RandomSampling<T>> implements RandomS
     }
 
     @Override
-    public RS feed(T item) {
+    public boolean feed(T item) {
         if (item == null) {
             throw new NullPointerException();
         }
         if (!set.add(item)) {
             throw new UnsupportedOperationException();
         }
-        source.feed(item);
-        return source;
+        return source.feed(item);
     }
 
     @Override
-    public RS feed(Iterator<T> items) {
-        source.feed(items);
-        return source;
+    public boolean feed(Iterator<T> items) {
+        return source.feed(items);
     }
 
     @Override
-    public RS feed(Iterable<T> items) {
-        source.feed(items);
-        return source;
+    public boolean feed(Iterable<T> items) {
+        return source.feed(items);
     }
 
     @Override

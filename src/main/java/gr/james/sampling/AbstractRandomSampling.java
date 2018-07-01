@@ -52,7 +52,7 @@ abstract class AbstractRandomSampling<T> implements RandomSampling<T> {
      * @throws StreamOverflowException if the number of items feeded exceeds {@link Long#MAX_VALUE}
      */
     @Override
-    public RandomSampling<T> feed(T item) {
+    public final boolean feed(T item) {
         // Checks
         if (item == null) {
             throw new NullPointerException("Item was null");
@@ -68,21 +68,21 @@ abstract class AbstractRandomSampling<T> implements RandomSampling<T> {
         // Skip items and add to reservoir
         if (sample.size() < sampleSize) {
             sample.add(item);
+            assert sample.size() == Math.min(sampleSize(), streamSize());
+            return true;
         } else {
             assert sample.size() == sampleSize;
             if (skip > 0) {
                 skip--;
+                return false;
             } else {
                 assert skip == 0;
                 sample.set(random.nextInt(sampleSize), item);
                 skip = skipLength(streamSize, sampleSize, random);
+                assert this.skip >= 0;
+                return true;
             }
         }
-
-        assert sample.size() == Math.min(sampleSize(), streamSize());
-        assert this.skip >= 0;
-
-        return this;
     }
 
     /**
@@ -91,12 +91,11 @@ abstract class AbstractRandomSampling<T> implements RandomSampling<T> {
      * @param items {@inheritDoc}
      * @return {@inheritDoc}
      * @throws NullPointerException    {@inheritDoc}
-     * @throws StreamOverflowException {@inheritDoc}
+     * @throws StreamOverflowException if the number of items feeded exceeds {@link Long#MAX_VALUE}
      */
     @Override
-    public RandomSampling<T> feed(Iterator<T> items) {
-        RandomSampling.super.feed(items);
-        return this;
+    public final boolean feed(Iterator<T> items) {
+        return RandomSampling.super.feed(items);
     }
 
     /**
@@ -105,12 +104,11 @@ abstract class AbstractRandomSampling<T> implements RandomSampling<T> {
      * @param items {@inheritDoc}
      * @return {@inheritDoc}
      * @throws NullPointerException    {@inheritDoc}
-     * @throws StreamOverflowException {@inheritDoc}
+     * @throws StreamOverflowException if the number of items feeded exceeds {@link Long#MAX_VALUE}
      */
     @Override
-    public RandomSampling<T> feed(Iterable<T> items) {
-        RandomSampling.super.feed(items);
-        return this;
+    public final boolean feed(Iterable<T> items) {
+        return RandomSampling.super.feed(items);
     }
 
     /**

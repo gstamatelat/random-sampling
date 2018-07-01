@@ -134,7 +134,8 @@ public class RandomSamplingTest {
     public void sampleView() {
         final RandomSampling<Integer> rs = impl.get();
         Collection<Integer> sample = rs.sample();
-        rs.feed(1).feed(2);
+        rs.feed(1);
+        rs.feed(2);
         Assert.assertTrue(RandomSamplingUtils.samplesEquals(sample, new HashSet<>(Arrays.asList(1, 2))));
     }
 
@@ -175,6 +176,21 @@ public class RandomSamplingTest {
         for (int i = 0; i < 1000; i++) {
             rs.feed(i);
             Assert.assertSame(sample, rs.sample());
+        }
+    }
+
+    /**
+     * If {@link RandomSampling#feed(Object)} returned {@code true}, than the sample has definitely changed, assuming
+     * unique stream elements.
+     */
+    @Test
+    public void feedReturnValue() {
+        final RandomSampling<Integer> rs = impl.get();
+        Collection<Integer> sample = new ArrayList<>();
+        for (int i = 0; i < 65536; i++) {
+            final boolean changed = rs.feed(i);
+            Assert.assertEquals(changed, !RandomSamplingUtils.samplesEquals(sample, rs.sample()));
+            sample = new ArrayList<>(rs.sample());
         }
     }
 

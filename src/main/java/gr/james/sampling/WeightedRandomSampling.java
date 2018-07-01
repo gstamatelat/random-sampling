@@ -47,12 +47,12 @@ public interface WeightedRandomSampling<T> extends RandomSampling<T> {
      *
      * @param item   the item to feed to the algorithm
      * @param weight the weight assigned to this item
-     * @return this instance
+     * @return {@code true} if the sample was modified as a result of this operation
      * @throws NullPointerException    if {@code item} is {@code null}
      * @throws IllegalWeightException  if {@code weight} is incompatible with the algorithm
      * @throws StreamOverflowException if the internal state of the algorithm has overflown
      */
-    WeightedRandomSampling<T> feed(T item, double weight);
+    boolean feed(T item, double weight);
 
     /**
      * Feed an {@link Iterator} of items of type {@code T} along with their weights to the algorithm.
@@ -72,7 +72,7 @@ public interface WeightedRandomSampling<T> extends RandomSampling<T> {
      *
      * @param items   the items to feed to the algorithm
      * @param weights the weights assigned to the {@code items}
-     * @return this instance
+     * @return {@code true} if the sample was modified as a result of this operation
      * @throws NullPointerException     if {@code items} is {@code null} or {@code weights} is {@code null} or any item
      *                                  in {@code items} is {@code null} or any weight in {@code weights} is
      *                                  {@code null}
@@ -81,14 +81,15 @@ public interface WeightedRandomSampling<T> extends RandomSampling<T> {
      * @throws StreamOverflowException  if any subsequent calls to {@link #feed(Object, double)} causes
      *                                  {@code StreamOverflowException}
      */
-    default WeightedRandomSampling<T> feed(Iterator<T> items, Iterator<Double> weights) {
+    default boolean feed(Iterator<T> items, Iterator<Double> weights) {
+        boolean r = false;
         while (items.hasNext() && weights.hasNext()) {
-            feed(items.next(), weights.next());
+            r = feed(items.next(), weights.next()) || r;
         }
         if (items.hasNext() || weights.hasNext()) {
             throw new IllegalArgumentException("Items and weights size mismatch");
         }
-        return this;
+        return r;
     }
 
     /**
@@ -102,7 +103,7 @@ public interface WeightedRandomSampling<T> extends RandomSampling<T> {
      * </code></pre>
      *
      * @param items the items to feed to the algorithm
-     * @return this instance
+     * @return {@code true} if the sample was modified as a result of this operation
      * @throws NullPointerException    if {@code items} is {@code null} or any key or value in {@code items} is
      *                                 {@code null}
      * @throws IllegalWeightException  if any of the weights in the values of {@code items} is incompatible with the
@@ -110,11 +111,12 @@ public interface WeightedRandomSampling<T> extends RandomSampling<T> {
      * @throws StreamOverflowException if any subsequent calls to {@link #feed(Object, double)} causes
      *                                 {@code StreamOverflowException}
      */
-    default WeightedRandomSampling<T> feed(Map<T, Double> items) {
+    default boolean feed(Map<T, Double> items) {
+        boolean r = false;
         for (Map.Entry<T, Double> e : items.entrySet()) {
-            feed(e.getKey(), e.getValue());
+            r = feed(e.getKey(), e.getValue()) || r;
         }
-        return this;
+        return r;
     }
 
     /**
@@ -131,9 +133,8 @@ public interface WeightedRandomSampling<T> extends RandomSampling<T> {
      * @throws StreamOverflowException {@inheritDoc}
      */
     @Override
-    default WeightedRandomSampling<T> feed(T item) {
-        feed(item, 1.0);
-        return this;
+    default boolean feed(T item) {
+        return feed(item, 1.0);
     }
 
     /**
@@ -147,11 +148,8 @@ public interface WeightedRandomSampling<T> extends RandomSampling<T> {
      * @throws StreamOverflowException {@inheritDoc}
      */
     @Override
-    default WeightedRandomSampling<T> feed(Iterator<T> items) {
-        while (items.hasNext()) {
-            feed(items.next());
-        }
-        return this;
+    default boolean feed(Iterator<T> items) {
+        return RandomSampling.super.feed(items);
     }
 
     /**
@@ -165,34 +163,7 @@ public interface WeightedRandomSampling<T> extends RandomSampling<T> {
      * @throws StreamOverflowException {@inheritDoc}
      */
     @Override
-    default WeightedRandomSampling<T> feed(Iterable<T> items) {
-        for (T item : items) {
-            feed(item);
-        }
-        return this;
+    default boolean feed(Iterable<T> items) {
+        return RandomSampling.super.feed(items);
     }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @return {@inheritDoc}
-     */
-    @Override
-    int sampleSize();
-
-    /**
-     * {@inheritDoc}
-     *
-     * @return {@inheritDoc}
-     */
-    @Override
-    long streamSize();
-
-    /**
-     * {@inheritDoc}
-     *
-     * @return {@inheritDoc}
-     */
-    @Override
-    Collection<T> sample();
 }

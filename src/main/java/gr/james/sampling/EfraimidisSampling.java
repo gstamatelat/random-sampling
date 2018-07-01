@@ -102,7 +102,7 @@ public class EfraimidisSampling<T> implements WeightedRandomSampling<T> {
      * @throws IllegalWeightException if {@code weight} is outside the range (0,+Inf)
      */
     @Override
-    public EfraimidisSampling<T> feed(T item, double weight) {
+    public boolean feed(T item, double weight) {
         // Checks
         if (item == null) {
             throw new NullPointerException("Item was null");
@@ -127,18 +127,17 @@ public class EfraimidisSampling<T> implements WeightedRandomSampling<T> {
         // Add item to reservoir
         if (pq.size() < sampleSize) {
             pq.add(newItem);
+            return true;
         } else if (pq.peek().weight < newItem.weight) {
             // Seems unfair for equal weight items to not have a chance to get in the sample
             // Of course in the long run it hardly matters
             assert pq.size() == sampleSize();
             pq.poll();
             pq.add(newItem);
+            return true;
         }
 
-        assert !pq.isEmpty();
-        assert pq.stream().allMatch(Objects::nonNull);
-
-        return this;
+        return false;
     }
 
     /**
@@ -152,9 +151,8 @@ public class EfraimidisSampling<T> implements WeightedRandomSampling<T> {
      * @throws IllegalWeightException   {@inheritDoc}
      */
     @Override
-    public EfraimidisSampling<T> feed(Iterator<T> items, Iterator<Double> weights) {
-        WeightedRandomSampling.super.feed(items, weights);
-        return this;
+    public boolean feed(Iterator<T> items, Iterator<Double> weights) {
+        return WeightedRandomSampling.super.feed(items, weights);
     }
 
     /**
@@ -166,9 +164,8 @@ public class EfraimidisSampling<T> implements WeightedRandomSampling<T> {
      * @throws IllegalWeightException {@inheritDoc}
      */
     @Override
-    public EfraimidisSampling<T> feed(Map<T, Double> items) {
-        WeightedRandomSampling.super.feed(items);
-        return this;
+    public boolean feed(Map<T, Double> items) {
+        return WeightedRandomSampling.super.feed(items);
     }
 
     /**
@@ -210,9 +207,8 @@ public class EfraimidisSampling<T> implements WeightedRandomSampling<T> {
      * @throws NullPointerException {@inheritDoc}
      */
     @Override
-    public EfraimidisSampling<T> feed(T item) {
-        WeightedRandomSampling.super.feed(item);
-        return this;
+    public boolean feed(T item) {
+        return WeightedRandomSampling.super.feed(item);
     }
 
     /**
@@ -223,9 +219,8 @@ public class EfraimidisSampling<T> implements WeightedRandomSampling<T> {
      * @throws NullPointerException {@inheritDoc}
      */
     @Override
-    public EfraimidisSampling<T> feed(Iterator<T> items) {
-        WeightedRandomSampling.super.feed(items);
-        return this;
+    public boolean feed(Iterator<T> items) {
+        return WeightedRandomSampling.super.feed(items);
     }
 
     /**
@@ -236,8 +231,7 @@ public class EfraimidisSampling<T> implements WeightedRandomSampling<T> {
      * @throws NullPointerException {@inheritDoc}
      */
     @Override
-    public EfraimidisSampling<T> feed(Iterable<T> items) {
-        WeightedRandomSampling.super.feed(items);
-        return this;
+    public boolean feed(Iterable<T> items) {
+        return WeightedRandomSampling.super.feed(items);
     }
 }
