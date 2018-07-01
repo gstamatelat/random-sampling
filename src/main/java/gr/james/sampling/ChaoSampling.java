@@ -265,9 +265,12 @@ public class ChaoSampling<T> implements WeightedRandomSampling<T> {
     }
 
     /**
-     * {@inheritDoc}
+     * Get the number of items that have been feeded to the algorithm during the lifetime of this instance, which is a
+     * non-negative {@code long} value.
+     * <p>
+     * This method runs in constant time.
      *
-     * @return {@inheritDoc}
+     * @return the number of items that have been feeded to the algorithm
      */
     @Override
     public final long streamSize() {

@@ -192,9 +192,14 @@ public class EfraimidisSampling<T> implements WeightedRandomSampling<T> {
     }
 
     /**
-     * {@inheritDoc}
+     * Get the number of items that have been feeded to the algorithm during the lifetime of this instance.
+     * <p>
+     * If more than {@link Long#MAX_VALUE} items has been feeded to the instance, {@code streamSize()} will cycle the
+     * long values, continuing from {@link Long#MIN_VALUE}.
+     * <p>
+     * This method runs in constant time.
      *
-     * @return {@inheritDoc}
+     * @return the number of items that have been feeded to the algorithm
      */
     @Override
     public final long streamSize() {
