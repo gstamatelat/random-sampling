@@ -8,6 +8,9 @@ import java.util.*;
  * According to this algorithm, the probability of an item to be in the final sample is proportional to its relative
  * weight. Weights are the range (0,+Inf), otherwise an {@link IllegalWeightException} is thrown.
  * <p>
+ * This implementation throws {@link StreamOverflowException} if more than {@link Long#MAX_VALUE} are feeded or if the
+ * sum of the weights of the items feeded is {@link Double#POSITIVE_INFINITY}, whichever occurs first.
+ * <p>
  * The space complexity of this class is {@code O(k)}, where {@code k} is the sample size.
  *
  * @param <T> the item type

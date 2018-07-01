@@ -21,6 +21,9 @@ import java.util.Iterator;
  * contain duplicate elements. Furthermore, elements need not be immutable and the sampling process does not rely on the
  * elements' {@code hashCode()} and {@code equals()} methods.
  * <p>
+ * Implementations can throw {@link StreamOverflowException} if some overflow has occurred in the internal state of the
+ * algorithm that would otherwise prevent it from functioning properly, typically related to the stream size.
+ * <p>
  * Classes that implement this interface have a static method with signature
  * <pre><code>
  * public static &lt;E&gt; RandomSamplingCollector&lt;E&gt; collector(int sampleSize, Random random)

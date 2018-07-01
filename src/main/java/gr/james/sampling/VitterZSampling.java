@@ -10,6 +10,8 @@ import java.util.Random;
  * algorithms to perform better by efficiently calculating the number of items that need to be skipped, while making
  * fewer calls to the RNG.
  * <p>
+ * This implementations throws {@link StreamOverflowException} if more than {@link Long#MAX_VALUE} items are feeded.
+ * <p>
  * The space complexity of this class is {@code O(k)}, where {@code k} is the sample size.
  *
  * @param <T> the item type

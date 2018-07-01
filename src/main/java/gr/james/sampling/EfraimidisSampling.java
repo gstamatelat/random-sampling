@@ -9,6 +9,8 @@ import java.util.*;
  * explicit or implicit item selections of the sampling procedure. Weights are the range (0,+Inf), otherwise an
  * {@link IllegalWeightException} is thrown.
  * <p>
+ * This implementation never throws {@link StreamOverflowException}.
+ * <p>
  * The space complexity of this class is {@code O(k)}, where {@code k} is the sample size.
  *
  * @param <T> the item type

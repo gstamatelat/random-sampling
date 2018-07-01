@@ -11,6 +11,8 @@ import java.util.Random;
  * {@link VitterXSampling} and {@link VitterZSampling} decide how many items to skip, rather than deciding whether or
  * not to skip an item each time it is feeded.
  * <p>
+ * This implementations throws {@link StreamOverflowException} if more than {@link Long#MAX_VALUE} items are feeded.
+ * <p>
  * The space complexity of this class is {@code O(k)}, where {@code k} is the sample size.
  *
  * @param <T> the item type
