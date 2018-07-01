@@ -56,6 +56,8 @@ public interface RandomSampling<T> {
      *     feed(items.next());
      * }
      * </code></pre>
+     * <p>
+     * After this method returns, the {@code items} iterator is left exhausted.
      *
      * @param items the items to feed to the algorithm
      * @return {@code true} if the sample was modified as a result of this operation
