@@ -9,7 +9,7 @@ import java.util.*;
  * @param <T> the item type
  * @author Giorgos Stamatelatos
  */
-abstract class AbstractRandomSampling<T> implements RandomSampling<T> {
+public abstract class AbstractRandomSampling<T> implements RandomSampling<T> {
     private final int sampleSize;
     private final Random random;
     private final List<T> sample;
