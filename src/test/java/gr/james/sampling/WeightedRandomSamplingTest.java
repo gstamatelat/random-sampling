@@ -39,7 +39,7 @@ public class WeightedRandomSamplingTest {
     @Test
     public void correctness() {
         final int[] streamSizes = {1, 20, 100};
-        final int[] repsSizes = {1000000, 1000000, 1000000};
+        final int[] repsSizes = {1000000, 1000000, 2000000};
 
         Assert.assertEquals(streamSizes.length, repsSizes.length);
 
