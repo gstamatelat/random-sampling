@@ -17,9 +17,7 @@ import java.util.stream.IntStream;
 public class WeightedRandomSamplingTest {
 
     private static final Random RANDOM = new Random();
-
     private static final int SAMPLE = 10;
-    private static final int REPS = 1000000;
 
     private final Supplier<WeightedRandomSampling<Integer>> impl;
 
@@ -41,6 +39,7 @@ public class WeightedRandomSamplingTest {
     @Test
     public void correctness20() {
         final int STREAM = 20;
+        final int REPS = 1000000;
 
         final int[] d = new int[STREAM];
 
@@ -67,6 +66,7 @@ public class WeightedRandomSamplingTest {
     @Test
     public void stream20() {
         final int STREAM = 20;
+        final int REPS = 1000000;
 
         final int[] d = new int[STREAM];
 
