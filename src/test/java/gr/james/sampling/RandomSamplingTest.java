@@ -37,36 +37,43 @@ public class RandomSamplingTest {
     }
 
     /**
-     * All items must be selected with equal probability. Using 20 stream elements.
+     * All items must be selected with equal probability.
      */
     @Test
-    public void correctness20() {
-        final int STREAM = 20;
-        final int REPS = 1000000;
+    public void correctness() {
+        final int[] streamSizes = {1, 20, 100};
+        final int[] repsSizes = {1000000, 1000000, 1000000};
 
-        final int[] d = new int[STREAM];
+        Assert.assertEquals(streamSizes.length, repsSizes.length);
 
-        for (int reps = 0; reps < REPS; reps++) {
-            final RandomSampling<Integer> alg = impl.get();
+        for (int test = 0; test < streamSizes.length; test++) {
+            final int STREAM = streamSizes[test];
+            final int REPS = repsSizes[test];
 
-            for (int i = 0; i < STREAM; i++) {
-                alg.feed(i);
+            final int[] d = new int[STREAM];
+
+            for (int reps = 0; reps < REPS; reps++) {
+                final RandomSampling<Integer> alg = impl.get();
+
+                for (int i = 0; i < STREAM; i++) {
+                    alg.feed(i);
+                }
+
+                for (int s : alg.sample()) {
+                    d[s]++;
+                }
             }
 
-            for (int s : alg.sample()) {
-                d[s]++;
+            for (int c : d) {
+                final double expected = (double) REPS * Math.min(SAMPLE, STREAM) / STREAM;
+                final double actual = (double) c;
+                Assert.assertEquals("RandomSamplingTest.correctness", 1, actual / expected, 1e-2);
             }
-        }
-
-        for (int c : d) {
-            final double expected = (double) REPS * SAMPLE / STREAM;
-            final double actual = (double) c;
-            Assert.assertEquals("RandomSamplingTest.correctness", 1, actual / expected, 1e-2);
         }
     }
 
     /**
-     * Same test as {@link #correctness20()} but with the stream API. Using 20 stream elements.
+     * Same test as {@link #correctness()} but with the stream API.
      */
     @Test
     public void stream20() {

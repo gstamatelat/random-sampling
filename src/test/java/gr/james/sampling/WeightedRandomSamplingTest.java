@@ -34,34 +34,41 @@ public class WeightedRandomSamplingTest {
     }
 
     /**
-     * Increased weight means more occurrences. Using 20 stream elements.
+     * Increased weight means more occurrences.
      */
     @Test
-    public void correctness20() {
-        final int STREAM = 20;
-        final int REPS = 1000000;
+    public void correctness() {
+        final int[] streamSizes = {1, 20, 100};
+        final int[] repsSizes = {1000000, 1000000, 1000000};
 
-        final int[] d = new int[STREAM];
+        Assert.assertEquals(streamSizes.length, repsSizes.length);
 
-        for (int reps = 0; reps < REPS; reps++) {
-            final WeightedRandomSampling<Integer> alg = impl.get();
+        for (int test = 0; test < streamSizes.length; test++) {
+            final int STREAM = streamSizes[test];
+            final int REPS = repsSizes[test];
 
-            for (int i = 0; i < STREAM; i++) {
-                alg.feed(i, i + 1);
+            final int[] d = new int[STREAM];
+
+            for (int reps = 0; reps < REPS; reps++) {
+                final WeightedRandomSampling<Integer> alg = impl.get();
+
+                for (int i = 0; i < STREAM; i++) {
+                    alg.feed(i, i + 1);
+                }
+
+                for (int s : alg.sample()) {
+                    d[s]++;
+                }
             }
 
-            for (int s : alg.sample()) {
-                d[s]++;
+            for (int i = 0; i < d.length - 1; i++) {
+                Assert.assertTrue("WeightedRandomSamplingTest.correctness", d[i] < d[i + 1]);
             }
-        }
-
-        for (int i = 0; i < d.length - 1; i++) {
-            Assert.assertTrue("WeightedRandomSamplingTest.correctness", d[i] < d[i + 1]);
         }
     }
 
     /**
-     * Same test as {@link #correctness20()} but with the stream API. Using 20 stream elements.
+     * Same test as {@link #correctness()} but with the stream API.
      */
     @Test
     public void stream20() {
