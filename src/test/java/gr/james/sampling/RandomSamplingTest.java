@@ -17,7 +17,6 @@ public class RandomSamplingTest {
 
     private static final Random RANDOM = new Random();
 
-    private static final int STREAM = 20;
     private static final int SAMPLE = 10;
     private static final int REPS = 1000000;
 
@@ -40,10 +39,12 @@ public class RandomSamplingTest {
     }
 
     /**
-     * All items must be selected with equal probability.
+     * All items must be selected with equal probability. Using 20 stream elements.
      */
     @Test
-    public void correctness() {
+    public void correctness20() {
+        final int STREAM = 20;
+
         final int[] d = new int[STREAM];
 
         for (int reps = 0; reps < REPS; reps++) {
@@ -66,10 +67,12 @@ public class RandomSamplingTest {
     }
 
     /**
-     * Same test as {@link #correctness()} but with the stream API.
+     * Same test as {@link #correctness20()} but with the stream API. Using 20 stream elements.
      */
     @Test
-    public void stream() {
+    public void stream20() {
+        final int STREAM = 20;
+
         final int[] d = new int[STREAM];
 
         for (int reps = 0; reps < REPS; reps++) {
