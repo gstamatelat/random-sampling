@@ -51,14 +51,18 @@ public class LiLSampling<T> extends AbstractRandomSampling<T> {
 
     @Override
     void init(int sampleSize, Random random) {
-        W = Math.exp(Math.log(random.nextDouble()) / sampleSize);
+        W = Math.exp(Math.log(RandomSamplingUtils.randomExclusive(random)) / sampleSize);
     }
 
     @Override
     long skipLength(long streamSize, int sampleSize, Random random) {
         final double random1 = RandomSamplingUtils.randomExclusive(random);
         final double random2 = RandomSamplingUtils.randomExclusive(random);
-        final long skip = (long) (Math.log(random1) / Math.log(1 - W));
+        long skip = (long) (Math.log(random1) / Math.log(1 - W));
+        assert skip >= 0 || skip == Long.MIN_VALUE;
+        if (skip == Long.MIN_VALUE) {  // Sometimes when W is very small, 1 - W = 1 and Math.log(1) = +0 instead of -0
+            skip = Long.MAX_VALUE;     // This results in negative infinity skip
+        }
         W = W * Math.exp(Math.log(random2) / sampleSize);
         return skip;
     }
