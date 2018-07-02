@@ -8,10 +8,10 @@ import java.util.Random;
  * <p>
  * The implementation is the simplest unweighted sampling algorithm that each time a new element is feeded, it
  * determines whether is should be accepted in the sample by producing a random number. The more efficient
- * {@link VitterXSampling} and {@link VitterZSampling} decide how many items to skip, rather than deciding whether or
- * not to skip an item each time it is feeded.
+ * {@link VitterXSampling}, {@link VitterZSampling} and {@link LiLSampling} decide how many items to skip, rather than
+ * deciding whether or not to skip an item each time it is feeded.
  * <p>
- * This implementations throws {@link StreamOverflowException} if more than {@link Long#MAX_VALUE} items are feeded.
+ * This implementation throws {@link StreamOverflowException} if more than {@link Long#MAX_VALUE} items are feeded.
  * <p>
  * The space complexity of this class is {@code O(k)}, where {@code k} is the sample size.
  *

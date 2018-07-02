@@ -33,6 +33,7 @@ public class RandomSamplingTest {
         implementations.add(() -> new WatermanSampling<>(SAMPLE, RANDOM));
         implementations.add(() -> new VitterXSampling<>(SAMPLE, RANDOM));
         implementations.add(() -> new VitterZSampling<>(SAMPLE, RANDOM));
+        implementations.add(() -> new LiLSampling<>(SAMPLE, RANDOM));
         implementations.add(() -> new EfraimidisSampling<>(SAMPLE, RANDOM));
         implementations.add(() -> new ChaoSampling<>(SAMPLE, RANDOM));
         return implementations;
@@ -85,6 +86,8 @@ public class RandomSamplingTest {
                 collector = EfraimidisSampling.collector(SAMPLE, RANDOM);
             } else if (alg instanceof ChaoSampling) {
                 collector = ChaoSampling.collector(SAMPLE, RANDOM);
+            } else if (alg instanceof LiLSampling) {
+                collector = LiLSampling.collector(SAMPLE, RANDOM);
             } else {
                 throw new AssertionError("RandomSamplingTest.stream");
             }

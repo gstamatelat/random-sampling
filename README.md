@@ -111,6 +111,7 @@ System.out.println(sample);
 | `WatermanSampling`   | Algorithm R by Waterman       | `O(k)` |          |
 | `VitterXSampling`    | Algorithm X by Vitter         | `O(k)` |          |
 | `VitterZSampling`    | Algorithm Z by Vitter         | `O(k)` |          |
+| `LiLSampling`        | Algorithm L by Li             | `O(k)` |          |
 | `EfraimidisSampling` | Algorithm A-Res by Efraimidis | `O(k)` | &#10004; |
 | `ChaoSampling`       | Algorithm by Chao             | `O(k)` | &#10004; |
 
@@ -135,14 +136,21 @@ Signature: `VitterZSampling` implements `RandomSampling`
 #### References
 - [Vitter, Jeffrey S. "Random sampling with a reservoir." ACM Transactions on Mathematical Software (TOMS) 11.1 (1985): 37-57.](https://doi.org/10.1145/3147.3165)
 
-### 4 Algorithm A-Res by Efraimidis
+### 4 Algorithm L by Li
+
+Signature: `LiLSampling` implements `RandomSampling`
+
+#### References
+- [Li, Kim-Hung. "Reservoir-sampling algorithms of time complexity O (n (1+ log (N/n)))." ACM Transactions on Mathematical Software (TOMS) 20.4 (1994): 481-493.](https://doi.org/10.1145/198429.198435)
+
+### 5 Algorithm A-Res by Efraimidis
 
 Signature: `EfraimidisSampling` implements `WeightedRandomSampling`
 
 #### References
 - [Efraimidis, Pavlos S., and Paul G. Spirakis. "Weighted random sampling with a reservoir." Information Processing Letters 97.5 (2006): 181-185.](https://doi.org/10.1016/j.ipl.2005.11.003)
 
-### 5 Algorithm by Chao
+### 6 Algorithm by Chao
 
 Signature: `ChaoSampling` implements `WeightedRandomSampling`
 

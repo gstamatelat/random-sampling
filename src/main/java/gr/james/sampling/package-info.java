@@ -9,6 +9,7 @@
  * <li>{@link gr.james.sampling.WatermanSampling}</li>
  * <li>{@link gr.james.sampling.VitterXSampling}</li>
  * <li>{@link gr.james.sampling.VitterZSampling}</li>
+ * <li>{@link gr.james.sampling.LiLSampling}</li>
  * </ul>
  * <h3><code>WeightedRandomSampling</code> implementations</h3>
  * <ul>
