@@ -56,8 +56,10 @@ public class LiLSampling<T> extends AbstractRandomSampling<T> {
 
     @Override
     long skipLength(long streamSize, int sampleSize, Random random) {
-        final long skip = (long) (Math.log(random.nextDouble()) / Math.log(1 - W));
-        W = W * Math.exp(Math.log(random.nextDouble()) / sampleSize);
+        final double random1 = RandomSamplingUtils.randomExclusive(random);
+        final double random2 = RandomSamplingUtils.randomExclusive(random);
+        final long skip = (long) (Math.log(random1) / Math.log(1 - W));
+        W = W * Math.exp(Math.log(random2) / sampleSize);
         return skip;
     }
 }
