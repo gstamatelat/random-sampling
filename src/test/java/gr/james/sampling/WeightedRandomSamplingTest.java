@@ -62,7 +62,7 @@ public class WeightedRandomSamplingTest {
             }
 
             for (int i = 0; i < d.length - 1; i++) {
-                Assert.assertTrue("WeightedRandomSamplingTest.correctness", d[i] < d[i + 1]);
+                Assert.assertTrue(d[i] < d[i + 1]);
             }
         }
     }
@@ -86,7 +86,7 @@ public class WeightedRandomSamplingTest {
             } else if (alg instanceof ChaoSampling) {
                 collector = ChaoSampling.weightedCollector(SAMPLE, RANDOM);
             } else {
-                throw new AssertionError("WeightedRandomSamplingTest.stream");
+                throw new AssertionError();
             }
 
             final Collection<Integer> sample = IntStream.range(0, STREAM).boxed()
@@ -99,7 +99,7 @@ public class WeightedRandomSamplingTest {
         }
 
         for (int i = 0; i < d.length - 1; i++) {
-            Assert.assertTrue("WeightedRandomSamplingTest.stream", d[i] < d[i + 1]);
+            Assert.assertTrue(d[i] < d[i + 1]);
         }
     }
 

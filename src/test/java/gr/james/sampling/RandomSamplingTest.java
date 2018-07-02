@@ -67,7 +67,7 @@ public class RandomSamplingTest {
             for (int c : d) {
                 final double expected = (double) REPS * Math.min(SAMPLE, STREAM) / STREAM;
                 final double actual = (double) c;
-                Assert.assertEquals("RandomSamplingTest.correctness", 1, actual / expected, 1e-2);
+                Assert.assertEquals(1, actual / expected, 1e-2);
             }
         }
     }
@@ -99,7 +99,7 @@ public class RandomSamplingTest {
             } else if (alg instanceof LiLSampling) {
                 collector = LiLSampling.collector(SAMPLE, RANDOM);
             } else {
-                throw new AssertionError("RandomSamplingTest.stream");
+                throw new AssertionError();
             }
 
             final Collection<Integer> sample = IntStream.range(0, STREAM).boxed().collect(collector);
@@ -112,7 +112,7 @@ public class RandomSamplingTest {
         for (int c : d) {
             final double expected = (double) REPS * SAMPLE / STREAM;
             final double actual = (double) c;
-            Assert.assertEquals("RandomSamplingTest.stream", 1, actual / expected, 1e-2);
+            Assert.assertEquals(1, actual / expected, 1e-2);
         }
     }
 

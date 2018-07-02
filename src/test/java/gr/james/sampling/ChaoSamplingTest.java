@@ -33,8 +33,7 @@ public class ChaoSamplingTest {
         }
         final double diff = 2.0 * (REPS * SAMPLE) / (STREAM * (STREAM + 1));
         for (int i = 0; i < d.length - 1; i++) {
-            Assert.assertEquals("ChaoSamplingTest.correctness",
-                    1.0, (d[i + 1] - d[i]) / diff, 1e-2);
+            Assert.assertEquals(1.0, (d[i + 1] - d[i]) / diff, 1e-2);
         }
     }
 
@@ -57,8 +56,7 @@ public class ChaoSamplingTest {
         }
         final double diff = 2.0 * (REPS * SAMPLE) / (STREAM * (STREAM + 1));
         for (int i = 0; i < d.length - 1; i++) {
-            Assert.assertEquals("ChaoSamplingTest.stream",
-                    1.0, (d[i + 1] - d[i]) / diff, 1e-2);
+            Assert.assertEquals(1.0, (d[i + 1] - d[i]) / diff, 1e-2);
         }
     }
 
