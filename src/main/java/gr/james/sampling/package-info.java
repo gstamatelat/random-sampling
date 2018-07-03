@@ -109,7 +109,7 @@
  * <li><a href="https://doi.org/10.1145/3147.3165">Vitter, Jeffrey S. "Random sampling with a reservoir."
  * ACM Transactions on Mathematical Software (TOMS) 11.1 (1985): 37-57.</a></li>
  * <li><a href="https://doi.org/10.1145/198429.198435">Li, Kim-Hung. "Reservoir-sampling algorithms of time complexity
- * O(n(1+log(N/n)))." ACM Transactions on Mathematical Software (TOMS) 20.4 (1994): 481-493.</a></li>
+ * O(n(1 + log(N/n)))." ACM Transactions on Mathematical Software (TOMS) 20.4 (1994): 481-493.</a></li>
  * <li><a href="https://doi.org/10.2307/2336002">Chao, M. T. "A general purpose unequal probability sampling plan."
  * Biometrika 69.3 (1982): 653-656.</a></li>
  * <li><a href="https://doi.org/10.1080/02664769624152">Sugden, R. A. "Chao's list sequential scheme for unequal
