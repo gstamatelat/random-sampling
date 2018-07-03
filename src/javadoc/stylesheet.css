@@ -25,3 +25,7 @@ table.table thead tr {
 table.table tbody tr:nth-child(2n) {
     background-color: #EEEEEF;
 }
+
+table.table th {
+    text-align: left;
+}
