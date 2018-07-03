@@ -44,7 +44,9 @@
  * <h4>Overflow</h4>
  * Related to the concept of precision, overflow refers to the situation where the precision has degraded into a
  * non-recurrent state that would prevent the algorithm from behaving consistently. In these cases the implementation
- * will throw {@link gr.james.sampling.StreamOverflowException} to indicate this state.
+ * will throw {@link gr.james.sampling.StreamOverflowException} to indicate this state. Algorithms that are not prone to
+ * precision degrading will never throw {@code StreamOverflowException} and are marked <em>ND</em> in the implementation
+ * table below.
  * <h3>Implementations</h3>
  * <table class="table" summary="">
  * <thead>
