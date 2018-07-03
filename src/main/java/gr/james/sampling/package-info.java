@@ -39,7 +39,8 @@
  * {@link java.util.Collection} may contain duplicate elements. Furthermore, elements need not be immutable and the
  * sampling process does not rely on the elements' {@code hashCode()} and {@code equals()} methods.
  * <h3>Implementations</h3>
- * <table summary="">
+ * <table class="table" summary="">
+ * <thead>
  * <tr>
  * <th>Implementation</th>
  * <th>Algorithm</th>
@@ -47,6 +48,8 @@
  * <th>Precision</th>
  * <th>Weighted</th>
  * </tr>
+ * </thead>
+ * <tbody>
  * <tr>
  * <td>{@link gr.james.sampling.WatermanSampling}</td>
  * <td>Algorithm R by Waterman</td>
@@ -89,6 +92,7 @@
  * <td>ND</td>
  * <td>YES</td>
  * </tr>
+ * </tbody>
  * </table>
  *
  * @see <a href="https://doi.org/10.1007/978-3-319-24024-4_12">Weighted Random Sampling over Data Streams</a>

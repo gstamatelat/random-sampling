@@ -1,5 +1,27 @@
 /* Code blocks */
+
 .block pre {
     background-color: #F6F8FA !important;
     padding: 0 1rem !important;
+}
+
+/* Tables */
+
+table.table {
+    border-spacing: 0;
+    border-collapse: collapse;
+}
+
+table.table td,
+table.table th {
+    padding: 6px 13px;
+    border: 1px solid #dfe2e5;
+}
+
+table.table thead tr {
+    background-color: #dee3e9;
+}
+
+table.table tbody tr:nth-child(2n) {
+    background-color: #EEEEEF;
 }
