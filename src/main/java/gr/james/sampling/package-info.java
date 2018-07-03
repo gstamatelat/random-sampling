@@ -16,12 +16,13 @@
  * The top level interfaces are {@link gr.james.sampling.RandomSampling} and
  * {@link gr.james.sampling.WeightedRandomSampling}, which represent unweighted and weighted random sampling algorithms
  * respectively. The {@code WeightedRandomSampling} interface extends {@code RandomSampling} and, thus, weighted
- * algorithms can be used in place as unweighted, usually with a performance penalty.
+ * algorithms can be used in-place as unweighted, usually with a performance penalty due to the extra weight-related
+ * overhead.
  * <h3>Properties</h3>
  * <h4>Complexity</h4>
  * A fundamental principle of reservoir based sampling algorithms is that the memory complexity is linear in respect to
- * the reservoir size. Furthermore, the sampling process is performed using a single pass of the stream. The amount of
- * RNG invocations vary among the different implementations.
+ * the reservoir size {@code O(k)}. Furthermore, the sampling process is performed using a single pass of the stream.
+ * The amount of RNG invocations vary among the different implementations.
  * <h4>Precision</h4>
  * Many implementations have an accumulating state which causes the precision of the algorithms to degrade as the stream
  * becomes bigger. An example might be a variable state which strictly increases or decreases as elements are read from
