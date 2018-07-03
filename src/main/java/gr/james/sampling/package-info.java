@@ -34,8 +34,10 @@
  * selections of the sampling procedure (implemented in {@code EfraimidisSampling}). As a result, implementations of
  * this interface may not exhibit identical behavior, as opposed to the {@link gr.james.sampling.RandomSampling}
  * interface. The contract of this interface is, however, that a higher weight value suggests a higher probability for
- * an item to be included in the sample. Implementations may also define certain restrictions on the values of
- * {@code weight} and violations will result in {@link gr.james.sampling.IllegalWeightException}.
+ * an item to be included in the sample. The first case is denoted as <em>P</em> and the second case as <em>W</em> in
+ * the implementation table below. Implementations may also define certain restrictions on the values of {@code weight}
+ * and violations will result in {@link gr.james.sampling.IllegalWeightException}. The weight ranges are also available
+ * in the table.
  * <h4>Precision</h4>
  * Many implementations have an accumulating state which causes the precision of the algorithms to degrade as the stream
  * becomes bigger. An example might be a variable state which strictly increases or decreases as elements are read from
@@ -55,7 +57,7 @@
  * <th>Algorithm</th>
  * <th>Space</th>
  * <th>Precision</th>
- * <th>Weighted</th>
+ * <th>Weights</th>
  * </tr>
  * </thead>
  * <tbody>
@@ -64,42 +66,42 @@
  * <td>Algorithm R by Waterman [2]</td>
  * <td>{@code O(k)}</td>
  * <td>D</td>
- * <td>NO</td>
+ * <td>-</td>
  * </tr>
  * <tr>
  * <td>{@link gr.james.sampling.VitterXSampling}</td>
  * <td>Algorithm X by Vitter [3]</td>
  * <td>{@code O(k)}</td>
  * <td>D</td>
- * <td>NO</td>
+ * <td>-</td>
  * </tr>
  * <tr>
  * <td>{@link gr.james.sampling.VitterZSampling}</td>
  * <td>Algorithm Z by Vitter [3]</td>
  * <td>{@code O(k)}</td>
  * <td>D</td>
- * <td>NO</td>
+ * <td>-</td>
  * </tr>
  * <tr>
  * <td>{@link gr.james.sampling.LiLSampling}</td>
  * <td>Algorithm L by Li [4]</td>
  * <td>{@code O(k)}</td>
  * <td>D</td>
- * <td>NO</td>
+ * <td>-</td>
  * </tr>
  * <tr>
  * <td>{@link gr.james.sampling.ChaoSampling}</td>
  * <td>Algorithm by Chao [5][6]</td>
  * <td>{@code O(k)}</td>
  * <td>D</td>
- * <td>YES</td>
+ * <td>P (0, +&infin;)</td>
  * </tr>
  * <tr>
  * <td>{@link gr.james.sampling.EfraimidisSampling}</td>
  * <td>Algorithm A-Res by Efraimidis [7]</td>
  * <td>{@code O(k)}</td>
  * <td>ND</td>
- * <td>YES</td>
+ * <td>W (0, +&infin;)</td>
  * </tr>
  * </tbody>
  * </table>
