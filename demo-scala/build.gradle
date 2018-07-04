@@ -1,6 +1,4 @@
-apply plugin: 'java'
-
-sourceCompatibility = 1.8
+apply plugin: 'scala'
 
 repositories {
     jcenter()
@@ -8,12 +6,13 @@ repositories {
 
 sourceSets {
     main {
-        java {
+        scala {
             srcDirs = ['src']
         }
     }
 }
 
 dependencies {
-    compile rootProject
+    compile rootProject,
+            'org.scala-lang:scala-library:2.12.6'
 }

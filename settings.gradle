@@ -1,2 +1,2 @@
 rootProject.name = 'random-sampling'
-include 'demo'
+include 'demo', 'demo-scala'

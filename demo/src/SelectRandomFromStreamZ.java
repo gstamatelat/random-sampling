@@ -1,7 +1,6 @@
 import gr.james.sampling.RandomSampling;
 import gr.james.sampling.VitterZSampling;
 
-import java.nio.charset.Charset;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -11,7 +10,7 @@ import java.util.Scanner;
 public final class SelectRandomFromStreamZ {
     public static void main(String[] args) {
         RandomSampling<String> rs = new VitterZSampling<>(5, new Random());
-        rs.feed(new Scanner(System.in, Charset.defaultCharset().name()));
+        rs.feed(new Scanner(System.in));
         System.out.println(rs.sample());
     }
 }
