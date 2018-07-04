@@ -23,6 +23,7 @@ wrapper {
 javadoc {
     doLast {
         new File(destinationDir, 'stylesheet.css').append(file('src/javadoc/stylesheet.css').text)
+        new File(destinationDir, 'script.js').append(file('src/javadoc/script.js').text)
     }
     options.overview('src/javadoc/overview.html')
 }
