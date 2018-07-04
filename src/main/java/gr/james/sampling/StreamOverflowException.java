@@ -4,10 +4,8 @@ import java.util.Iterator;
 import java.util.Map;
 
 /**
- * A {@code StreamOverflowException} indicates that the internal state of the algorithm has overflown.
- * <p>
- * The exception may occur when the amount of items feeded to a random sampling algorithm exceeds the maximum allowed or
- * when the internal state has overflown in a way that would otherwise cause the algorithm to behave inconsistently.
+ * A {@code StreamOverflowException} indicates that the internal state of the algorithm has reached a situation where
+ * the precision has degraded into a non-recurrent state that would prevent the algorithm from behaving consistently.
  * <p>
  * More specifically, this exception targets the methods
  * <ul>
