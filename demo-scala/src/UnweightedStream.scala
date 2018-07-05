@@ -4,6 +4,7 @@ import SamplingTraversableOnce._
 import gr.james.sampling.{RandomSampling, WatermanSampling}
 
 import scala.collection.JavaConverters._
+import scala.language.implicitConversions
 
 /**
   * Extension of [[TraversableOnce]] with the <code>sample</code> method.

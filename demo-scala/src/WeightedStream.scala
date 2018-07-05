@@ -4,6 +4,7 @@ import WeightedSamplingTraversableOnce._
 import gr.james.sampling.{ChaoSampling, WeightedRandomSampling}
 
 import scala.collection.JavaConverters._
+import scala.language.implicitConversions
 
 /**
   * Extension of [[TraversableOnce]] with the <code>sample</code> method.
