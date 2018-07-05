@@ -1,17 +1,17 @@
 import java.util.Random
 
-import WeightedSamplingIterator._
+import WeightedSamplingTraversableOnce._
 import gr.james.sampling.{ChaoSampling, WeightedRandomSampling}
 
 import scala.collection.JavaConverters._
 
 /**
-  * Extension of the [[Iterator]] with the <code>sample</code> method.
+  * Extension of [[TraversableOnce]] with the <code>sample</code> method.
   *
-  * @param it the source iterator
+  * @param it the source
   * @tparam T the element type
   */
-class WeightedSamplingIterator[T](val it: Iterator[(T, Double)]) {
+class WeightedSamplingTraversableOnce[T](val it: TraversableOnce[(T, Double)]) {
   private val foldOperation =
     (rs: WeightedRandomSampling[T], i: (T, Double)) => {
       rs.feed(i._1, i._2)
@@ -19,21 +19,26 @@ class WeightedSamplingIterator[T](val it: Iterator[(T, Double)]) {
     }
 
   /**
-    * Samples this iterator using the provided algorithm.
+    * Samples this iterator using the provided algorithm and returns a copy of the reservoir.
     *
     * @param wrs the sampling algorithm
     * @return a [[List]] containing the sampled elements
+    * @throws NullPointerException     if <code>wrs</code> is <code>null</code>
+    * @throws IllegalArgumentException if <code>wrs</code> is not empty
     */
-  def sample(wrs: WeightedRandomSampling[T]): List[T] = it.foldLeft(wrs)(foldOperation).sample().asScala.toList
+  def sample(wrs: WeightedRandomSampling[T]): List[T] = {
+    require(wrs.sample().isEmpty)
+    it.foldLeft(wrs)(foldOperation).sample().asScala.toList
+  }
 }
 
 /**
-  * The [[WeightedSamplingIterator]] companion object with the <code>iteratorToWeightedSamplingIterator</code> implicit
-  * conversion.
+  * The [[WeightedSamplingTraversableOnce]] companion object with the <code>traversableOnceImplicitConversion</code>
+  * implicit conversion.
   */
-object WeightedSamplingIterator {
-  implicit def iteratorToWeightedSamplingIterator[T](s: Iterator[(T, Double)]): WeightedSamplingIterator[T] =
-    new WeightedSamplingIterator(s)
+object WeightedSamplingTraversableOnce {
+  implicit def traversableOnceImplicitConversion[T](s: TraversableOnce[(T, Double)]): WeightedSamplingTraversableOnce[T] =
+    new WeightedSamplingTraversableOnce(s)
 }
 
 /**
@@ -47,6 +52,6 @@ object WeightedStream extends App {
     "random" -> 3.0,
     "sampling" -> 4.0,
     "reservoir" -> 5.0
-  ).iterator.sample(new ChaoSampling[String](2, new Random))
+  ).sample(new ChaoSampling[String](2, new Random))
   println(sample)
 }

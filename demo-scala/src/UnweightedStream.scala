@@ -1,17 +1,17 @@
 import java.util.Random
 
-import SamplingIterator._
+import SamplingTraversableOnce._
 import gr.james.sampling.{RandomSampling, WatermanSampling}
 
 import scala.collection.JavaConverters._
 
 /**
-  * Extension of the [[Iterator]] with the <code>sample</code> method.
+  * Extension of [[TraversableOnce]] with the <code>sample</code> method.
   *
-  * @param it the source iterator
+  * @param it the source
   * @tparam T the element type
   */
-class SamplingIterator[T](val it: Iterator[T]) {
+class SamplingTraversableOnce[T](val it: TraversableOnce[T]) {
   private val foldOperation =
     (rs: RandomSampling[T], i: T) => {
       rs.feed(i)
@@ -19,26 +19,32 @@ class SamplingIterator[T](val it: Iterator[T]) {
     }
 
   /**
-    * Samples this iterator using the provided algorithm.
+    * Samples this iterator using the provided algorithm and returns a copy of the reservoir.
     *
     * @param rs the sampling algorithm
     * @return a [[List]] containing the sampled elements
+    * @throws NullPointerException     if <code>rs</code> is <code>null</code>
+    * @throws IllegalArgumentException if <code>rs</code> is not empty
     */
-  def sample(rs: RandomSampling[T]): List[T] = it.foldLeft(rs)(foldOperation).sample().asScala.toList
+  def sample(rs: RandomSampling[T]): List[T] = {
+    require(rs.sample().isEmpty)
+    it.foldLeft(rs)(foldOperation).sample().asScala.toList
+  }
 }
 
 /**
-  * The [[SamplingIterator]] companion object with the <code>iteratorToSamplingIterator</code> implicit conversion.
+  * The [[SamplingTraversableOnce]] companion object with the <code>traversableOnceImplicitConversion</code> implicit
+  * conversion.
   */
-object SamplingIterator {
-  implicit def iteratorToSamplingIterator[T](s: Iterator[T]): SamplingIterator[T] =
-    new SamplingIterator(s)
+object SamplingTraversableOnce {
+  implicit def traversableOnceImplicitConversion[T](s: TraversableOnce[T]): SamplingTraversableOnce[T] =
+    new SamplingTraversableOnce(s)
 }
 
 /**
   * Unweighted random sampling using functional constructs.
   */
 object UnweightedStream extends App {
-  val sample = (0 until 20).iterator.sample(new WatermanSampling[Int](5, new Random()))
+  val sample = (0 until 20).sample(new WatermanSampling[Int](5, new Random()))
   println(sample)
 }
