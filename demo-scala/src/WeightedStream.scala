@@ -20,7 +20,7 @@ class WeightedSamplingTraversableOnce[T](val it: TraversableOnce[(T, Double)]) {
     }
 
   /**
-    * Samples this iterator using the provided algorithm and returns a copy of the reservoir.
+    * Samples this [[TraversableOnce]] using the provided algorithm and returns a copy of the reservoir.
     *
     * @param wrs the sampling algorithm
     * @return a [[List]] containing the sampled elements
