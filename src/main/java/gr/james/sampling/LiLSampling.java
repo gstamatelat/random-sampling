@@ -38,6 +38,17 @@ public class LiLSampling<T> extends AbstractRandomSampling<T> {
     }
 
     /**
+     * Construct a new instance of {@link LiLSampling} using the specified sample size and a default source of
+     * randomness.
+     *
+     * @param sampleSize the sample size
+     * @throws IllegalArgumentException if {@code sampleSize} is less than 1
+     */
+    public LiLSampling(int sampleSize) {
+        this(sampleSize, new Random());
+    }
+
+    /**
      * Get a {@link RandomSamplingCollector} from this class.
      *
      * @param sampleSize the sample size

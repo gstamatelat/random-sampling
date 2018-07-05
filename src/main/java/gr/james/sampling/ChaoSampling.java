@@ -84,6 +84,17 @@ public class ChaoSampling<T> implements WeightedRandomSampling<T> {
     }
 
     /**
+     * Construct a new instance of {@link ChaoSampling} using the specified sample size and a default source of
+     * randomness.
+     *
+     * @param sampleSize the sample size
+     * @throws IllegalArgumentException if {@code sampleSize} is less than 1
+     */
+    public ChaoSampling(int sampleSize) {
+        this(sampleSize, new Random());
+    }
+
+    /**
      * Get a {@link RandomSamplingCollector} from this class.
      *
      * @param sampleSize the sample size
