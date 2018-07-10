@@ -66,4 +66,31 @@ public class WatermanSampling<T> extends AbstractRandomSampling<T> {
         }
         return skipCount;
     }
+
+    @Deprecated
+    private static class WatermanSkipFunction implements SkipFunction {
+        private final int sampleSize;
+        private final Random random;
+        private long streamSize;
+
+        public WatermanSkipFunction(int sampleSize, Random random) {
+            this.sampleSize = sampleSize;
+            this.random = random;
+            this.streamSize = sampleSize;
+        }
+
+        @Override
+        public long skip() throws StreamOverflowException {
+            if (streamSize == Long.MAX_VALUE) {
+                throw new StreamOverflowException();
+            }
+            streamSize++;
+            long skipCount = 0;
+            while (random.nextDouble() * streamSize >= sampleSize && streamSize > 0) {
+                streamSize++;
+                skipCount++;
+            }
+            return skipCount;
+        }
+    }
 }
