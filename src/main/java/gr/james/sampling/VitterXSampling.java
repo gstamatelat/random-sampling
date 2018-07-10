@@ -72,4 +72,38 @@ public class VitterXSampling<T> extends AbstractRandomSampling<T> {
 
         return skipCount;
     }
+
+    @Deprecated
+    private static class VitterXSkipFunction implements SkipFunction {
+        private final int sampleSize;
+        private final Random random;
+        private long streamSize;
+
+        public VitterXSkipFunction(int sampleSize, Random random) {
+            this.sampleSize = sampleSize;
+            this.random = random;
+            this.streamSize = sampleSize;
+        }
+
+        @Override
+        public long skip() throws StreamOverflowException {
+            if (streamSize == Long.MAX_VALUE) {
+                throw new StreamOverflowException();
+            }
+
+            streamSize++;
+
+            final double r = random.nextDouble();
+            long skipCount = 0;
+
+            double quot = (streamSize - sampleSize) / (double) streamSize;
+            while (quot > r && streamSize > 0) {
+                skipCount++;
+                streamSize++;
+                quot = (quot * (streamSize - sampleSize)) / (double) streamSize;
+            }
+
+            return skipCount;
+        }
+    }
 }
