@@ -1,6 +1,8 @@
-apply plugin: 'java'
-apply plugin: 'maven'
-apply plugin: 'findbugs'
+plugins {
+    id 'java'
+    id 'maven'
+    id 'findbugs'
+}
 
 group = 'gr.james'
 version = '0.13'
