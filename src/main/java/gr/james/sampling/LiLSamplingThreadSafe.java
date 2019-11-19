@@ -22,7 +22,7 @@ import java.util.concurrent.atomic.AtomicLong;
  * @see <a href="https://doi.org/10.1145/198429.198435">Reservoir-sampling algorithms of time complexity
  * O(n(1 + log(N/n)))</a>
  */
-public class LiLSamplingThreadSafe<T> extends AbstractRandomSampling<T> implements ThreadSafe {
+public class LiLSamplingThreadSafe<T> extends AbstractThreadSafeRandomSampling<T> {
 
     private AtomicLong W;
 

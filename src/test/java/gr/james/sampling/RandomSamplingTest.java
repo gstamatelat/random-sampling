@@ -1,6 +1,5 @@
 package gr.james.sampling;
 
-import static java.util.stream.Collectors.toList;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Assert;
@@ -57,7 +56,8 @@ public class RandomSamplingTest {
 
         for (int test = 0; test < streamSizes.length; test++) {
             final int STREAM = streamSizes[test];
-            final int numCores = (impl.get() instanceof ThreadSafe) ? Runtime.getRuntime().availableProcessors() : 1;
+            final int numCores = (impl.get() instanceof ThreadSafeRandomSampling) ?
+                Runtime.getRuntime().availableProcessors() : 1;
             final int REPS = repsSizes[test];
 
             final AtomicIntegerArray d = new AtomicIntegerArray(STREAM);
