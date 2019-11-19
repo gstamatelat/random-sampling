@@ -9,8 +9,6 @@ import java.util.RandomAccess;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReferenceArray;
-import java.util.function.LongUnaryOperator;
-import java.util.function.Predicate;
 
 /**
  * This class provides a skeletal implementation of the {@link RandomSampling} interface to minimize the effort required
@@ -20,9 +18,9 @@ import java.util.function.Predicate;
  * @author Giorgos Stamatelatos
  */
 public abstract class AbstractThreadSafeRandomSampling<T> implements RandomSampling<T> {
-    private final int maxSamples;
+    private final int sampleSize;
     private final Random random;
-    private final AtomicReferenceArray<T> samples;
+    private final AtomicReferenceArray<T> sample;
     private final AtomicInteger samplesCount;
     private final Collection<T> unmodifiableSample;
     private AtomicLong streamSize;
@@ -33,26 +31,26 @@ public abstract class AbstractThreadSafeRandomSampling<T> implements RandomSampl
      * {@code random} conforms to the contract of {@link Random} and will perform no checks to ensure that. If this
      * contract is violated, the behavior is undefined.
      *
-     * @param maxSamples the sample size
+     * @param sampleSize the sample size
      * @param random     the RNG to use
      * @throws NullPointerException     if {@code random} is {@code null}
      * @throws IllegalArgumentException if {@code sampleSize} is less than 1
      */
-    AbstractThreadSafeRandomSampling(int maxSamples, Random random) {
+    AbstractThreadSafeRandomSampling(int sampleSize, Random random) {
         if (random == null) {
             throw new NullPointerException("Random was null");
         }
-        if (maxSamples < 1) {
+        if (sampleSize < 1) {
             throw new IllegalArgumentException("Sample size was less than 1");
         }
-        init(maxSamples, random);
+        init(sampleSize, random);
         this.random = random;
-        this.maxSamples = maxSamples;
+        this.sampleSize = sampleSize;
         this.streamSize = new AtomicLong(0);
-        this.samples = new AtomicReferenceArray<>(maxSamples);
+        this.sample = new AtomicReferenceArray<>(sampleSize);
         this.samplesCount = new AtomicInteger(0);
-        this.skip = new AtomicLong(skipLength(maxSamples, maxSamples, random));
-        this.unmodifiableSample = new AtomicReferenceArrayList<>(samples, samplesCount);
+        this.skip = new AtomicLong(skipLength(sampleSize, sampleSize, random));
+        this.unmodifiableSample = new AtomicReferenceArrayList<>(sample, samplesCount);
     }
 
     /**
@@ -78,17 +76,17 @@ public abstract class AbstractThreadSafeRandomSampling<T> implements RandomSampl
         assert streamSize > 0;
 
         // Skip items and add to reservoir
-        int samplesArraySize = samplesCount.get();
-        if(samplesArraySize < maxSamples) {
+        int samplesInArray = samplesCount.get();
+        if(samplesInArray < sampleSize) {
             // racy with atomicSamplesSize, but is safe due to null check
-            boolean arrayWasModified = samples.compareAndSet(samplesCount.get(), null, item);
+            boolean arrayWasModified = sample.compareAndSet(samplesInArray, null, item);
             if(arrayWasModified) {
-                samplesArraySize = samplesCount.incrementAndGet();
-                assert samplesArraySize == Math.min(sampleSize(), streamSize);
+                samplesInArray = samplesCount.incrementAndGet();
+                assert samplesInArray == Math.min(sampleSize(), streamSize);
             }
             return arrayWasModified;
         } else {
-            assert samplesArraySize == maxSamples;
+            assert samplesInArray == sampleSize;
             // if another thread decremented in the meantime, loop until the other thread is done setting a new
             // skip value, at which point the function will succeed
             long currentSkipValue = decrementIfAboveZero(skip);
@@ -96,10 +94,10 @@ public abstract class AbstractThreadSafeRandomSampling<T> implements RandomSampl
                 return false;
             } else {
                 assert currentSkipValue == 0;
-                long nextSkipValue = skipLength(streamSize, maxSamples, random);
+                long nextSkipValue = skipLength(streamSize, sampleSize, random);
                 boolean wasUpdated = skip.compareAndSet(currentSkipValue, nextSkipValue);
                 if(wasUpdated) {
-                    samples.set(random.nextInt(maxSamples), item);
+                    sample.set(random.nextInt(sampleSize), item);
                 }
                 assert nextSkipValue >= 0;
                 return true;
@@ -153,8 +151,8 @@ public abstract class AbstractThreadSafeRandomSampling<T> implements RandomSampl
      */
     @Override
     public final int sampleSize() {
-        assert this.maxSamples > 0;
-        return this.maxSamples;
+        assert this.sampleSize > 0;
+        return this.sampleSize;
     }
 
     /**

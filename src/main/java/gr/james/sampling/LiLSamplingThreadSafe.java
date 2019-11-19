@@ -22,7 +22,7 @@ import java.util.concurrent.atomic.AtomicLong;
  * @see <a href="https://doi.org/10.1145/198429.198435">Reservoir-sampling algorithms of time complexity
  * O(n(1 + log(N/n)))</a>
  */
-public class LiLSamplingThreadSafe<T> extends AbstractRandomSampling<T> {
+public class LiLSamplingThreadSafe<T> extends AbstractRandomSampling<T> implements ThreadSafe {
 
     private AtomicLong W;
 
@@ -84,30 +84,4 @@ public class LiLSamplingThreadSafe<T> extends AbstractRandomSampling<T> {
         return skip;
     }
 
-    @Deprecated
-    private static class LiLSkipFunction implements SkipFunction {
-        private final int sampleSize;
-        private final Random random;
-        private double W;
-
-        public LiLSkipFunction(int sampleSize, Random random) {
-            this.sampleSize = sampleSize;
-            this.random = random;
-            this.W = Math.pow(RandomSamplingUtils.randomExclusive(random), 1.0 / sampleSize);
-        }
-
-        @Override
-        public long skip() throws StreamOverflowException {
-            final double random1 = RandomSamplingUtils.randomExclusive(random);
-            final double random2 = RandomSamplingUtils.randomExclusive(random);
-            long skip = (long) (Math.log(random1) / Math.log(1 - W));
-            assert skip >= 0 || skip == Long.MIN_VALUE;
-            if (skip == Long.MIN_VALUE) {  // Sometimes when W is very small, 1 - W = 1 and Math.log(1) = +0 instead of -0
-                skip = Long.MAX_VALUE;     // This results in negative infinity skip
-            }
-            // W = W * Math.exp(Math.log(random2) / sampleSize);
-            W = W * Math.pow(random2, 1.0 / sampleSize);
-            return skip;
-        }
-    }
 }
