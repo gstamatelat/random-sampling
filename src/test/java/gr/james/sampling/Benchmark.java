@@ -11,6 +11,7 @@ public class Benchmark {
     private static final VitterXSampling<Object> vitterx = new VitterXSampling<>(sample, random);
     private static final VitterZSampling<Object> vitterz = new VitterZSampling<>(sample, random);
     private static final LiLSampling<Object> lil = new LiLSampling<>(sample, random);
+    private static final LiLSamplingThreadSafe<Object> lilThreadSafe = new LiLSamplingThreadSafe<>(sample, random);
     private static final EfraimidisSampling<Object> efraimidis = new EfraimidisSampling<>(sample, random);
     private static final ChaoSampling<Object> chao = new ChaoSampling<>(sample, random);
 
@@ -19,6 +20,7 @@ public class Benchmark {
         System.out.printf("%10s %5d ms%n", "VitterX", performance(vitterx) / 1000000);
         System.out.printf("%10s %5d ms%n", "VitterZ", performance(vitterz) / 1000000);
         System.out.printf("%10s %5d ms%n", "LiL", performance(lil) / 1000000);
+        System.out.printf("%10s %5d ms%n", "LiL Thread Safe", performance(lilThreadSafe) / 1000000);
         System.out.printf("%10s %5d ms%n", "Efraimidis", performance(efraimidis) / 1000000);
         System.out.printf("%10s %5d ms%n", "Chao", performance(chao) / 1000000);
     }
