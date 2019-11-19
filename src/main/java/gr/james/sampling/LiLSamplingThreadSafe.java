@@ -74,13 +74,14 @@ public class LiLSamplingThreadSafe<T> extends AbstractThreadSafeRandomSampling<T
     long skipLength(long streamSize, int sampleSize, Random random) {
         final double random1 = RandomSamplingUtils.randomExclusive(random);
         final double random2 = RandomSamplingUtils.randomExclusive(random);
-        long skip = (long) (Math.log(random1) / Math.log(1 - Double.longBitsToDouble(W.get())));
+        double w = Double.longBitsToDouble(W.get());
+        long skip = (long) (Math.log(random1) / Math.log(1 - w));
         assert skip >= 0 || skip == Long.MIN_VALUE;
         if (skip == Long.MIN_VALUE) {  // Sometimes when W is very small, 1 - W = 1 and Math.log(1) = +0 instead of -0
             skip = Long.MAX_VALUE;     // This results in negative infinity skip
         }
         // W = W * Math.pow(random2, 1.0 / sampleSize);
-        W.set(Double.doubleToLongBits(Double.longBitsToDouble(W.get()) * Math.pow(random2, 1.0 / sampleSize)));
+        W.set(Double.doubleToLongBits(w * Math.pow(random2, 1.0 / sampleSize)));
         return skip;
     }
 

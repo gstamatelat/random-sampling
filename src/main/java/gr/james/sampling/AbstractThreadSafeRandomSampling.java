@@ -76,47 +76,36 @@ public abstract class AbstractThreadSafeRandomSampling<T> implements RandomSampl
         long streamSize = this.streamSize.incrementAndGet();
         assert streamSize > 0;
 
-        // Skip items and add to reservoir
-        int samplesInArray = samplesCount.get();
-        if(samplesInArray < sampleSize) {
-            // racy with atomicSamplesSize, but is safe due to null check
+
+        // attempt to add to samples while we don't have a full count yet, until successful or array is full
+        for(int samplesInArray = samplesCount.get(); samplesInArray < sampleSize;) {
             boolean arrayWasModified = sample.compareAndSet(samplesInArray, null, item);
-            if(arrayWasModified) {
-                samplesInArray = samplesCount.incrementAndGet();
-                assert samplesInArray == Math.min(sampleSize(), streamSize);
-            }
-            return arrayWasModified;
-        } else {
-            assert samplesInArray == sampleSize;
-            // if another thread decremented in the meantime, loop until the other thread is done setting a new
-            // skip value, at which point the function will succeed
-            long currentSkipValue = decrementIfAboveZero(skip);
+            if(!arrayWasModified)
+                continue;
+            samplesInArray = samplesCount.incrementAndGet();
+            assert samplesInArray == Math.min(sampleSize(), streamSize);
+            return true;
+        }
+
+        // try to either decrement the skip count or calculate a new skip count value, until either succeeds
+        while(true) {
+            long currentSkipValue = skip.get();
             if(currentSkipValue > 0) {
-                return false;
+                boolean decrementSuccess = skip.compareAndSet(currentSkipValue, currentSkipValue - 1);
+                if(decrementSuccess) {
+                    return false;
+                }
             } else {
                 assert currentSkipValue == 0;
                 long nextSkipValue = skipLength(streamSize, sampleSize, random);
-                boolean wasUpdated = skip.compareAndSet(currentSkipValue, nextSkipValue);
-                if(wasUpdated) {
+                boolean skipCountUpdated = skip.compareAndSet(currentSkipValue, nextSkipValue);
+                if(skipCountUpdated) {
                     sample.set(random.nextInt(sampleSize), item);
+                    assert nextSkipValue >= 0;
+                    return true;
                 }
-                assert nextSkipValue >= 0;
-                return true;
             }
         }
-    }
-
-    /**
-     * Decrements the given AtomicLong unless it is zero.
-     *
-     * @return new value
-     */
-    private long decrementIfAboveZero(AtomicLong al) {
-        long prev;
-        do {
-            prev = al.get();
-        } while (prev == 0 || !al.compareAndSet(prev, prev - 1));
-        return prev - 1;
     }
 
     /**
