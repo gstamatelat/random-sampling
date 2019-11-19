@@ -16,6 +16,7 @@ import java.util.concurrent.atomic.AtomicReferenceArray;
  *
  * @param <T> the item type
  * @author Giorgos Stamatelatos
+ * @author Michael Böckling
  */
 public abstract class AbstractThreadSafeRandomSampling<T> implements RandomSampling<T>, ThreadSafeRandomSampling {
 

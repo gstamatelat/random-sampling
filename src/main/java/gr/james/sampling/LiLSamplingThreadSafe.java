@@ -19,6 +19,7 @@ import java.util.concurrent.atomic.AtomicLong;
  *
  * @param <T> the item type
  * @author Giorgos Stamatelatos
+ * @author Michael Böckling
  * @see <a href="https://doi.org/10.1145/198429.198435">Reservoir-sampling algorithms of time complexity
  * O(n(1 + log(N/n)))</a>
  */
