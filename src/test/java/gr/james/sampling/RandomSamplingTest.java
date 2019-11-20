@@ -1,11 +1,18 @@
 package gr.james.sampling;
 
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
 import java.util.*;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicIntegerArray;
 import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
@@ -31,6 +38,7 @@ public class RandomSamplingTest {
         implementations.add(() -> new VitterXSampling<>(SAMPLE, RANDOM));
         implementations.add(() -> new VitterZSampling<>(SAMPLE, RANDOM));
         implementations.add(() -> new LiLSampling<>(SAMPLE, RANDOM));
+        implementations.add(() -> new LiLSamplingThreadSafe<>(SAMPLE, RANDOM));
         implementations.add(() -> new EfraimidisSampling<>(SAMPLE, RANDOM));
         implementations.add(() -> new ChaoSampling<>(SAMPLE, RANDOM));
         return implementations;
@@ -44,30 +52,55 @@ public class RandomSamplingTest {
         final int[] streamSizes = {1, 20, 100};
         final int[] repsSizes = {1000000, 1000000, 2000000};
 
-        Assert.assertEquals(streamSizes.length, repsSizes.length);
+        assertEquals(streamSizes.length, repsSizes.length);
 
         for (int test = 0; test < streamSizes.length; test++) {
             final int STREAM = streamSizes[test];
+            final int numCores = (impl.get() instanceof ThreadSafeRandomSampling) ?
+                Runtime.getRuntime().availableProcessors() : 1;
             final int REPS = repsSizes[test];
 
-            final int[] d = new int[STREAM];
+            final AtomicIntegerArray d = new AtomicIntegerArray(STREAM);
+            ExecutorService executorService = Executors.newFixedThreadPool(numCores);
+            List<Callable<Void>> taskList = new ArrayList<>(numCores);
 
-            for (int reps = 0; reps < REPS; reps++) {
-                final RandomSampling<Integer> alg = impl.get();
+            for(int core = 0; core < numCores; core++) {
+                taskList.add(() -> {
 
-                for (int i = 0; i < STREAM; i++) {
-                    alg.feed(i);
-                }
+                    for (int reps = 0; reps < (REPS / numCores); reps++) {
+                        final RandomSampling<Integer> alg = impl.get();
 
-                for (int s : alg.sample()) {
-                    d[s]++;
-                }
+                        for (int i = 0; i < STREAM; i++) {
+                            alg.feed(i);
+                        }
+
+                        for (int s : alg.sample()) {
+                            d.incrementAndGet(s);
+                        }
+                    }
+
+                    return null;
+                });
             }
 
-            for (int c : d) {
+            // wait until all threads are done
+            try {
+                executorService.invokeAll(taskList).stream().map(future -> {
+                    try {
+                        return future.get();
+                    } catch (InterruptedException | ExecutionException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+
+            for (int i = 0; i < d.length(); i++) {
+                int c = d.get(i);
                 final double expected = (double) REPS * Math.min(SAMPLE, STREAM) / STREAM;
                 final double actual = (double) c;
-                Assert.assertEquals(1, actual / expected, 1e-2);
+                assertEquals(1, actual / expected, 1e-2);
             }
         }
     }
@@ -98,6 +131,8 @@ public class RandomSamplingTest {
                 collector = ChaoSampling.collector(SAMPLE, RANDOM);
             } else if (alg instanceof LiLSampling) {
                 collector = LiLSampling.collector(SAMPLE, RANDOM);
+            } else if (alg instanceof LiLSamplingThreadSafe) {
+                collector = LiLSamplingThreadSafe.collector(SAMPLE, RANDOM);
             } else {
                 throw new AssertionError();
             }
@@ -112,7 +147,7 @@ public class RandomSamplingTest {
         for (int c : d) {
             final double expected = (double) REPS * SAMPLE / STREAM;
             final double actual = (double) c;
-            Assert.assertEquals(1, actual / expected, 1e-2);
+            assertEquals(1, actual / expected, 1e-2);
         }
     }
 
@@ -134,10 +169,10 @@ public class RandomSamplingTest {
         rs3.feed(set);
         Assert.assertTrue(RandomSamplingUtils.samplesEquals(rs1.sample(), rs2.sample()));
         Assert.assertTrue(RandomSamplingUtils.samplesEquals(rs2.sample(), rs3.sample()));
-        Assert.assertEquals(rs1.streamSize(), rs2.streamSize());
-        Assert.assertEquals(rs2.streamSize(), rs3.streamSize());
-        Assert.assertEquals(rs1.sample().size(), rs2.sample().size());
-        Assert.assertEquals(rs2.sample().size(), rs3.sample().size());
+        assertEquals(rs1.streamSize(), rs2.streamSize());
+        assertEquals(rs2.streamSize(), rs3.streamSize());
+        assertEquals(rs1.sample().size(), rs2.sample().size());
+        assertEquals(rs2.sample().size(), rs3.sample().size());
     }
 
     /**
@@ -162,7 +197,7 @@ public class RandomSamplingTest {
         for (int i = 0; i < size; i++) {
             rs.feed(0);
         }
-        Assert.assertEquals(size, rs.streamSize());
+        assertEquals(size, rs.streamSize());
     }
 
     /**
@@ -202,8 +237,8 @@ public class RandomSamplingTest {
         Collection<Integer> sample = new ArrayList<>();
         for (int i = 0; i < 65536; i++) {
             final boolean changed = rs.feed(i);
-            Assert.assertEquals(changed, !RandomSamplingUtils.samplesEquals(sample, rs.sample()));
-            Assert.assertEquals(changed, rs.sample().contains(i));
+            assertEquals(changed, !RandomSamplingUtils.samplesEquals(sample, rs.sample()));
+            assertEquals(changed, rs.sample().contains(i));
             sample = new ArrayList<>(rs.sample());
         }
     }
