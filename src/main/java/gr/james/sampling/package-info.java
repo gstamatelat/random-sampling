@@ -58,6 +58,7 @@
  * <th>Space</th>
  * <th>Precision</th>
  * <th>Weights</th>
+ * <th>Thread-Safe Version</th>
  * </tr>
  * </thead>
  * <tbody>
@@ -67,12 +68,14 @@
  * <td>{@code O(k)}</td>
  * <td>D</td>
  * <td>-</td>
+ * <td>-</td>
  * </tr>
  * <tr>
  * <td>{@link gr.james.sampling.VitterXSampling}</td>
  * <td>Algorithm X by Vitter [3]</td>
  * <td>{@code O(k)}</td>
  * <td>D</td>
+ * <td>-</td>
  * <td>-</td>
  * </tr>
  * <tr>
@@ -81,6 +84,7 @@
  * <td>{@code O(k)}</td>
  * <td>D</td>
  * <td>-</td>
+ * <td>-</td>
  * </tr>
  * <tr>
  * <td>{@link gr.james.sampling.LiLSampling}</td>
@@ -88,6 +92,7 @@
  * <td>{@code O(k)}</td>
  * <td>D</td>
  * <td>-</td>
+ * <td>{@link gr.james.sampling.LiLSamplingThreadSafe}</td>
  * </tr>
  * <tr>
  * <td>{@link gr.james.sampling.ChaoSampling}</td>
@@ -95,6 +100,7 @@
  * <td>{@code O(k)}</td>
  * <td>D</td>
  * <td>P (0, +&infin;)</td>
+ * <td>-</td>
  * </tr>
  * <tr>
  * <td>{@link gr.james.sampling.EfraimidisSampling}</td>
@@ -102,6 +108,7 @@
  * <td>{@code O(k)}</td>
  * <td>ND</td>
  * <td>W (0, +&infin;)</td>
+ * <td>-</td>
  * </tr>
  * </tbody>
  * </table>

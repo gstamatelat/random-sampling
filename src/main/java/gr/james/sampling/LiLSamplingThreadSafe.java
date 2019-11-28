@@ -13,6 +13,8 @@ import java.util.concurrent.atomic.AtomicLong;
  * This property allows these algorithms to perform better by efficiently calculating the number of items that need to
  * be skipped, while making fewer calls to the RNG.
  * <p>
+ * This is the thread-safe implementation of {@link LiLSampling}.
+ * <p>
  * This implementation throws {@link StreamOverflowException} if more than {@link Long#MAX_VALUE} items are feeded.
  * <p>
  * The space complexity of this class is {@code O(k)}, where {@code k} is the sample size.
@@ -28,9 +30,9 @@ public class LiLSamplingThreadSafe<T> extends AbstractThreadSafeRandomSampling<T
     private AtomicLong W;
 
     /**
-     * Construct a new instance of {@link LiLSamplingThreadSafe} using the specified sample size and RNG. The implementation
-     * assumes that {@code random} conforms to the contract of {@link Random} and will perform no checks to ensure that.
-     * If this contract is violated, the behavior is undefined.
+     * Construct a new instance of {@link LiLSamplingThreadSafe} using the specified sample size and RNG. The
+     * implementation assumes that {@code random} conforms to the contract of {@link Random} and will perform no checks
+     * to ensure that. If this contract is violated, the behavior is undefined.
      *
      * @param sampleSize the sample size
      * @param random     the RNG to use

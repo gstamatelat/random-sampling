@@ -1,18 +1,13 @@
 package gr.james.sampling;
 
-import java.util.AbstractList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Random;
-import java.util.RandomAccess;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReferenceArray;
 
 /**
- * This class provides a skeletal implementation of the {@link RandomSampling} interface to minimize the effort required
- * to implement that interface.
+ * This class provides a skeletal implementation of the thread-safe variant of the {@link RandomSampling} interface to
+ * minimize the effort required to implement that interface.
  *
  * @param <T> the item type
  * @author Giorgos Stamatelatos
@@ -79,9 +74,9 @@ public abstract class AbstractThreadSafeRandomSampling<T> implements RandomSampl
 
 
         // attempt to add to samples while we don't have a full count yet, until successful or array is full
-        for(int samplesInArray = samplesCount.get(); samplesInArray < sampleSize;) {
+        for (int samplesInArray = samplesCount.get(); samplesInArray < sampleSize; ) {
             boolean arrayWasModified = sample.compareAndSet(samplesInArray, null, item);
-            if(!arrayWasModified)
+            if (!arrayWasModified)
                 continue;
             samplesInArray = samplesCount.incrementAndGet();
             assert samplesInArray == Math.min(sampleSize(), streamSize);
@@ -89,18 +84,18 @@ public abstract class AbstractThreadSafeRandomSampling<T> implements RandomSampl
         }
 
         // try to either decrement the skip count or calculate a new skip count value, until either succeeds
-        while(true) {
+        while (true) {
             long currentSkipValue = skip.get();
-            if(currentSkipValue > 0) {
+            if (currentSkipValue > 0) {
                 boolean decrementSuccess = skip.compareAndSet(currentSkipValue, currentSkipValue - 1);
-                if(decrementSuccess) {
+                if (decrementSuccess) {
                     return false;
                 }
             } else {
                 assert currentSkipValue == 0;
                 long nextSkipValue = skipLength(streamSize, sampleSize, random);
                 boolean skipCountUpdated = skip.compareAndSet(currentSkipValue, nextSkipValue);
-                if(skipCountUpdated) {
+                if (skipCountUpdated) {
                     sample.set(random.nextInt(sampleSize), item);
                     assert nextSkipValue >= 0;
                     return true;
