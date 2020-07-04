@@ -38,6 +38,12 @@
  * the implementation table below. Implementations may also define certain restrictions on the values of {@code weight}
  * and violations will result in {@link gr.james.sampling.IllegalWeightException}. The weight ranges are also available
  * in the table.
+ * <h4>Determinism</h4>
+ * Certain implementations rely on elements of the JRE that are not deterministic, for example
+ * {@link java.util.PriorityQueue} and {@link java.util.TreeSet}. The side effect of this is that weighted algorithms
+ * are not deterministic either because they typically rely on these data structures. This phenomenon is more prevalent
+ * in {@link gr.james.sampling.ChaoSampling}, where, in the presence of ties, there could be instances of different
+ * samples, even with the same seed and the same weighted elements.
  * <h4>Precision</h4>
  * Many implementations have an accumulating state which causes the precision of the algorithms to degrade as the stream
  * becomes bigger. An example might be a variable state which strictly increases or decreases as elements are read from
