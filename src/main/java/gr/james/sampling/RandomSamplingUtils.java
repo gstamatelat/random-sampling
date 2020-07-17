@@ -15,7 +15,7 @@ public final class RandomSamplingUtils {
      * Returns a pseudorandom double value in (0,1) exclusive.
      * <p>
      * This method will perform repeated calls to {@link Random#nextDouble()} until the value returned is not 0. In
-     * practise, the probability to get a zero is extremely low but some algorithms would fail on such value, for
+     * practice, the probability to get a zero is extremely low but some algorithms would fail on such value, for
      * example when used in combination with {@link Math#pow(double, double)}.
      *
      * @param random the {@link Random} to use
