@@ -158,6 +158,13 @@ Signature: `ChaoSampling` implements `WeightedRandomSampling`
 - [Chao, M. T. "A general purpose unequal probability sampling plan." Biometrika 69.3 (1982): 653-656.](https://doi.org/10.2307/2336002)
 - [Sugden, R. A. "Chao's list sequential scheme for unequal probability sampling." Journal of Applied Statistics 23.4 (1996): 413-421.](https://doi.org/10.1080/02664769624152)
 
+### 7 Algorithm by Ohlsson
+
+Signature: `SequentialPoissonSampling` implements `WeightedRandomSampling`
+
+#### References
+- [Ohlsson, Esbjörn. "Sequential poisson sampling." Journal of official Statistics 14.2 (1998): 149.](https://www.mendeley.com/catalogue/95bcff1f-86be-389c-ab3f-717796d22abd/)
+
 ## References
 
 [1] [Wikipedia contributors. "Reservoir sampling." Wikipedia, The Free Encyclopedia. Wikipedia, The Free Encyclopedia, 17 Oct. 2017. Web. 21 Nov. 2017.](https://en.wikipedia.org/wiki/Reservoir_sampling)

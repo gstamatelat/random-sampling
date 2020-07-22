@@ -30,6 +30,7 @@ public class WeightedRandomSamplingTest {
         final Collection<Supplier<WeightedRandomSampling<Integer>>> implementations = new ArrayList<>();
         implementations.add(() -> new EfraimidisSampling<>(SAMPLE, RANDOM));
         implementations.add(() -> new ChaoSampling<>(SAMPLE, RANDOM));
+        implementations.add(() -> new SequentialPoissonSampling<>(SAMPLE, RANDOM));
         return implementations;
     }
 
@@ -85,6 +86,8 @@ public class WeightedRandomSamplingTest {
                 collector = EfraimidisSampling.weightedCollector(SAMPLE, RANDOM);
             } else if (alg instanceof ChaoSampling) {
                 collector = ChaoSampling.weightedCollector(SAMPLE, RANDOM);
+            } else if (alg instanceof SequentialPoissonSampling) {
+                collector = SequentialPoissonSampling.weightedCollector(SAMPLE, RANDOM);
             } else {
                 throw new AssertionError();
             }

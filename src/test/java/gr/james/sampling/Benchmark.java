@@ -14,15 +14,17 @@ public class Benchmark {
     private static final LiLSamplingThreadSafe<Object> lilThreadSafe = new LiLSamplingThreadSafe<>(sample, random);
     private static final EfraimidisSampling<Object> efraimidis = new EfraimidisSampling<>(sample, random);
     private static final ChaoSampling<Object> chao = new ChaoSampling<>(sample, random);
+    private static final SequentialPoissonSampling<Object> sequentialPoisson = new SequentialPoissonSampling<>(sample, random);
 
     public static void main(String[] args) {
-        System.out.printf("%10s %5d ms%n", "Waterman", performance(waterman) / 1000000);
-        System.out.printf("%10s %5d ms%n", "VitterX", performance(vitterx) / 1000000);
-        System.out.printf("%10s %5d ms%n", "VitterZ", performance(vitterz) / 1000000);
-        System.out.printf("%10s %5d ms%n", "LiL", performance(lil) / 1000000);
-        System.out.printf("%10s %5d ms%n", "LiL Thread Safe", performance(lilThreadSafe) / 1000000);
-        System.out.printf("%10s %5d ms%n", "Efraimidis", performance(efraimidis) / 1000000);
-        System.out.printf("%10s %5d ms%n", "Chao", performance(chao) / 1000000);
+        System.out.printf("%18s %5d ms%n", "Waterman", performance(waterman) / 1000000);
+        System.out.printf("%18s %5d ms%n", "VitterX", performance(vitterx) / 1000000);
+        System.out.printf("%18s %5d ms%n", "VitterZ", performance(vitterz) / 1000000);
+        System.out.printf("%18s %5d ms%n", "LiL", performance(lil) / 1000000);
+        System.out.printf("%18s %5d ms%n", "LiL Thread Safe", performance(lilThreadSafe) / 1000000);
+        System.out.printf("%18s %5d ms%n", "Efraimidis", performance(efraimidis) / 1000000);
+        System.out.printf("%18s %5d ms%n", "Chao", performance(chao) / 1000000);
+        System.out.printf("%18s %5d ms%n", "Sequential Poisson", performance(sequentialPoisson) / 1000000);
     }
 
     private static long performance(RandomSampling<Object> alg) {

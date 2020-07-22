@@ -34,10 +34,9 @@
  * selections of the sampling procedure (implemented in {@code EfraimidisSampling}). As a result, implementations of
  * this interface may not exhibit identical behavior, as opposed to the {@link gr.james.sampling.RandomSampling}
  * interface. The contract of this interface is, however, that a higher weight value suggests a higher probability for
- * an item to be included in the sample. The first case is denoted as <em>P</em> and the second case as <em>W</em> in
- * the implementation table below. Implementations may also define certain restrictions on the values of {@code weight}
- * and violations will result in {@link gr.james.sampling.IllegalWeightException}. The weight ranges are also available
- * in the table.
+ * an item to be included in the sample. Implementations may also define certain restrictions on the values of
+ * {@code weight} and violations will result in {@link gr.james.sampling.IllegalWeightException}. The weight ranges are
+ * available in the table below.
  * <h4>Determinism</h4>
  * Certain implementations rely on elements of the JRE that are not deterministic, for example
  * {@link java.util.PriorityQueue} and {@link java.util.TreeSet}. The side effect of this is that weighted algorithms
@@ -105,7 +104,7 @@
  * <td>Algorithm by Chao [5][6]</td>
  * <td>{@code O(k)}</td>
  * <td>D</td>
- * <td>P (0, +&infin;)</td>
+ * <td>(0, +&infin;)</td>
  * <td>-</td>
  * </tr>
  * <tr>
@@ -113,7 +112,15 @@
  * <td>Algorithm A-Res by Efraimidis [7]</td>
  * <td>{@code O(k)}</td>
  * <td>ND</td>
- * <td>W (0, +&infin;)</td>
+ * <td>(0, +&infin;)</td>
+ * <td>-</td>
+ * </tr>
+ * <tr>
+ * <td>{@link gr.james.sampling.SequentialPoissonSampling}</td>
+ * <td>Algorithm by Ohlsson [8]</td>
+ * <td>{@code O(k)}</td>
+ * <td>ND</td>
+ * <td>(0, +&infin;)</td>
  * <td>-</td>
  * </tr>
  * </tbody>
@@ -133,6 +140,8 @@
  * probability sampling." Journal of Applied Statistics 23.4 (1996): 413-421.</a></li>
  * <li><a href="https://doi.org/10.1016/j.ipl.2005.11.003">Efraimidis, Pavlos S., and Paul G. Spirakis. "Weighted random
  * sampling with a reservoir." Information Processing Letters 97.5 (2006): 181-185.</a></li>
+ * <li><a href="https://www.mendeley.com/catalogue/95bcff1f-86be-389c-ab3f-717796d22abd/">Ohlsson, Esbjörn. "Sequential
+ * poisson sampling." Journal of official Statistics 14.2 (1998): 149.</a></li>
  * </ol>
  */
 package gr.james.sampling;

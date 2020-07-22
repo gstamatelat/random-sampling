@@ -1,7 +1,5 @@
 package gr.james.sampling;
 
-import static org.junit.Assert.assertEquals;
-
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,6 +13,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicIntegerArray;
 import java.util.function.Supplier;
 import java.util.stream.IntStream;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * Tests for unweighted algorithms (and weighted used as unweighted).
@@ -41,6 +41,7 @@ public class RandomSamplingTest {
         implementations.add(() -> new LiLSamplingThreadSafe<>(SAMPLE, RANDOM));
         implementations.add(() -> new EfraimidisSampling<>(SAMPLE, RANDOM));
         implementations.add(() -> new ChaoSampling<>(SAMPLE, RANDOM));
+        implementations.add(() -> new SequentialPoissonSampling<>(SAMPLE, RANDOM));
         return implementations;
     }
 
@@ -57,14 +58,14 @@ public class RandomSamplingTest {
         for (int test = 0; test < streamSizes.length; test++) {
             final int STREAM = streamSizes[test];
             final int numCores = (impl.get() instanceof ThreadSafeRandomSampling) ?
-                Runtime.getRuntime().availableProcessors() : 1;
+                    Runtime.getRuntime().availableProcessors() : 1;
             final int REPS = repsSizes[test];
 
             final AtomicIntegerArray d = new AtomicIntegerArray(STREAM);
             ExecutorService executorService = Executors.newFixedThreadPool(numCores);
             List<Callable<Void>> taskList = new ArrayList<>(numCores);
 
-            for(int core = 0; core < numCores; core++) {
+            for (int core = 0; core < numCores; core++) {
                 taskList.add(() -> {
 
                     for (int reps = 0; reps < (REPS / numCores); reps++) {
@@ -133,6 +134,8 @@ public class RandomSamplingTest {
                 collector = LiLSampling.collector(SAMPLE, RANDOM);
             } else if (alg instanceof LiLSamplingThreadSafe) {
                 collector = LiLSamplingThreadSafe.collector(SAMPLE, RANDOM);
+            } else if (alg instanceof SequentialPoissonSampling) {
+                collector = SequentialPoissonSampling.collector(SAMPLE, RANDOM);
             } else {
                 throw new AssertionError();
             }
