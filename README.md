@@ -106,14 +106,15 @@ System.out.println(sample);
 
 ## Algorithms
 
-| Class                | Algorithm                     | Space  | Weighted |
-| :------------------- | :---------------------------- | :----- | :------- |
-| `WatermanSampling`   | Algorithm R by Waterman       | `O(k)` |          |
-| `VitterXSampling`    | Algorithm X by Vitter         | `O(k)` |          |
-| `VitterZSampling`    | Algorithm Z by Vitter         | `O(k)` |          |
-| `LiLSampling`        | Algorithm L by Li             | `O(k)` |          |
-| `EfraimidisSampling` | Algorithm A-Res by Efraimidis | `O(k)` | &#10004; |
-| `ChaoSampling`       | Algorithm by Chao             | `O(k)` | &#10004; |
+| Class                       | Algorithm                     | Space  | Weighted |
+| :-------------------------- | :---------------------------- | :----- | :------- |
+| `WatermanSampling`          | Algorithm R by Waterman       | `O(k)` |          |
+| `VitterXSampling`           | Algorithm X by Vitter         | `O(k)` |          |
+| `VitterZSampling`           | Algorithm Z by Vitter         | `O(k)` |          |
+| `LiLSampling`               | Algorithm L by Li             | `O(k)` |          |
+| `EfraimidisSampling`        | Algorithm A-Res by Efraimidis | `O(k)` | &#10004; |
+| `ChaoSampling`              | Algorithm by Chao             | `O(k)` | &#10004; |
+| `SequentialPoissonSampling` | Algorithm by Ohlsson          | `O(k)` | &#10004; |
 
 ### 1 Algorithm R by Waterman
 
