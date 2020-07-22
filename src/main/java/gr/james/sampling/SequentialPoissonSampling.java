@@ -6,7 +6,7 @@ import java.util.*;
  * Implementation of the algorithm by Ohlsson in <b>Sequential Poisson Sampling</b>.
  * <p>
  * Weighted are not being assigned a particular meaning or have physical interpretation but the resulting inclusion
- * probabilities are an approximation of the exact model ({@link ChaoSampling}). Weights are the range (0,+Inf),
+ * probabilities are an approximation of the exact model ({@link ChaoSampling}). Weights must be in the range (0,+Inf),
  * otherwise an {@link IllegalWeightException} is thrown.
  * <p>
  * This implementation never throws {@link StreamOverflowException}.
