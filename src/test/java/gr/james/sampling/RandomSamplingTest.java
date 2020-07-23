@@ -52,7 +52,7 @@ public class RandomSamplingTest {
     @Test
     public void correctness() {
         final int[] streamSizes = {1, 20, 100};
-        final int[] repsSizes = {1000000, 1000000, 2000000};
+        final int[] repsSizes = {1000000, 2000000, 4000000};
 
         assertEquals(streamSizes.length, repsSizes.length);
 
