@@ -6,7 +6,8 @@ import java.util.*;
  * Implementation of the algorithm by Chao in <b>A general purpose unequal probability sampling plan</b>.
  * <p>
  * According to this algorithm, the probability of an item to be in the final sample is proportional to its relative
- * weight. Weights must be in the range (0,+Inf), otherwise an {@link IllegalWeightException} is thrown.
+ * weight. Weights must be in the range (0,+Inf), otherwise an {@link IllegalWeightException} is thrown. The default
+ * weight in this implementation is {@code 1.0}.
  * <p>
  * This implementation throws {@link StreamOverflowException} if the sum of the weights of the items feeded is
  * {@link Double#POSITIVE_INFINITY}.
@@ -295,7 +296,7 @@ public class ChaoSampling<T> implements WeightedRandomSampling<T> {
      */
     @Override
     public boolean feed(T item) {
-        return WeightedRandomSampling.super.feed(item);
+        return this.feed(item, 1.0);
     }
 
     /**

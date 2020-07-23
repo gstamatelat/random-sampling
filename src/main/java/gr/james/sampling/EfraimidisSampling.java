@@ -7,7 +7,7 @@ import java.util.*;
  * <p>
  * According to this algorithm, the relative weight determines the probability that the item is selected in each of the
  * explicit or implicit item selections of the sampling procedure. Weights must be in the range (0,+Inf), otherwise an
- * {@link IllegalWeightException} is thrown.
+ * {@link IllegalWeightException} is thrown. The default weight in this implementation is {@code 1.0}.
  * <p>
  * This implementation never throws {@link StreamOverflowException}.
  * <p>
@@ -226,7 +226,7 @@ public class EfraimidisSampling<T> implements WeightedRandomSampling<T> {
      */
     @Override
     public boolean feed(T item) {
-        return WeightedRandomSampling.super.feed(item);
+        return this.feed(item, 1.0);
     }
 
     /**

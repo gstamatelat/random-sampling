@@ -7,7 +7,7 @@ import java.util.*;
  * <p>
  * Weighted are not being assigned a particular meaning or have physical interpretation but the resulting inclusion
  * probabilities are an approximation of the exact model ({@link ChaoSampling}). Weights must be in the range (0,+Inf),
- * otherwise an {@link IllegalWeightException} is thrown.
+ * otherwise an {@link IllegalWeightException} is thrown. The default weight in this implementation is {@code 1.0}.
  * <p>
  * This implementation never throws {@link StreamOverflowException}.
  * <p>
@@ -226,7 +226,7 @@ public class SequentialPoissonSampling<T> implements WeightedRandomSampling<T> {
      */
     @Override
     public boolean feed(T item) {
-        return WeightedRandomSampling.super.feed(item);
+        return this.feed(item, 1.0);
     }
 
     /**

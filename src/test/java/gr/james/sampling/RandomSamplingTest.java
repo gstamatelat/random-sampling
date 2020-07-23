@@ -73,11 +73,7 @@ public class RandomSamplingTest {
                         final RandomSampling<Integer> alg = impl.get();
 
                         for (int i = 0; i < STREAM; i++) {
-                            if (alg instanceof ParetoSampling) {
-                                ((ParetoSampling<Integer>) alg).feed(i, 0.5);
-                            } else {
-                                alg.feed(i);
-                            }
+                            alg.feed(i);
                         }
 
                         for (int s : alg.sample()) {
@@ -106,7 +102,7 @@ public class RandomSamplingTest {
                 int c = d.get(i);
                 final double expected = (double) REPS * Math.min(SAMPLE, STREAM) / STREAM;
                 final double actual = (double) c;
-                assertEquals(1, actual / expected, 1e-2);
+                assertEquals(String.format("Correctness failed for streamSize %d", STREAM), 1, actual / expected, 1e-2);
             }
         }
     }

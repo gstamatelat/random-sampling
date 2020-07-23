@@ -125,9 +125,10 @@ public interface WeightedRandomSampling<T> extends RandomSampling<T> {
     /**
      * {@inheritDoc}
      * <p>
-     * This method uses the value {@code 1.0} as weight and is equivalent to
+     * This method uses a value {@code z} set by the specific implementation as weight that guarantees legality. Hence,
+     * this method is equivalent to
      * <pre><code>
-     * feed(item, 1.0);
+     * feed(item, z);
      * </code></pre>
      *
      * @param item {@inheritDoc}
@@ -143,7 +144,7 @@ public interface WeightedRandomSampling<T> extends RandomSampling<T> {
     /**
      * {@inheritDoc}
      * <p>
-     * This method uses the value {@code 1.0} as weight.
+     * This method uses an implementation specific value as weight.
      *
      * @param items {@inheritDoc}
      * @return {@inheritDoc}
@@ -158,7 +159,7 @@ public interface WeightedRandomSampling<T> extends RandomSampling<T> {
     /**
      * {@inheritDoc}
      * <p>
-     * This method uses the value {@code 1.0} as weight.
+     * This method uses an implementation specific value as weight.
      *
      * @param items {@inheritDoc}
      * @return {@inheritDoc}

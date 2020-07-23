@@ -7,9 +7,8 @@ import java.util.*;
  * <p>
  * Weighted are not being assigned a particular meaning or have physical interpretation but the resulting inclusion
  * probabilities are an approximation of the exact model ({@link ChaoSampling}). Weights must be in the range (0,+Inf)
- * but not the value {@code 1.0}, otherwise an {@link IllegalWeightException} is thrown. A side effect of this is that
- * the signatures {@link #feed(Object)}, {@link #feed(Iterable)} and {@link #feed(Iterator)} will always throw
- * {@link IllegalWeightException}.
+ * but not the value {@code 1.0}, otherwise an {@link IllegalWeightException} is thrown. The default weight in this
+ * implementation is {@code 0.5}.
  * <p>
  * This implementation never throws {@link StreamOverflowException}.
  * <p>
@@ -141,7 +140,6 @@ public class ParetoSampling<T> implements WeightedRandomSampling<T> {
 
         // Calculate item weight
         final Weighted<T> newItem = new Weighted<>(item, (r * (1 - weight)) / ((1 - r) * weight));
-        assert newItem.weight >= 0.0; // weight can also be 0.0 because of double precision
 
         // Add item to reservoir
         if (pq.size() < sampleSize) {
@@ -232,7 +230,7 @@ public class ParetoSampling<T> implements WeightedRandomSampling<T> {
      */
     @Override
     public boolean feed(T item) {
-        return WeightedRandomSampling.super.feed(item);
+        return this.feed(item, 0.5);
     }
 
     /**
