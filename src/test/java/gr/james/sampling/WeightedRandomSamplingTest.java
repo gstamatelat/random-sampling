@@ -41,7 +41,7 @@ public class WeightedRandomSamplingTest {
     @Test
     public void correctness() {
         final int[] streamSizes = {1, 20, 100};
-        final int[] repsSizes = {1000000, 1000000, 2000000};
+        final int[] repsSizes = {1000000, 2000000, 4000000};
 
         Assert.assertEquals(streamSizes.length, repsSizes.length);
 
@@ -55,7 +55,7 @@ public class WeightedRandomSamplingTest {
                 final WeightedRandomSampling<Integer> alg = impl.get();
 
                 for (int i = 0; i < STREAM; i++) {
-                    alg.feed(i, i + 1);
+                    alg.feed(i, (i + 1.0) / (STREAM + 1.0));
                 }
 
                 for (int s : alg.sample()) {
@@ -64,7 +64,10 @@ public class WeightedRandomSamplingTest {
             }
 
             for (int i = 0; i < d.length - 1; i++) {
-                Assert.assertTrue(d[i] < d[i + 1]);
+                if (d[i] > d[i + 1]) {
+                    System.out.println();
+                }
+                Assert.assertTrue(String.format("Correctness failed at stream size %d", STREAM), d[i] < d[i + 1]);
             }
         }
     }
@@ -96,7 +99,7 @@ public class WeightedRandomSamplingTest {
             }
 
             final Collection<Integer> sample = IntStream.range(0, STREAM).boxed()
-                    .collect(Collectors.toMap(o -> o, o -> (double) (o + 1)))
+                    .collect(Collectors.toMap(o -> o, o -> (o + 1.0) / (STREAM + 1.0)))
                     .entrySet().stream().collect(collector);
 
             for (int s : sample) {
@@ -131,8 +134,8 @@ public class WeightedRandomSamplingTest {
         final WeightedRandomSampling<Integer> rs3 = impl.get();
         final Map<Integer, Double> map = new HashMap<>();
         for (int i = 1; i <= SAMPLE; i++) {
-            map.put(i, (double) i);
-            rs1.feed(i, (double) i);
+            map.put(i, i / (SAMPLE + 1.0));
+            rs1.feed(i, i / (SAMPLE + 1.0));
         }
         rs3.feed(map.keySet().iterator(), map.values().iterator());
         rs2.feed(map);
