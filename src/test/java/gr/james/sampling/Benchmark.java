@@ -15,6 +15,7 @@ public class Benchmark {
     private static final EfraimidisSampling<Object> efraimidis = new EfraimidisSampling<>(sample, random);
     private static final ChaoSampling<Object> chao = new ChaoSampling<>(sample, random);
     private static final SequentialPoissonSampling<Object> sequentialPoisson = new SequentialPoissonSampling<>(sample, random);
+    private static final ParetoSampling<Object> pareto = new ParetoSampling<>(sample, random);
 
     public static void main(String[] args) {
         System.out.printf("%18s %5d ms%n", "Waterman", performance(waterman) / 1000000);
@@ -25,6 +26,7 @@ public class Benchmark {
         System.out.printf("%18s %5d ms%n", "Efraimidis", performance(efraimidis) / 1000000);
         System.out.printf("%18s %5d ms%n", "Chao", performance(chao) / 1000000);
         System.out.printf("%18s %5d ms%n", "Sequential Poisson", performance(sequentialPoisson) / 1000000);
+        System.out.printf("%18s %5d ms%n", "Pareto", performance(pareto) / 1000000);
     }
 
     private static long performance(RandomSampling<Object> alg) {

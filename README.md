@@ -115,6 +115,7 @@ System.out.println(sample);
 | `EfraimidisSampling`        | Algorithm A-Res by Efraimidis | `O(k)` | &#10004; |
 | `ChaoSampling`              | Algorithm by Chao             | `O(k)` | &#10004; |
 | `SequentialPoissonSampling` | Algorithm by Ohlsson          | `O(k)` | &#10004; |
+| `ParetoSampling`            | Algorithm by Rosén            | `O(k)` | &#10004; |
 
 ### 1 Algorithm R by Waterman
 
@@ -165,6 +166,14 @@ Signature: `SequentialPoissonSampling` implements `WeightedRandomSampling`
 
 #### References
 - [Ohlsson, Esbjörn. "Sequential poisson sampling." Journal of official Statistics 14.2 (1998): 149.](https://www.mendeley.com/catalogue/95bcff1f-86be-389c-ab3f-717796d22abd/)
+
+### 7 Algorithm by Rosén
+
+Signature: `ParetoSampling` implements `WeightedRandomSampling`
+
+#### References
+- [Rosén, Bengt. "Asymptotic theory for order sampling." Journal of Statistical Planning and Inference 62.2 (1997): 135-158.](https://doi.org/10.1016/S0378-3758(96)00185-1)
+- [Rosén, Bengt. "On sampling with probability proportional to size." Journal of statistical planning and inference 62.2 (1997): 159-191.](https://doi.org/10.1016/S0378-3758(96)00186-3)
 
 ## References
 

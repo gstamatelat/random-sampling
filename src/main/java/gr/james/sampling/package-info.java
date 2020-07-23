@@ -123,6 +123,14 @@
  * <td>(0, +&infin;)</td>
  * <td>-</td>
  * </tr>
+ * <tr>
+ *  <td>{@link gr.james.sampling.ParetoSampling}</td>
+ *  <td>Algorithm by Rosén [9][10]</td>
+ *  <td>{@code O(k)}</td>
+ *  <td>ND</td>
+ *  <td>(0, +&infin;) except 1.0</td>
+ *  <td>-</td>
+ * </tr>
  * </tbody>
  * </table>
  * <h3>References</h3>
@@ -142,6 +150,10 @@
  * sampling with a reservoir." Information Processing Letters 97.5 (2006): 181-185.</a></li>
  * <li><a href="https://www.mendeley.com/catalogue/95bcff1f-86be-389c-ab3f-717796d22abd/">Ohlsson, Esbjörn. "Sequential
  * poisson sampling." Journal of official Statistics 14.2 (1998): 149.</a></li>
+ * <li><a href="https://doi.org/10.1016/S0378-3758(96)00185-1">Rosén, Bengt. "Asymptotic theory for order sampling."
+ * Journal of Statistical Planning and Inference 62.2 (1997): 135-158.</a></li>
+ * <li><a href="https://doi.org/10.1016/S0378-3758(96)00186-3">Rosén, Bengt. "On sampling with probability proportional
+ * to size." Journal of statistical planning and inference 62.2 (1997): 159-191.</a></li>
  * </ol>
  */
 package gr.james.sampling;

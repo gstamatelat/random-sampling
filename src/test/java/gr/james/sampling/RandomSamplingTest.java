@@ -42,6 +42,7 @@ public class RandomSamplingTest {
         implementations.add(() -> new EfraimidisSampling<>(SAMPLE, RANDOM));
         implementations.add(() -> new ChaoSampling<>(SAMPLE, RANDOM));
         implementations.add(() -> new SequentialPoissonSampling<>(SAMPLE, RANDOM));
+        implementations.add(() -> new ParetoSampling<>(SAMPLE, RANDOM));
         return implementations;
     }
 
@@ -72,7 +73,11 @@ public class RandomSamplingTest {
                         final RandomSampling<Integer> alg = impl.get();
 
                         for (int i = 0; i < STREAM; i++) {
-                            alg.feed(i);
+                            if (alg instanceof ParetoSampling) {
+                                ((ParetoSampling<Integer>) alg).feed(i, 0.5);
+                            } else {
+                                alg.feed(i);
+                            }
                         }
 
                         for (int s : alg.sample()) {
@@ -136,6 +141,8 @@ public class RandomSamplingTest {
                 collector = LiLSamplingThreadSafe.collector(SAMPLE, RANDOM);
             } else if (alg instanceof SequentialPoissonSampling) {
                 collector = SequentialPoissonSampling.collector(SAMPLE, RANDOM);
+            } else if (alg instanceof ParetoSampling) {
+                collector = ParetoSampling.collector(SAMPLE, RANDOM);
             } else {
                 throw new AssertionError();
             }
