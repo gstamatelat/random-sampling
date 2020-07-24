@@ -17,5 +17,5 @@ sourceSets {
 }
 
 dependencies {
-    compile rootProject
+    implementation rootProject
 }
