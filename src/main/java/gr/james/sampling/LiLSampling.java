@@ -7,11 +7,11 @@ import java.util.Random;
  * O(n(1 + log(N/n)))</b>.
  * <p>
  * Unlike {@link WatermanSampling}, the {@link VitterXSampling}, {@link VitterZSampling} and {@code LiLSampling}
- * algorithms decide how many items to skip, rather than deciding whether or not to skip an item each time it is feeded.
+ * algorithms decide how many items to skip, rather than deciding whether or not to skip an item each time it is fed.
  * This property allows these algorithms to perform better by efficiently calculating the number of items that need to
  * be skipped, while making fewer calls to the RNG.
  * <p>
- * This implementation throws {@link StreamOverflowException} if more than {@link Long#MAX_VALUE} items are feeded.
+ * This implementation throws {@link StreamOverflowException} if more than {@link Long#MAX_VALUE} items are fed.
  * <p>
  * The space complexity of this class is {@code O(k)}, where {@code k} is the sample size.
  *

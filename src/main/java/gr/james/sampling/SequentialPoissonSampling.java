@@ -203,14 +203,14 @@ public class SequentialPoissonSampling<T> implements WeightedRandomSampling<T> {
     }
 
     /**
-     * Get the number of items that have been feeded to the algorithm during the lifetime of this instance.
+     * Get the number of items that have been fed to the algorithm during the lifetime of this instance.
      * <p>
-     * If more than {@link Long#MAX_VALUE} items has been feeded to the instance, {@code streamSize()} will cycle the
-     * long values, continuing from {@link Long#MIN_VALUE}.
+     * If more than {@link Long#MAX_VALUE} items has been fed to the instance, {@code streamSize()} will cycle the long
+     * values, continuing from {@link Long#MIN_VALUE}.
      * <p>
      * This method runs in constant time.
      *
-     * @return the number of items that have been feeded to the algorithm
+     * @return the number of items that have been fed to the algorithm
      */
     @Override
     public final long streamSize() {

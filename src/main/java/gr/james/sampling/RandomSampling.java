@@ -116,19 +116,19 @@ public interface RandomSampling<T> {
     int sampleSize();
 
     /**
-     * Get the number of items that have been feeded to the algorithm during the lifetime of this instance.
+     * Get the number of items that have been fed to the algorithm during the lifetime of this instance.
      * <p>
-     * If more than {@link Long#MAX_VALUE} items has been feeded to the instance, this method may return
+     * If more than {@link Long#MAX_VALUE} items has been fed to the instance, this method may return
      * {@link Long#MAX_VALUE} or any other undefined {@link Long} value.
      * <p>
      * This method runs in constant time.
      *
-     * @return the number of items that have been feeded to the algorithm
+     * @return the number of items that have been fed to the algorithm
      */
     long streamSize();
 
     /**
-     * Get the sample of all the items that have been feeded to the algorithm during the lifetime of the instance.
+     * Get the sample of all the items that have been fed to the algorithm during the lifetime of the instance.
      * <p>
      * This method returns a readonly {@link Collection} view of the items in the sample which is backed by the
      * instance; subsequent modification of the instance (using any of the {@code feed} methods) will reflect on this
@@ -146,9 +146,9 @@ public interface RandomSampling<T> {
      * The items returned are in no particular order inside the sample collection unless otherwise specified.
      * <p>
      * The {@link Collection} returned cannot be {@code null} but it can be empty if and only if no items have been
-     * feeded to the implementation. The {@link Collection} may also contain duplicate elements if an object has been
-     * feeded multiple times. It, furthermore, holds that {@code sample().size() == min(sampleSize(), streamSize())},
-     * assuming that {@code streamSize()} does not overflow.
+     * fed to the implementation. The {@link Collection} may also contain duplicate elements if an object has been fed
+     * multiple times. It, furthermore, holds that {@code sample().size() == min(sampleSize(), streamSize())}, assuming
+     * that {@code streamSize()} does not overflow.
      * <p>
      * Because the {@link Collection} interface adds no stipulations to the contract for the
      * {@link Collection#equals(Object)} method, the {@code sample().equals} method is not a reliable way to query the
@@ -158,7 +158,7 @@ public interface RandomSampling<T> {
      * <p>
      * This method runs in constant time.
      *
-     * @return the sample of the items that have been feeded to this instance
+     * @return the sample of the items that have been fed to this instance
      */
     Collection<T> sample();
 }

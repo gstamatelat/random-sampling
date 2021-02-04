@@ -6,12 +6,12 @@ import java.util.Random;
  * Implementation of <i>Algorithm R</i> credited to Alan Waterman in <b>The Art of Computer Programming, Vol II, Random
  * Sampling and Shuffling</b>.
  * <p>
- * The implementation is the simplest unweighted sampling algorithm that each time a new element is feeded, it
- * determines whether is should be accepted in the sample by producing a random number. The more efficient
- * {@link VitterXSampling}, {@link VitterZSampling} and {@link LiLSampling} decide how many items to skip, rather than
- * deciding whether or not to skip an item each time it is feeded.
+ * The implementation is the simplest unweighted sampling algorithm that each time a new element is fed, it determines
+ * whether is should be accepted in the sample by producing a random number. The more efficient {@link VitterXSampling},
+ * {@link VitterZSampling} and {@link LiLSampling} decide how many items to skip, rather than deciding whether or not
+ * to skip an item each time it is fed.
  * <p>
- * This implementation throws {@link StreamOverflowException} if more than {@link Long#MAX_VALUE} items are feeded.
+ * This implementation throws {@link StreamOverflowException} if more than {@link Long#MAX_VALUE} items are fed.
  * <p>
  * The space complexity of this class is {@code O(k)}, where {@code k} is the sample size.
  *

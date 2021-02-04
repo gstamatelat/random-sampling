@@ -27,7 +27,7 @@ class IdentityRandomSampling<T, RS extends RandomSampling<T>> implements RandomS
      *
      * @param source the source {@link RandomSampling} implementation
      * @throws NullPointerException     if {@code source} is {@code null}
-     * @throws IllegalArgumentException if {@code source} already had some items feeded
+     * @throws IllegalArgumentException if {@code source} already had some items fed
      */
     IdentityRandomSampling(RS source) {
         if (source == null) {

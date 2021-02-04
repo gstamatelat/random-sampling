@@ -56,7 +56,7 @@ public abstract class AbstractThreadSafeRandomSampling<T> implements RandomSampl
      * @param item {@inheritDoc}
      * @return {@inheritDoc}
      * @throws NullPointerException    {@inheritDoc}
-     * @throws StreamOverflowException if the number of items feeded exceeds {@link Long#MAX_VALUE}
+     * @throws StreamOverflowException if the number of items fed exceeds {@link Long#MAX_VALUE}
      */
     @Override
     public final boolean feed(T item) {
@@ -110,7 +110,7 @@ public abstract class AbstractThreadSafeRandomSampling<T> implements RandomSampl
      * @param items {@inheritDoc}
      * @return {@inheritDoc}
      * @throws NullPointerException    {@inheritDoc}
-     * @throws StreamOverflowException if the number of items feeded exceeds {@link Long#MAX_VALUE}
+     * @throws StreamOverflowException if the number of items fed exceeds {@link Long#MAX_VALUE}
      */
     @Override
     public final boolean feed(Iterator<T> items) {
@@ -123,7 +123,7 @@ public abstract class AbstractThreadSafeRandomSampling<T> implements RandomSampl
      * @param items {@inheritDoc}
      * @return {@inheritDoc}
      * @throws NullPointerException    {@inheritDoc}
-     * @throws StreamOverflowException if the number of items feeded exceeds {@link Long#MAX_VALUE}
+     * @throws StreamOverflowException if the number of items fed exceeds {@link Long#MAX_VALUE}
      */
     @Override
     public final boolean feed(Iterable<T> items) {
@@ -142,12 +142,12 @@ public abstract class AbstractThreadSafeRandomSampling<T> implements RandomSampl
     }
 
     /**
-     * Get the number of items that have been feeded to the algorithm during the lifetime of this instance, which is a
+     * Get the number of items that have been fed to the algorithm during the lifetime of this instance, which is a
      * non-negative {@code long} value.
      * <p>
      * This method runs in constant time.
      *
-     * @return the number of items that have been feeded to the algorithm
+     * @return the number of items that have been fed to the algorithm
      */
     @Override
     public final long streamSize() {
@@ -170,7 +170,7 @@ public abstract class AbstractThreadSafeRandomSampling<T> implements RandomSampl
      * <p>
      * The implementation of this method must only rely on the given arguments and not on the state of the instance.
      *
-     * @param streamSize how many items have been feeded to the sampler
+     * @param streamSize how many items have been fed to the sampler
      * @param sampleSize expected sample size
      * @param random     the {@link Random} instance to use
      * @return how many items to skip

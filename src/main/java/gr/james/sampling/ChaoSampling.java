@@ -9,7 +9,7 @@ import java.util.*;
  * weight. Weights must be in the range (0,+Inf), otherwise an {@link IllegalWeightException} is thrown. The default
  * weight in this implementation is {@code 1.0}.
  * <p>
- * This implementation throws {@link StreamOverflowException} if the sum of the weights of the items feeded is
+ * This implementation throws {@link StreamOverflowException} if the sum of the weights of the items fed is
  * {@link Double#POSITIVE_INFINITY}.
  * <p>
  * The space complexity of this class is {@code O(k)}, where {@code k} is the sample size.
@@ -127,7 +127,7 @@ public class ChaoSampling<T> implements WeightedRandomSampling<T> {
      * @return {@inheritDoc}
      * @throws NullPointerException    {@inheritDoc}
      * @throws IllegalWeightException  if {@code weight} is outside the range (0,+Inf)
-     * @throws StreamOverflowException if the sum of the weights of the items feeded is {@link Double#POSITIVE_INFINITY}
+     * @throws StreamOverflowException if the sum of the weights of the items fed is {@link Double#POSITIVE_INFINITY}
      */
     @Override
     public boolean feed(T item, double weight) {
@@ -228,8 +228,7 @@ public class ChaoSampling<T> implements WeightedRandomSampling<T> {
      * @throws NullPointerException     {@inheritDoc}
      * @throws IllegalArgumentException {@inheritDoc}
      * @throws IllegalWeightException   if {@code weight} is outside the range (0,+Inf)
-     * @throws StreamOverflowException  if the sum of the weights of the items feeded is
-     *                                  {@link Double#POSITIVE_INFINITY}
+     * @throws StreamOverflowException  if the sum of the weights of the items fed is {@link Double#POSITIVE_INFINITY}
      */
     @Override
     public boolean feed(Iterator<T> items, Iterator<Double> weights) {
@@ -243,7 +242,7 @@ public class ChaoSampling<T> implements WeightedRandomSampling<T> {
      * @return {@inheritDoc}
      * @throws NullPointerException    {@inheritDoc}
      * @throws IllegalWeightException  if {@code weight} is outside the range (0,+Inf)
-     * @throws StreamOverflowException if the sum of the weights of the items feeded is {@link Double#POSITIVE_INFINITY}
+     * @throws StreamOverflowException if the sum of the weights of the items fed is {@link Double#POSITIVE_INFINITY}
      */
     @Override
     public boolean feed(Map<T, Double> items) {
@@ -272,14 +271,14 @@ public class ChaoSampling<T> implements WeightedRandomSampling<T> {
     }
 
     /**
-     * Get the number of items that have been feeded to the algorithm during the lifetime of this instance.
+     * Get the number of items that have been fed to the algorithm during the lifetime of this instance.
      * <p>
-     * If more than {@link Long#MAX_VALUE} items has been feeded to the instance, {@code streamSize()} will cycle the
-     * long values, continuing from {@link Long#MIN_VALUE}.
+     * If more than {@link Long#MAX_VALUE} items has been fed to the instance, {@code streamSize()} will cycle the long
+     * values, continuing from {@link Long#MIN_VALUE}.
      * <p>
      * This method runs in constant time.
      *
-     * @return the number of items that have been feeded to the algorithm
+     * @return the number of items that have been fed to the algorithm
      */
     @Override
     public final long streamSize() {
@@ -292,7 +291,7 @@ public class ChaoSampling<T> implements WeightedRandomSampling<T> {
      * @param item {@inheritDoc}
      * @return {@inheritDoc}
      * @throws NullPointerException    {@inheritDoc}
-     * @throws StreamOverflowException if the sum of the weights of the items feeded is {@link Double#POSITIVE_INFINITY}
+     * @throws StreamOverflowException if the sum of the weights of the items fed is {@link Double#POSITIVE_INFINITY}
      */
     @Override
     public boolean feed(T item) {
@@ -305,7 +304,7 @@ public class ChaoSampling<T> implements WeightedRandomSampling<T> {
      * @param items {@inheritDoc}
      * @return {@inheritDoc}
      * @throws NullPointerException    {@inheritDoc}
-     * @throws StreamOverflowException if the sum of the weights of the items feeded is {@link Double#POSITIVE_INFINITY}
+     * @throws StreamOverflowException if the sum of the weights of the items fed is {@link Double#POSITIVE_INFINITY}
      */
     @Override
     public boolean feed(Iterator<T> items) {
@@ -318,7 +317,7 @@ public class ChaoSampling<T> implements WeightedRandomSampling<T> {
      * @param items {@inheritDoc}
      * @return {@inheritDoc}
      * @throws NullPointerException    {@inheritDoc}
-     * @throws StreamOverflowException if the sum of the weights of the items feeded is {@link Double#POSITIVE_INFINITY}
+     * @throws StreamOverflowException if the sum of the weights of the items fed is {@link Double#POSITIVE_INFINITY}
      */
     @Override
     public boolean feed(Iterable<T> items) {
