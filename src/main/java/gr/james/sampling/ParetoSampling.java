@@ -5,7 +5,7 @@ import java.util.*;
 /**
  * Implementation of the algorithm by Rosén in <b>On sampling with probability proportional to size</b>.
  * <p>
- * Weighted are not being assigned a particular meaning or have physical interpretation but the resulting inclusion
+ * Weights are not being assigned a particular meaning or have physical interpretation but the resulting inclusion
  * probabilities are an approximation of the exact model ({@link ChaoSampling}). Weights must be in the range (0,+Inf)
  * but not the value {@code 1.0}, otherwise an {@link IllegalWeightException} is thrown. The default weight in this
  * implementation is {@code 0.5}.
