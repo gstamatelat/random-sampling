@@ -20,9 +20,7 @@ are mentioned.
 
 ## Using
 
-Random Sampling is published to
-[jcenter](https://bintray.com/gstamatelat/random-sampling/random-sampling). You
-can add a dependency from your project as follows:
+You can add a dependency from your project as follows:
 
 Using Maven
 
@@ -36,8 +34,9 @@ Using Maven
 
 Using Gradle
 
-```
-compile 'gr.james:random-sampling:0.16'
+```gradle
+implementation 'gr.james:random-sampling:0.16' // Runtime
+api            'gr.james:random-sampling:0.16' // Public API
 ```
 
 ## Examples

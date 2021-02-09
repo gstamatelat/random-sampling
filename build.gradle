@@ -1,7 +1,7 @@
 plugins {
     id 'java-library'
     id 'maven-publish'
-    id "com.github.spotbugs" version "4.4.4"
+    id "com.github.spotbugs" version "4.6.0"
 }
 
 group = 'gr.james'
@@ -10,7 +10,7 @@ version = '0.16'
 sourceCompatibility = 1.8
 
 repositories {
-    jcenter()
+    mavenCentral()
 }
 
 java {
@@ -25,8 +25,31 @@ spotbugs {
 
 publishing {
     publications {
-        library(MavenPublication) {
+        mavenJava(MavenPublication) {
             from components.java
+            pom {
+                name = 'Random Sampling'
+                description = 'A collection of algorithms in Java 8 for the problem of random sampling with a reservoir'
+                url = 'https://github.com/gstamatelat/random-sampling'
+                licenses {
+                    license {
+                        name = 'The MIT License'
+                        url = 'https://opensource.org/licenses/MIT'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'gstamatelat'
+                        name = 'Giorgos Stamatelatos'
+                        email = 'gstamatelat@gmail.com'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:https://github.com/gstamatelat/random-sampling.git'
+                    developerConnection = 'scm:git:git@github.com:gstamatelat/random-sampling.git'
+                    url = 'https://github.com/gstamatelat/random-sampling'
+                }
+            }
         }
     }
     repositories {
