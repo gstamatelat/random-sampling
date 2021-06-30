@@ -10,11 +10,34 @@ import java.util.*;
  * @author Giorgos Stamatelatos
  */
 public abstract class AbstractRandomSampling<T> implements RandomSampling<T> {
+    /**
+     * The given sample size from the constructor.
+     */
     protected final int sampleSize;
+
+    /**
+     * The given Random instance from the constructor.
+     */
     protected final Random random;
+
+    /**
+     * The internal reservoir maintained by the algorithm.
+     */
     protected final List<T> sample;
+
+    /**
+     * The unmodifiable decorator around the sample.
+     */
     protected final Collection<T> unmodifiableSample;
+
+    /**
+     * The counted stream size.
+     */
     protected long streamSize;
+
+    /**
+     * The next skip size.
+     */
     protected long skip;
 
     /**
