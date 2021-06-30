@@ -10,12 +10,12 @@ import java.util.*;
  * @author Giorgos Stamatelatos
  */
 public abstract class AbstractRandomSampling<T> implements RandomSampling<T> {
-    private final int sampleSize;
-    private final Random random;
-    private final List<T> sample;
-    private final Collection<T> unmodifiableSample;
-    private long streamSize;
-    private long skip;
+    protected final int sampleSize;
+    protected final Random random;
+    protected final List<T> sample;
+    protected final Collection<T> unmodifiableSample;
+    protected long streamSize;
+    protected long skip;
 
     /**
      * Construct a new instance of this class using the specified sample size and RNG. The implementation assumes that
@@ -52,7 +52,7 @@ public abstract class AbstractRandomSampling<T> implements RandomSampling<T> {
      * @throws StreamOverflowException if the number of items fed exceeds {@link Long#MAX_VALUE}
      */
     @Override
-    public final boolean feed(T item) {
+    public boolean feed(T item) {
         // Checks
         if (item == null) {
             throw new NullPointerException("Item was null");
@@ -94,7 +94,7 @@ public abstract class AbstractRandomSampling<T> implements RandomSampling<T> {
      * @throws StreamOverflowException if the number of items fed exceeds {@link Long#MAX_VALUE}
      */
     @Override
-    public final boolean feed(Iterator<T> items) {
+    public boolean feed(Iterator<T> items) {
         return RandomSampling.super.feed(items);
     }
 
@@ -107,7 +107,7 @@ public abstract class AbstractRandomSampling<T> implements RandomSampling<T> {
      * @throws StreamOverflowException if the number of items fed exceeds {@link Long#MAX_VALUE}
      */
     @Override
-    public final boolean feed(Iterable<T> items) {
+    public boolean feed(Iterable<T> items) {
         return RandomSampling.super.feed(items);
     }
 
@@ -117,7 +117,7 @@ public abstract class AbstractRandomSampling<T> implements RandomSampling<T> {
      * @return {@inheritDoc}
      */
     @Override
-    public final int sampleSize() {
+    public int sampleSize() {
         assert this.sampleSize > 0;
         return this.sampleSize;
     }
@@ -131,7 +131,7 @@ public abstract class AbstractRandomSampling<T> implements RandomSampling<T> {
      * @return the number of items that have been fed to the algorithm
      */
     @Override
-    public final long streamSize() {
+    public long streamSize() {
         assert this.streamSize >= 0;
         return this.streamSize;
     }
@@ -142,7 +142,7 @@ public abstract class AbstractRandomSampling<T> implements RandomSampling<T> {
      * @return {@inheritDoc}
      */
     @Override
-    public final Collection<T> sample() {
+    public Collection<T> sample() {
         return this.unmodifiableSample;
     }
 
