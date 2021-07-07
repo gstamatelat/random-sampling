@@ -118,4 +118,47 @@ public final class RandomSamplingUtils {
         }
         return !a.hasNext() && !b.hasNext();
     }
+
+    /**
+     * Performs an unweighted selection without replacement of <code>k</code> elements from a population of
+     * <code>n</code> elements.
+     * <p>
+     * The population and the sample are represented by their indices and, as a result, this method will return
+     * <code>k</code> random and discrete indices in the range <code>[0,n)</code>.
+     * <p>
+     * The selection is performed in such a way that the higher order inclusion probabilities of all
+     * <code>k</code>-tuples are equal.
+     * <p>
+     * This method runs in time proportional to <code>k</code> in the worst case.
+     *
+     * @param n   the size of the population
+     * @param k   the size of the sample
+     * @param rng the random number generator to use
+     * @return an array of <code>k</code> random and discrete integers in the range <code>[0,n)</code>
+     * @throws IllegalArgumentException if <code>n</code> or <code>k</code> is less than 1
+     * @throws IllegalArgumentException if <code>k &gt; n</code>
+     */
+    public static int[] randomSelection(int n, int k, Random rng) {
+        if (n < 1) {
+            throw new IllegalArgumentException("n must be at least 1");
+        }
+        if (k < 1) {
+            throw new IllegalArgumentException("k must be at least 1");
+        }
+        if (k > n) {
+            throw new IllegalArgumentException("k must be at most n");
+        }
+
+        final int[] a = new int[k];
+        final Map<Integer, Integer> swaps = new HashMap<>();
+        for (int i = 0; i < k; i++) {
+            final int nextIndex = rng.nextInt(n - i);
+            a[i] = swaps.getOrDefault(nextIndex, nextIndex);
+            swaps.put(nextIndex, swaps.getOrDefault(n - i - 1, n - i - 1));
+        }
+
+        assert Arrays.stream(a).distinct().count() == k;
+
+        return a;
+    }
 }
