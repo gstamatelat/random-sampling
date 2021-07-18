@@ -15,6 +15,9 @@
  * probability depends on the extra {@code weight} parameter (see <em><a href="#weights">weights</a></em> for more
  * details). The {@code WeightedRandomSampling} interface extends {@code RandomSampling} and, thus, weighted algorithms
  * can be used in-place as unweighted, usually with a performance penalty due to the extra weight-related overhead.
+ * <p>
+ * The package also contains the class {@link gr.james.sampling.RandomSamplingUtils} with various static helper
+ * utilities for random sampling, random generation and random selections.
  * <h3>Properties</h3>
  * <h4>Complexity</h4>
  * A fundamental principle of reservoir based sampling algorithms is that the memory complexity is linear in respect to

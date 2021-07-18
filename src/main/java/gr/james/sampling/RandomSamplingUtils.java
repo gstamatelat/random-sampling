@@ -4,6 +4,8 @@ import java.util.*;
 
 /**
  * Global utility methods used throughout the package.
+ * <p>
+ * Contains various helper methods for random sampling, random generation and random selections.
  *
  * @author Giorgos Stamatelatos
  */
