@@ -9,11 +9,12 @@
  * This package distinguishes these algorithms into two main categories: the ones that assign a weight in each item of
  * the source stream (interface {@link gr.james.sampling.WeightedRandomSampling}) and the ones that don't
  * (interface {@link gr.james.sampling.RandomSampling}). In unweighted algorithms, each item in the stream has
- * probability {@code k/n} in appearing in the sample. As a result, they have equivalent behavior and are differentiated
- * only on their performance characteristics. In weighted algorithms this probability depends on the extra
- * {@code weight} parameter (see <em><a href="#weights">weights</a></em> for more details). The
- * {@code WeightedRandomSampling} interface extends {@code RandomSampling} and, thus, weighted algorithms can be used
- * in-place as unweighted, usually with a performance penalty due to the extra weight-related overhead.
+ * probability {@code k/n} in appearing in the sample. As a result, they have equivalent behavior in terms of their
+ * first-order inclusion probabilities of the elements for {@code k > 1} but not necessarily for higher-order
+ * probabilities. They are also differentiated on their performance characteristics. In weighted algorithms this
+ * probability depends on the extra {@code weight} parameter (see <em><a href="#weights">weights</a></em> for more
+ * details). The {@code WeightedRandomSampling} interface extends {@code RandomSampling} and, thus, weighted algorithms
+ * can be used in-place as unweighted, usually with a performance penalty due to the extra weight-related overhead.
  * <h3>Properties</h3>
  * <h4>Complexity</h4>
  * A fundamental principle of reservoir based sampling algorithms is that the memory complexity is linear in respect to

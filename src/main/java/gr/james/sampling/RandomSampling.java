@@ -11,8 +11,9 @@ import java.util.Iterator;
  * is considered a weighted random sampling algorithm and implements {@link WeightedRandomSampling}, which is a
  * subinterface of {@code RandomSampling}.
  * <p>
- * All classes implementing {@code RandomSampling} have equivalent behavior and are differentiated only on their
- * performance characteristics.
+ * All classes implementing {@code RandomSampling} have equivalent behavior in terms of the first-order inclusion
+ * probabilities of the elements but not necessarily in terms of higher-order probabilities (which is relevant for
+ * {@code k > 1}). They are also differentiated only on performance characteristics.
  * <p>
  * A {@code RandomSampling} algorithm does not keep track of duplicate elements because that would result in a linear
  * memory complexity. Thus, it is valid to feed the same element multiple times in the same instance. For example it is
