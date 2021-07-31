@@ -194,6 +194,17 @@ public class RandomSamplingTest {
     }
 
     /**
+     * Check that the sample() method returns read-only collection.
+     */
+    @Test(expected = UnsupportedOperationException.class)
+    public void readOnlySample() {
+        final RandomSampling<Integer> rs = impl.get();
+        rs.feed(1);
+        rs.feed(2);
+        rs.sample().add(3);
+    }
+
+    /**
      * {@link RandomSampling#streamSize()} correctness.
      */
     @Test
