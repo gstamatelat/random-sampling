@@ -7,7 +7,7 @@ import java.util.Random;
  * Sampling and Shuffling</b>.
  * <p>
  * The implementation is the simplest unweighted sampling algorithm that each time a new element is fed, it determines
- * whether is should be accepted in the sample by producing a random number. The more efficient {@link VitterXSampling},
+ * whether it should be accepted in the sample by producing a random number. The more efficient {@link VitterXSampling},
  * {@link VitterZSampling} and {@link LiLSampling} decide how many items to skip, rather than deciding whether or not
  * to skip an item each time it is fed.
  * <p>
