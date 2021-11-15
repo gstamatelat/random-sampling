@@ -27,8 +27,8 @@ Using Maven
 ```xml
 <dependency>
   <groupId>gr.james</groupId>
-    <artifactId>random-sampling</artifactId>
-    <version>0.18</version>
+  <artifactId>random-sampling</artifactId>
+  <version>0.18</version>
 </dependency>
 ```
 
