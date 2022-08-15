@@ -136,4 +136,15 @@ public class WeightedRandomSamplingTest {
         Assert.assertEquals(rs2.sample().size(), rs3.sample().size());
     }
 
+    /**
+     * Infinite or NaN weights should result in {@link IllegalWeightException} in all weighted implementations.
+     */
+    @Test(expected = IllegalWeightException.class)
+    public void infiniteNanWeights() {
+        final WeightedRandomSampling<Integer> alg = impl.get();
+        alg.feed(0, Double.NaN);
+        alg.feed(1, Double.POSITIVE_INFINITY);
+        alg.feed(2, Double.NEGATIVE_INFINITY);
+    }
+
 }

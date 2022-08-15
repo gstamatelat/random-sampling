@@ -125,8 +125,8 @@ public class ParetoSampling<T> implements WeightedRandomSampling<T> {
         if (item == null) {
             throw new NullPointerException("Item was null");
         }
-        if (weight <= 0 || weight >= 1) {
-            throw new IllegalWeightException("Weight must be in (0,1)");
+        if (!(weight > 0 && weight < 1)) {
+            throw new IllegalWeightException(String.format("Weight must be in (0,1), was %s", weight));
         }
 
         // Produce a random value

@@ -135,11 +135,8 @@ public class ChaoSampling<T> implements WeightedRandomSampling<T> {
         if (item == null) {
             throw new NullPointerException("Item was null");
         }
-        if (weight <= 0) {
-            throw new IllegalWeightException("Weight was not positive, must be in (0,+Inf)");
-        }
-        if (Double.isInfinite(weight)) {
-            throw new IllegalWeightException("Weight was infinite, must be in (0,+Inf)");
+        if (!(weight > 0 && weight < Double.POSITIVE_INFINITY)) {
+            throw new IllegalWeightException(String.format("Weight must be in (0,+Inf), was %s", weight));
         }
 
         // Increase stream size
