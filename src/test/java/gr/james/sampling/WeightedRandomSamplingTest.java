@@ -113,17 +113,6 @@ public class WeightedRandomSamplingTest {
     }
 
     /**
-     * Pass very small and very large weights to check if algorithms fail.
-     */
-    @Test
-    public void cornerWeights() {
-        final WeightedRandomSampling<Integer> alg = impl.get();
-        alg.feed(0, Double.MIN_VALUE);
-        alg.feed(1, Double.MAX_VALUE);
-        alg.sample();
-    }
-
-    /**
      * Equivalence between {@link WeightedRandomSampling#feed(Object)},
      * {@link WeightedRandomSampling#feed(Iterator, Iterator)} and {@link WeightedRandomSampling#feed(Map)}.
      */

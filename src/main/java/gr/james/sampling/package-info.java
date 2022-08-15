@@ -132,7 +132,7 @@
  *  <td>Algorithm by Rosén [9][10]</td>
  *  <td>{@code O(k)}</td>
  *  <td>ND</td>
- *  <td>(0, +&infin;) except 1.0</td>
+ *  <td>(0, 1)</td>
  *  <td>-</td>
  * </tr>
  * </tbody>

@@ -5,10 +5,12 @@ import java.util.*;
 /**
  * Implementation of the algorithm by Rosén in <b>On sampling with probability proportional to size</b>.
  * <p>
- * Weights are not being assigned a particular meaning or have physical interpretation but the resulting inclusion
- * probabilities are an approximation of the exact model ({@link ChaoSampling}). Weights must be in the range (0,+Inf)
- * but not the value {@code 1.0}, otherwise an {@link IllegalWeightException} is thrown. The default weight in this
- * implementation is {@code 0.5}.
+ * According to <b>Pareto Sampling versus Sampford and Conditional Poisson Sampling</b>, the parameters (weights)
+ * represent inclusion probabilities, hence they are in the range (0,1). The real inclusion probabilities will be an
+ * approximation of the given parameters. Weights outside this range will throw an {@link IllegalWeightException}. In
+ * order for the implementation to comply with the reservoir sampling interface, where the number of elements in the
+ * stream is unknown, the target inclusion probabilities will not be calculated based on the given weights; the weights
+ * themselves will be assumed to be the lambda parameters in the formula mentioned in Section 1 in the previous paper.
  * <p>
  * This implementation never throws {@link StreamOverflowException}.
  * <p>
@@ -18,6 +20,7 @@ import java.util.*;
  * @author Giorgos Stamatelatos
  * @see <a href="https://doi.org/10.1016/S0378-3758(96)00185-1">Asymptotic theory for order sampling</a>
  * @see <a href="https://doi.org/10.1016/S0378-3758(96)00186-3">On sampling with probability proportional to size</a>
+ * @see <a href="https://doi.org/10.1111/j.1467-9469.2006.00497.x">Pareto Sampling versus Sampford and Conditional Poisson Sampling</a>
  */
 public class ParetoSampling<T> implements WeightedRandomSampling<T> {
     private final int sampleSize;
@@ -122,14 +125,8 @@ public class ParetoSampling<T> implements WeightedRandomSampling<T> {
         if (item == null) {
             throw new NullPointerException("Item was null");
         }
-        if (weight <= 0) {
-            throw new IllegalWeightException("Weight was not positive, must be in (0,+Inf) but not 1");
-        }
-        if (Double.isInfinite(weight)) {
-            throw new IllegalWeightException("Weight was infinite, must be in (0,+Inf) but not 1");
-        }
-        if (weight == 1.0) {
-            throw new IllegalWeightException("Weight was 1, must be in (0,+Inf) but not 1");
+        if (weight <= 0 || weight >= 1) {
+            throw new IllegalWeightException("Weight must be in (0,1)");
         }
 
         // Produce a random value
