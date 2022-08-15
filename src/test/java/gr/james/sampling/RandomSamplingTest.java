@@ -102,7 +102,10 @@ public class RandomSamplingTest {
                 int c = d.get(i);
                 final double expected = (double) REPS * Math.min(SAMPLE, STREAM) / STREAM;
                 final double actual = (double) c;
-                assertEquals(String.format("Correctness failed for streamSize %d", STREAM), 1, actual / expected, 1e-2);
+                assertEquals(
+                        String.format("Correctness failed for streamSize %d and frequencies %s", STREAM, d),
+                        1, actual / expected, 1e-2
+                );
             }
         }
     }
