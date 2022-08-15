@@ -141,7 +141,7 @@
  * <ol class="citations">
  * <li><a href="https://doi.org/10.1007/978-3-319-24024-4_12">Efraimidis, Pavlos S. "Weighted random sampling over data
  * streams." Algorithms, Probability, Networks, and Games. Springer International Publishing, 2015. 183-195.</a></li>
- * <li>The Art of Computer Programming, Vol II, Random Sampling and Shuffling</li>
+ * <li>The Art of Computer Programming, Vol II, Random Sampling and Shuffling.</li>
  * <li><a href="https://doi.org/10.1145/3147.3165">Vitter, Jeffrey S. "Random sampling with a reservoir."
  * ACM Transactions on Mathematical Software (TOMS) 11.1 (1985): 37-57.</a></li>
  * <li><a href="https://doi.org/10.1145/198429.198435">Li, Kim-Hung. "Reservoir-sampling algorithms of time complexity
