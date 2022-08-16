@@ -26,7 +26,7 @@ Using Maven
 
 ```xml
 <dependency>
-  <groupId>gr.james</groupId>
+    <groupId>gr.james</groupId>
     <artifactId>random-sampling</artifactId>
     <version>0.20</version>
 </dependency>
