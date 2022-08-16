@@ -38,9 +38,12 @@
  * selections of the sampling procedure (implemented in {@code EfraimidisSampling}). As a result, implementations of
  * this interface may not exhibit identical behavior, as opposed to the {@link gr.james.sampling.RandomSampling}
  * interface. The contract of this interface is, however, that a higher weight value suggests a higher probability for
- * an item to be included in the sample. Implementations may also define certain restrictions on the values of
- * {@code weight} and violations will result in {@link gr.james.sampling.IllegalWeightException}. The weight ranges are
- * available in the table below.
+ * an item to be included in the sample. In the special case where the weights are exactly proportional to the first
+ * order inclusion probabilities, the implementation is marked with the {@link gr.james.sampling.StrictRandomSampling}
+ * marker interface; this is often referred to as <i>strictly proportional to size</i> in the literature. Consult the
+ * <i>Strict</i> column of the table below for more information on this. Implementations may also define certain
+ * restrictions on the values of {@code weight} and violations will result in
+ * {@link gr.james.sampling.IllegalWeightException}. The weight ranges are also available in the table below.
  * <h4>Determinism</h4>
  * Certain implementations rely on elements of the JRE that are not deterministic, for example
  * {@link java.util.PriorityQueue} and {@link java.util.TreeSet}. The side effect of this is that weighted algorithms
@@ -72,6 +75,7 @@
  * <th>Space</th>
  * <th>Precision</th>
  * <th>Weights</th>
+ * <th>Strict</th>
  * <th>Thread-Safe Version</th>
  * </tr>
  * </thead>
@@ -83,12 +87,14 @@
  * <td>D</td>
  * <td>-</td>
  * <td>-</td>
+ * <td>-</td>
  * </tr>
  * <tr>
  * <td>{@link gr.james.sampling.VitterXSampling}</td>
  * <td>Algorithm X by Vitter [3]</td>
  * <td>{@code O(k)}</td>
  * <td>D</td>
+ * <td>-</td>
  * <td>-</td>
  * <td>-</td>
  * </tr>
@@ -99,12 +105,14 @@
  * <td>D</td>
  * <td>-</td>
  * <td>-</td>
+ * <td>-</td>
  * </tr>
  * <tr>
  * <td>{@link gr.james.sampling.LiLSampling}</td>
  * <td>Algorithm L by Li [4]</td>
  * <td>{@code O(k)}</td>
  * <td>D</td>
+ * <td>-</td>
  * <td>-</td>
  * <td>{@link gr.james.sampling.LiLSamplingThreadSafe}</td>
  * </tr>
@@ -114,6 +122,7 @@
  * <td>{@code O(k)}</td>
  * <td>D</td>
  * <td>(0, +&infin;)</td>
+ * <td>Y</td>
  * <td>-</td>
  * </tr>
  * <tr>
@@ -122,6 +131,7 @@
  * <td>{@code O(k)}</td>
  * <td>ND</td>
  * <td>(0, +&infin;)</td>
+ * <td>N</td>
  * <td>-</td>
  * </tr>
  * <tr>
@@ -130,6 +140,7 @@
  * <td>{@code O(k)}</td>
  * <td>ND</td>
  * <td>(0, +&infin;)</td>
+ * <td>N</td>
  * <td>-</td>
  * </tr>
  * <tr>
@@ -138,6 +149,7 @@
  *  <td>{@code O(k)}</td>
  *  <td>ND</td>
  *  <td>(0, 1)</td>
+ *  <td>N</td>
  *  <td>-</td>
  * </tr>
  * </tbody>

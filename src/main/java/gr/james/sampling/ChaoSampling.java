@@ -20,7 +20,7 @@ import java.util.*;
  * @see <a href="https://doi.org/10.1080/02664769624152">Chao's list sequential scheme for unequal probability sampling
  * </a>
  */
-public class ChaoSampling<T> implements WeightedRandomSampling<T> {
+public class ChaoSampling<T> implements WeightedRandomSampling<T>, StrictRandomSampling {
     private final int sampleSize;
     private final Random random;
     private final List<T> sample;
