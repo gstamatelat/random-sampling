@@ -47,6 +47,11 @@
  * are not deterministic either because they typically rely on these data structures. This phenomenon is more prevalent
  * in {@link gr.james.sampling.ChaoSampling}, where, in the presence of ties, there could be instances of different
  * samples, even with the same seed and the same weighted elements.
+ * <h4>Thread Safety</h4>
+ * Implementations in this package are not designed to be thread-safe and should generally not be used in multithreaded
+ * environments. The exception is classes that are specifically marked with the
+ * {@link gr.james.sampling.ThreadSafeRandomSampling} interface that are thread-safe variants of normal implementations.
+ * Consult the table below for a list of thread-safe variants.
  * <h4>Precision</h4>
  * Many implementations have an accumulating state which causes the precision of the algorithms to degrade as the stream
  * becomes bigger. An example might be a variable state which strictly increases or decreases as elements are read from
