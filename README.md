@@ -27,16 +27,16 @@ Using Maven
 ```xml
 <dependency>
   <groupId>gr.james</groupId>
-  <artifactId>random-sampling</artifactId>
-  <version>0.19</version>
+    <artifactId>random-sampling</artifactId>
+    <version>0.20</version>
 </dependency>
 ```
 
 Using Gradle
 
 ```gradle
-implementation 'gr.james:random-sampling:0.19' // Runtime
-api            'gr.james:random-sampling:0.19' // Public API
+implementation 'gr.james:random-sampling:0.20' // Runtime
+api            'gr.james:random-sampling:0.20' // Public API
 ```
 
 ## Examples
