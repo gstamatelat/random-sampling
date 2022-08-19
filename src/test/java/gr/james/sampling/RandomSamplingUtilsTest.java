@@ -9,12 +9,13 @@ import java.util.stream.Collectors;
 /**
  * Tests for {@link RandomSamplingUtils#randomSelection(int, int, Random)}.
  */
-public class RandomSamplingUtilsRandomSelectionTest {
+public class RandomSamplingUtilsTest {
     /**
-     * Check correctness for n=6 and k=3. The total number of 3-tuples should be 60 with equal probability of inclusion.
+     * Check correctness of {@link RandomSamplingUtils#randomSelection(int, int, Random) randomSelection} for n=6 and
+     * k=3. The total number of 3-tuples should be 60 with equal probability of inclusion.
      */
     @Test
-    public void correctness() {
+    public void randomSelectionCorrectness() {
         final int REPS = 200000000;
         final Random rng = new Random();
         final Map<List<Integer>, Long> frequencies = new HashMap<>();
