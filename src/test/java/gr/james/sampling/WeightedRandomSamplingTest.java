@@ -1,5 +1,6 @@
 package gr.james.sampling;
 
+import gr.james.sampling.implementations.*;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,19 +21,21 @@ public class WeightedRandomSamplingTest {
     private static final int SAMPLE = 10;
 
     private final Supplier<WeightedRandomSampling<Integer>> impl;
+    private final Supplier<WeightedRandomSamplingCollector<Integer>> collector;
 
-    public WeightedRandomSamplingTest(Supplier<WeightedRandomSampling<Integer>> impl) {
-        this.impl = impl;
+    public WeightedRandomSamplingTest(WeightedRandomSamplingImplementation<Integer> impl) {
+        this.impl = () -> impl.weightedImplementation().apply(SAMPLE, RANDOM);
+        this.collector = () -> impl.weightedCollector().apply(SAMPLE, RANDOM);
     }
 
     @Parameterized.Parameters()
-    public static Collection<Supplier<WeightedRandomSampling<Integer>>> implementations() {
-        final Collection<Supplier<WeightedRandomSampling<Integer>>> implementations = new ArrayList<>();
-        implementations.add(() -> new EfraimidisSampling<>(SAMPLE, RANDOM));
-        implementations.add(() -> new ChaoSampling<>(SAMPLE, RANDOM));
-        implementations.add(() -> new SequentialPoissonSampling<>(SAMPLE, RANDOM));
-        implementations.add(() -> new ParetoSampling<>(SAMPLE, RANDOM));
-        return implementations;
+    public static Collection<RandomSamplingImplementation<Integer>> implementations() {
+        return Arrays.asList(
+                new EfraimidisImplementation<>(),
+                new ChaoImplementation<>(),
+                new SequentialPoissonImplementation<>(),
+                new ParetoImplementation<>()
+        );
     }
 
     /**
@@ -64,9 +67,6 @@ public class WeightedRandomSamplingTest {
             }
 
             for (int i = 0; i < d.length - 1; i++) {
-                if (d[i] > d[i + 1]) {
-                    System.out.println();
-                }
                 Assert.assertTrue(String.format("Correctness failed at stream size %d", STREAM), d[i] < d[i + 1]);
             }
         }
@@ -83,25 +83,9 @@ public class WeightedRandomSamplingTest {
         final int[] d = new int[STREAM];
 
         for (int reps = 0; reps < REPS; reps++) {
-            final WeightedRandomSamplingCollector<Integer> collector;
-
-            final WeightedRandomSampling<Integer> alg = impl.get();
-            if (alg instanceof EfraimidisSampling) {
-                collector = EfraimidisSampling.weightedCollector(SAMPLE, RANDOM);
-            } else if (alg instanceof ChaoSampling) {
-                collector = ChaoSampling.weightedCollector(SAMPLE, RANDOM);
-            } else if (alg instanceof SequentialPoissonSampling) {
-                collector = SequentialPoissonSampling.weightedCollector(SAMPLE, RANDOM);
-            } else if (alg instanceof ParetoSampling) {
-                collector = ParetoSampling.weightedCollector(SAMPLE, RANDOM);
-            } else {
-                throw new AssertionError();
-            }
-
             final Collection<Integer> sample = IntStream.range(0, STREAM).boxed()
                     .collect(Collectors.toMap(o -> o, o -> (o + 1.0) / (STREAM + 1.0)))
-                    .entrySet().stream().collect(collector);
-
+                    .entrySet().stream().collect(collector.get());
             for (int s : sample) {
                 d[s]++;
             }

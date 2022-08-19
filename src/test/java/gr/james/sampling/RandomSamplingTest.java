@@ -1,16 +1,12 @@
 package gr.james.sampling;
 
+import gr.james.sampling.implementations.*;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
 import java.util.*;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicIntegerArray;
 import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
@@ -26,24 +22,26 @@ public class RandomSamplingTest {
     private static final int SAMPLE = 10;
 
     private final Supplier<RandomSampling<Integer>> impl;
+    private final Supplier<RandomSamplingCollector<Integer>> collector;
 
-    public RandomSamplingTest(Supplier<RandomSampling<Integer>> impl) {
-        this.impl = impl;
+    public RandomSamplingTest(RandomSamplingImplementation<Integer> impl) {
+        this.impl = () -> impl.implementation().apply(SAMPLE, RANDOM);
+        this.collector = () -> impl.collector().apply(SAMPLE, RANDOM);
     }
 
     @Parameterized.Parameters()
-    public static Collection<Supplier<RandomSampling<Integer>>> implementations() {
-        final Collection<Supplier<RandomSampling<Integer>>> implementations = new ArrayList<>();
-        implementations.add(() -> new WatermanSampling<>(SAMPLE, RANDOM));
-        implementations.add(() -> new VitterXSampling<>(SAMPLE, RANDOM));
-        implementations.add(() -> new VitterZSampling<>(SAMPLE, RANDOM));
-        implementations.add(() -> new LiLSampling<>(SAMPLE, RANDOM));
-        implementations.add(() -> new LiLSamplingThreadSafe<>(SAMPLE, RANDOM));
-        implementations.add(() -> new EfraimidisSampling<>(SAMPLE, RANDOM));
-        implementations.add(() -> new ChaoSampling<>(SAMPLE, RANDOM));
-        implementations.add(() -> new SequentialPoissonSampling<>(SAMPLE, RANDOM));
-        implementations.add(() -> new ParetoSampling<>(SAMPLE, RANDOM));
-        return implementations;
+    public static Collection<RandomSamplingImplementation<Integer>> implementations() {
+        return Arrays.asList(
+                new WatermanImplementation<>(),
+                new VitterXImplementation<>(),
+                new VitterZImplementation<>(),
+                new LiLImplementation<>(),
+                new LiLThreadSafeImplementation<>(),
+                new EfraimidisImplementation<>(),
+                new ChaoImplementation<>(),
+                new SequentialPoissonImplementation<>(),
+                new ParetoImplementation<>()
+        );
     }
 
     /**
@@ -58,53 +56,27 @@ public class RandomSamplingTest {
 
         for (int test = 0; test < streamSizes.length; test++) {
             final int STREAM = streamSizes[test];
-            final int numCores = (impl.get() instanceof ThreadSafeRandomSampling) ?
-                    Runtime.getRuntime().availableProcessors() : 1;
             final int REPS = repsSizes[test];
 
-            final AtomicIntegerArray d = new AtomicIntegerArray(STREAM);
-            ExecutorService executorService = Executors.newFixedThreadPool(numCores);
-            List<Callable<Void>> taskList = new ArrayList<>(numCores);
+            final int[] d = new int[STREAM];
 
-            for (int core = 0; core < numCores; core++) {
-                taskList.add(() -> {
+            for (int reps = 0; reps < REPS; reps++) {
+                final RandomSampling<Integer> alg = impl.get();
 
-                    for (int reps = 0; reps < (REPS / numCores); reps++) {
-                        final RandomSampling<Integer> alg = impl.get();
+                for (int i = 0; i < STREAM; i++) {
+                    alg.feed(i);
+                }
 
-                        for (int i = 0; i < STREAM; i++) {
-                            alg.feed(i);
-                        }
-
-                        for (int s : alg.sample()) {
-                            d.incrementAndGet(s);
-                        }
-                    }
-
-                    return null;
-                });
+                for (int s : alg.sample()) {
+                    d[s]++;
+                }
             }
 
-            // wait until all threads are done
-            try {
-                executorService.invokeAll(taskList).stream().map(future -> {
-                    try {
-                        return future.get();
-                    } catch (InterruptedException | ExecutionException e) {
-                        throw new RuntimeException(e);
-                    }
-                });
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-
-            for (int i = 0; i < d.length(); i++) {
-                int c = d.get(i);
+            for (int i = 0; i < d.length - 1; i++) {
                 final double expected = (double) REPS * Math.min(SAMPLE, STREAM) / STREAM;
-                final double actual = (double) c;
                 assertEquals(
                         String.format("Correctness failed for streamSize %d and frequencies %s", STREAM, d),
-                        1, actual / expected, 1e-2
+                        1, d[i] / expected, 1e-2
                 );
             }
         }
@@ -121,33 +93,7 @@ public class RandomSamplingTest {
         final int[] d = new int[STREAM];
 
         for (int reps = 0; reps < REPS; reps++) {
-            final RandomSamplingCollector<Integer> collector;
-
-            final RandomSampling<Integer> alg = impl.get();
-            if (alg instanceof WatermanSampling) {
-                collector = WatermanSampling.collector(SAMPLE, RANDOM);
-            } else if (alg instanceof VitterXSampling) {
-                collector = VitterXSampling.collector(SAMPLE, RANDOM);
-            } else if (alg instanceof VitterZSampling) {
-                collector = VitterZSampling.collector(SAMPLE, RANDOM);
-            } else if (alg instanceof EfraimidisSampling) {
-                collector = EfraimidisSampling.collector(SAMPLE, RANDOM);
-            } else if (alg instanceof ChaoSampling) {
-                collector = ChaoSampling.collector(SAMPLE, RANDOM);
-            } else if (alg instanceof LiLSampling) {
-                collector = LiLSampling.collector(SAMPLE, RANDOM);
-            } else if (alg instanceof LiLSamplingThreadSafe) {
-                collector = LiLSamplingThreadSafe.collector(SAMPLE, RANDOM);
-            } else if (alg instanceof SequentialPoissonSampling) {
-                collector = SequentialPoissonSampling.collector(SAMPLE, RANDOM);
-            } else if (alg instanceof ParetoSampling) {
-                collector = ParetoSampling.collector(SAMPLE, RANDOM);
-            } else {
-                throw new AssertionError();
-            }
-
-            final Collection<Integer> sample = IntStream.range(0, STREAM).boxed().collect(collector);
-
+            final Collection<Integer> sample = IntStream.range(0, STREAM).boxed().collect(collector.get());
             for (int s : sample) {
                 d[s]++;
             }

@@ -1,14 +1,20 @@
 package gr.james.sampling;
 
+import gr.james.sampling.implementations.ChaoImplementation;
+import gr.james.sampling.implementations.WeightedRandomSamplingImplementation;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
+import java.util.function.Supplier;
 
-public class ChaoSamplingTest {
+/**
+ * Tests for strict weighted algorithms.
+ */
+@RunWith(Parameterized.class)
+public class StrictRandomSamplingTest {
 
     private static final Random RANDOM = new Random();
 
@@ -16,18 +22,33 @@ public class ChaoSamplingTest {
     private static final int SAMPLE = 5;
     private static final int REPS = 10000000;
 
+    private final Supplier<WeightedRandomSampling<Integer>> impl;
+    private final Supplier<WeightedRandomSamplingCollector<Integer>> collector;
+
+    public StrictRandomSamplingTest(WeightedRandomSamplingImplementation<Integer> impl) {
+        this.impl = () -> impl.weightedImplementation().apply(SAMPLE, RANDOM);
+        this.collector = () -> impl.weightedCollector().apply(SAMPLE, RANDOM);
+    }
+
+    @Parameterized.Parameters()
+    public static Collection<WeightedRandomSamplingImplementation<Integer>> implementations() {
+        return Arrays.asList(
+                new ChaoImplementation<>()
+        );
+    }
+
     /**
-     * In {@link ChaoSampling} the appearance probability must be proportional to the item weight.
+     * The appearance probability must be proportional to the item weight.
      */
     @Test
     public void correctness() {
         final int[] d = new int[STREAM];
         for (int reps = 0; reps < REPS; reps++) {
-            final ChaoSampling<Integer> chao = new ChaoSampling<>(SAMPLE, RANDOM);
+            final WeightedRandomSampling<Integer> wrs = impl.get();
             for (int i = 0; i < STREAM; i++) {
-                chao.feed(i, i + 1);
+                wrs.feed(i, i + 1);
             }
-            for (int s : chao.sample()) {
+            for (int s : wrs.sample()) {
                 d[s]++;
             }
         }
@@ -49,7 +70,7 @@ public class ChaoSamplingTest {
                 map.put(i, (double) (i + 1));
             }
             final Collection<Integer> sample =
-                    map.entrySet().stream().collect(ChaoSampling.weightedCollector(SAMPLE, RANDOM));
+                    map.entrySet().stream().collect(collector.get());
             for (int s : sample) {
                 d[s]++;
             }
