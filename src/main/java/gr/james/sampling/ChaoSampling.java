@@ -152,7 +152,8 @@ public class ChaoSampling<T> implements WeightedRandomSampling<T>, StrictRandomS
         // The first k items go straight into the A list
         if (this.impossible.size() + this.sample.size() < sampleSize) {
             assert this.sample.isEmpty();
-            this.impossible.add(new Weighted<>(item, weight));
+            final boolean added = this.impossible.add(new Weighted<>(item, weight));
+            assert added;
             return true;
         }
 
@@ -202,7 +203,8 @@ public class ChaoSampling<T> implements WeightedRandomSampling<T>, StrictRandomS
 
         if (w >= 1) {
             // New item is overweight and will be placed in A
-            this.impossible.add(new Weighted<>(item, weight));
+            final boolean added = this.impossible.add(new Weighted<>(item, weight));
+            assert added;
         } else if (w > add) {
             // New item is feasible and will be placed in C
             this.sample.add(item);
