@@ -1,9 +1,17 @@
 package gr.james.sampling;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
+
 /**
  * Represents an item with a weight.
  * <p>
  * This class is immutable and is meant for use in weighted random sampling algorithms.
+ * <p>
+ * The {@link #equals(Object)}, {@link #hashCode()} and {@link #compareTo(Weighted)} methods are implemented in such a
+ * way that two {@code a.equals(b) == (a == b)} and {@code (a.compareTo(b) == 0) == (a == b)}. As a result, two
+ * different references are always unequal.
  *
  * @param <T> the object type
  * @author Giorgos Stamatelatos
@@ -20,6 +28,11 @@ class Weighted<T> implements Comparable<Weighted<T>> {
     public final double weight;
 
     /**
+     * A list of ints to break the ties of {@link #compareTo(Weighted)} among elements with the same weight.
+     */
+    private final List<Integer> id;
+
+    /**
      * Construct a new {@link Weighted} from a given object and weight.
      * <p>
      * For performance reasons, no checks are performed on the inputs.
@@ -30,6 +43,7 @@ class Weighted<T> implements Comparable<Weighted<T>> {
     public Weighted(T object, double weight) {
         this.object = object;
         this.weight = weight;
+        this.id = new ArrayList<>();
     }
 
     /**
@@ -37,8 +51,8 @@ class Weighted<T> implements Comparable<Weighted<T>> {
      * as this object is less than, equal to, or greater than the specified object.
      * <p>
      * The comparison is based on the {@link #weight} values of the two {@link Weighted} objects. If the weights are of
-     * the same value, the comparison is based on {@link System#identityHashCode(Object)}. This means that
-     * {@code a.equals(b)} will evaluate to {@code 0} if and only if {@code a == b}.
+     * the same value, the comparison is performed using a hidden random internal state of the objects that guarantees
+     * that {@code a.compareTo(b) == 0} if and only if {@code a == b}.
      *
      * @param o the object to be compared
      * @return a negative integer, zero, or a positive integer as the object is less than, equal to, or greater than the
@@ -47,27 +61,42 @@ class Weighted<T> implements Comparable<Weighted<T>> {
      */
     @Override
     public int compareTo(Weighted<T> o) {
+        if (this == o) {
+            return 0;
+        }
+        assert !this.equals(o);
         final int c = Double.compare(weight, o.weight);
-        if (c == 0) {
-            assert (Integer.compare(System.identityHashCode(this), System.identityHashCode(o)) == 0) == (this.equals(o));
-            return Integer.compare(System.identityHashCode(this), System.identityHashCode(o));
-        } else {
-            assert !this.equals(o);
+        if (c != 0) {
             return c;
+        }
+        for (int i = 0; ; i++) {
+            assert this.id.size() >= i;
+            assert o.id.size() >= i;
+            if (this.id.size() == i) {
+                this.id.add(ThreadLocalRandom.current().nextInt());
+            }
+            if (o.id.size() == i) {
+                o.id.add(ThreadLocalRandom.current().nextInt());
+            }
+            if (this.id.get(i) > o.id.get(i)) {
+                return 1;
+            } else if (this.id.get(i) < o.id.get(i)) {
+                return -1;
+            }
         }
     }
 
     /**
      * Indicates whether some other object is "equal to" this one.
      * <p>
-     * The implementation delegates to an invocation of {@link Object#equals(Object)}.
+     * The implementation delegates to an invocation of {@link Object#equals(Object)} and returns {@code true} if and
+     * only if {@code this == obj}.
      *
      * @param obj the reference object with which to compare
      * @return {@code true} if this object is the same as the {@code obj} argument; {@code false} otherwise
      */
     @Override
     public boolean equals(Object obj) {
-        assert !super.equals(obj) || super.hashCode() == obj.hashCode();
         return super.equals(obj);
     }
 
