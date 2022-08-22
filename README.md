@@ -28,15 +28,15 @@ Using Maven
 <dependency>
     <groupId>gr.james</groupId>
     <artifactId>random-sampling</artifactId>
-    <version>0.20</version>
+    <version>0.21</version>
 </dependency>
 ```
 
 Using Gradle
 
 ```gradle
-implementation 'gr.james:random-sampling:0.20' // Runtime
-api            'gr.james:random-sampling:0.20' // Public API
+implementation 'gr.james:random-sampling:0.21' // Runtime
+api            'gr.james:random-sampling:0.21' // Public API
 ```
 
 ## Examples
