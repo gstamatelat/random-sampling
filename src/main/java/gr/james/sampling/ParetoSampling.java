@@ -137,6 +137,7 @@ public class ParetoSampling<T> implements WeightedRandomSampling<T> {
 
         // Calculate item weight
         final Weighted<T> newItem = new Weighted<>(item, (r * (1 - weight)) / ((1 - r) * weight));
+        assert newItem.weight >= 0.0; // weight can also be 0.0 because of double precision
 
         // Add item to reservoir
         if (pq.size() < sampleSize) {
