@@ -25,4 +25,9 @@ public class SequentialPoissonImplementation<T> implements WeightedRandomSamplin
     public BiFunction<Integer, Random, WeightedRandomSamplingCollector<T>> weightedCollector() {
         return SequentialPoissonSampling::weightedCollector;
     }
+
+    @Override
+    public String toString() {
+        return "SequentialPoisson";
+    }
 }

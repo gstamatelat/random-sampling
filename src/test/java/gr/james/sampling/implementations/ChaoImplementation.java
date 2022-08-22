@@ -25,4 +25,9 @@ public class ChaoImplementation<T> implements WeightedRandomSamplingImplementati
     public BiFunction<Integer, Random, WeightedRandomSamplingCollector<T>> weightedCollector() {
         return ChaoSampling::weightedCollector;
     }
+
+    @Override
+    public String toString() {
+        return "Chao";
+    }
 }

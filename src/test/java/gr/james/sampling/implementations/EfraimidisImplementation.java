@@ -25,4 +25,9 @@ public class EfraimidisImplementation<T> implements WeightedRandomSamplingImplem
     public BiFunction<Integer, Random, WeightedRandomSamplingCollector<T>> weightedCollector() {
         return EfraimidisSampling::weightedCollector;
     }
+
+    @Override
+    public String toString() {
+        return "Efraimidis";
+    }
 }

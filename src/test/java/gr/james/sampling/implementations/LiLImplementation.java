@@ -17,4 +17,9 @@ public class LiLImplementation<T> implements RandomSamplingImplementation<T> {
     public BiFunction<Integer, Random, RandomSamplingCollector<T>> collector() {
         return LiLSampling::collector;
     }
+
+    @Override
+    public String toString() {
+        return "LiL";
+    }
 }

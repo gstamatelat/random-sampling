@@ -25,4 +25,9 @@ public class ParetoImplementation<T> implements WeightedRandomSamplingImplementa
     public BiFunction<Integer, Random, WeightedRandomSamplingCollector<T>> weightedCollector() {
         return ParetoSampling::weightedCollector;
     }
+
+    @Override
+    public String toString() {
+        return "Pareto";
+    }
 }

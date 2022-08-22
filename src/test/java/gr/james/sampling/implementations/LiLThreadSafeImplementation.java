@@ -17,4 +17,9 @@ public class LiLThreadSafeImplementation<T> implements RandomSamplingImplementat
     public BiFunction<Integer, Random, RandomSamplingCollector<T>> collector() {
         return LiLSamplingThreadSafe::collector;
     }
+
+    @Override
+    public String toString() {
+        return "LiLThreadSafe";
+    }
 }

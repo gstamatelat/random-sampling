@@ -17,4 +17,9 @@ public class WatermanImplementation<T> implements RandomSamplingImplementation<T
     public BiFunction<Integer, Random, RandomSamplingCollector<T>> collector() {
         return WatermanSampling::collector;
     }
+
+    @Override
+    public String toString() {
+        return "Waterman";
+    }
 }

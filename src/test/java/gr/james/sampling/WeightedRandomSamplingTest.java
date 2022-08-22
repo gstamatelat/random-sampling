@@ -28,7 +28,7 @@ public class WeightedRandomSamplingTest {
         this.collector = () -> impl.weightedCollector().apply(SAMPLE, RANDOM);
     }
 
-    @Parameterized.Parameters()
+    @Parameterized.Parameters(name = "{0}")
     public static Collection<RandomSamplingImplementation<Integer>> implementations() {
         return Arrays.asList(
                 new EfraimidisImplementation<>(),

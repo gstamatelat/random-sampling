@@ -17,4 +17,9 @@ public class VitterXImplementation<T> implements RandomSamplingImplementation<T>
     public BiFunction<Integer, Random, RandomSamplingCollector<T>> collector() {
         return VitterXSampling::collector;
     }
+
+    @Override
+    public String toString() {
+        return "VitterX";
+    }
 }
