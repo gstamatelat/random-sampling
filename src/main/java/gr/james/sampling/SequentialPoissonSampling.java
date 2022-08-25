@@ -1,6 +1,6 @@
 package gr.james.sampling;
 
-import java.util.*;
+import java.util.Random;
 
 /**
  * Implementation of the algorithm by Ohlsson in <b>Sequential Poisson Sampling</b>.
@@ -17,13 +17,7 @@ import java.util.*;
  * @author Giorgos Stamatelatos
  * @see <a href="https://www.mendeley.com/catalogue/95bcff1f-86be-389c-ab3f-717796d22abd/">Sequential poisson sampling</a>
  */
-public class SequentialPoissonSampling<T> implements WeightedRandomSampling<T> {
-    private final int sampleSize;
-    private final Random random;
-    private final PriorityQueue<Weighted<T>> pq;
-    private final Collection<T> unmodifiableSample;
-    private long streamSize;
-
+public class SequentialPoissonSampling<T> extends AbstractOrderSampling<T> {
     /**
      * Construct a new instance of {@link SequentialPoissonSampling} using the specified sample size and RNG. The
      * implementation assumes that {@code random} conforms to the contract of {@link Random} and will perform no checks
@@ -35,39 +29,7 @@ public class SequentialPoissonSampling<T> implements WeightedRandomSampling<T> {
      * @throws IllegalArgumentException if {@code sampleSize} is less than 1
      */
     public SequentialPoissonSampling(int sampleSize, Random random) {
-        if (random == null) {
-            throw new NullPointerException("Random was null");
-        }
-        if (sampleSize < 1) {
-            throw new IllegalArgumentException("Sample size was less than 1");
-        }
-        this.random = random;
-        this.sampleSize = sampleSize;
-        this.streamSize = 0;
-        this.pq = new PriorityQueue<>(sampleSize, Comparator.reverseOrder());
-        this.unmodifiableSample = new AbstractCollection<T>() {
-            @Override
-            public Iterator<T> iterator() {
-                return new Iterator<T>() {
-                    final Iterator<Weighted<T>> it = pq.iterator();
-
-                    @Override
-                    public boolean hasNext() {
-                        return it.hasNext();
-                    }
-
-                    @Override
-                    public T next() {
-                        return it.next().object;
-                    }
-                };
-            }
-
-            @Override
-            public int size() {
-                return pq.size();
-            }
-        };
+        super(sampleSize, random);
     }
 
     /**
@@ -78,7 +40,7 @@ public class SequentialPoissonSampling<T> implements WeightedRandomSampling<T> {
      * @throws IllegalArgumentException if {@code sampleSize} is less than 1
      */
     public SequentialPoissonSampling(int sampleSize) {
-        this(sampleSize, new Random());
+        super(sampleSize);
     }
 
     /**
@@ -108,145 +70,47 @@ public class SequentialPoissonSampling<T> implements WeightedRandomSampling<T> {
     /**
      * {@inheritDoc}
      *
-     * @param item   {@inheritDoc}
      * @param weight {@inheritDoc}
      * @return {@inheritDoc}
-     * @throws NullPointerException   {@inheritDoc}
-     * @throws IllegalWeightException if {@code weight} is outside the range (0,+Inf)
      */
     @Override
-    public boolean feed(T item, double weight) {
-        // Checks
-        if (item == null) {
-            throw new NullPointerException("Item was null");
-        }
-        if (!(weight > 0 && weight < Double.POSITIVE_INFINITY)) {
-            throw new IllegalWeightException(String.format("Weight must be in (0,+Inf), was %s", weight));
-        }
+    protected boolean isWeightValid(double weight) {
+        return weight > 0 && weight < Double.POSITIVE_INFINITY;
+    }
 
-        // Produce a random value
-        final double r = RandomSamplingUtils.randomExclusive(random);
-
-        // Increase stream size
-        this.streamSize++;
-
-        // Calculate item weight
-        final Weighted<T> newItem = new Weighted<>(item, r / weight);
-        assert newItem.weight >= 0.0; // weight can also be 0.0 because of double precision
-
-        // Add item to reservoir
-        if (pq.size() < sampleSize) {
-            pq.add(newItem);
-            return true;
-        } else if (pq.peek().weight > newItem.weight) {
-            // Seems unfair for equal weight items to not have a chance to get in the sample
-            // Of course in the long run it hardly matters
-            assert pq.size() == sampleSize();
-            pq.poll();
-            pq.add(newItem);
-            return true;
-        }
-
-        return false;
+    /**
+     * Returns the string "(0,+Inf)", which is the acceptable weight range of this algorithm.
+     *
+     * @return the string "(0,+Inf)"
+     */
+    @Override
+    protected String weightRange() {
+        return "(0,+Inf)";
     }
 
     /**
      * {@inheritDoc}
      *
-     * @param items   {@inheritDoc}
-     * @param weights {@inheritDoc}
-     * @return {@inheritDoc}
-     * @throws NullPointerException     {@inheritDoc}
-     * @throws IllegalArgumentException {@inheritDoc}
-     * @throws IllegalWeightException   {@inheritDoc}
-     */
-    @Override
-    public boolean feed(Iterator<T> items, Iterator<Double> weights) {
-        return WeightedRandomSampling.super.feed(items, weights);
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @param items {@inheritDoc}
-     * @return {@inheritDoc}
-     * @throws NullPointerException   {@inheritDoc}
-     * @throws IllegalWeightException {@inheritDoc}
-     */
-    @Override
-    public boolean feed(Map<T, Double> items) {
-        return WeightedRandomSampling.super.feed(items);
-    }
-
-    /**
-     * {@inheritDoc}
-     *
+     * @param weight {@inheritDoc}
+     * @param rng    {@inheritDoc}
      * @return {@inheritDoc}
      */
     @Override
-    public Collection<T> sample() {
-        return this.unmodifiableSample;
+    protected double key(double weight, Random rng) {
+        assert isWeightValid(weight);
+        final double r = RandomSamplingUtils.randomExclusive(rng);
+        final double key = weight / r;
+        assert key >= 0.0; // weight can also be 0.0 because of double precision
+        return key;
     }
 
     /**
-     * {@inheritDoc}
+     * Returns {@code 1.0}, which is the default weight of this algorithm.
      *
-     * @return {@inheritDoc}
+     * @return {@code 1.0}
      */
     @Override
-    public final int sampleSize() {
-        assert this.sampleSize > 0;
-        return this.sampleSize;
-    }
-
-    /**
-     * Get the number of items that have been fed to the algorithm during the lifetime of this instance.
-     * <p>
-     * If more than {@link Long#MAX_VALUE} items has been fed to the instance, {@code streamSize()} will cycle the long
-     * values, continuing from {@link Long#MIN_VALUE}.
-     * <p>
-     * This method runs in constant time.
-     *
-     * @return the number of items that have been fed to the algorithm
-     */
-    @Override
-    public final long streamSize() {
-        return this.streamSize;
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @param item {@inheritDoc}
-     * @return {@inheritDoc}
-     * @throws NullPointerException {@inheritDoc}
-     */
-    @Override
-    public boolean feed(T item) {
-        return this.feed(item, 1.0);
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @param items {@inheritDoc}
-     * @return {@inheritDoc}
-     * @throws NullPointerException {@inheritDoc}
-     */
-    @Override
-    public boolean feed(Iterator<T> items) {
-        return WeightedRandomSampling.super.feed(items);
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @param items {@inheritDoc}
-     * @return {@inheritDoc}
-     * @throws NullPointerException {@inheritDoc}
-     */
-    @Override
-    public boolean feed(Iterable<T> items) {
-        return WeightedRandomSampling.super.feed(items);
+    protected double defaultWeight() {
+        return 1;
     }
 }
