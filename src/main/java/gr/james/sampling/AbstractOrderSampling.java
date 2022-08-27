@@ -149,14 +149,18 @@ public abstract class AbstractOrderSampling<T> implements WeightedRandomSampling
         // Calculate item weight
         final Weighted<T> newItem = new Weighted<>(item, this.key(weight, random));
 
-        // Add item to reservoir
+        // Add if reservoir is not full
         if (pq.size() < sampleSize) {
             pq.add(newItem);
             return true;
-        } else if (pq.peek().weight < newItem.weight) {
-            // Seems unfair for equal weight items to not have a chance to get in the sample
-            // Of course in the long run it hardly matters
-            assert pq.size() == sampleSize();
+        }
+
+        // Add if key is high
+        assert pq.size() == sampleSize();
+        final Weighted<T> least = pq.peek();
+        assert least != null;
+        assert least.compareTo(newItem) != 0;
+        if (least.compareTo(newItem) < 0) {
             pq.poll();
             pq.add(newItem);
             return true;
