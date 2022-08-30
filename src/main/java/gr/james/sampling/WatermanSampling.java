@@ -56,8 +56,16 @@ public class WatermanSampling<T> extends AbstractRandomSampling<T> {
         return new RandomSamplingCollector<>(() -> new WatermanSampling<>(sampleSize, random));
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @param streamSize {@inheritDoc}
+     * @param sampleSize {@inheritDoc}
+     * @param random     {@inheritDoc}
+     * @return {@inheritDoc}
+     */
     @Override
-    long skipLength(long streamSize, int sampleSize, Random random) {
+    protected long skipLength(long streamSize, int sampleSize, Random random) {
         streamSize++;
         long skipCount = 0;
         while (random.nextDouble() * streamSize >= sampleSize && streamSize > 0) {

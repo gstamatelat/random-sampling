@@ -60,14 +60,28 @@ public class LiLSampling<T> extends AbstractRandomSampling<T> {
         return new RandomSamplingCollector<>(() -> new LiLSampling<>(sampleSize, random));
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @param sampleSize {@inheritDoc}
+     * @param random     {@inheritDoc}
+     */
     @Override
-    void init(int sampleSize, Random random) {
+    protected void init(int sampleSize, Random random) {
         // W = Math.exp(Math.log(RandomSamplingUtils.randomExclusive(random)) / sampleSize);
         W = Math.pow(RandomSamplingUtils.randomExclusive(random), 1.0 / sampleSize);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @param streamSize {@inheritDoc}
+     * @param sampleSize {@inheritDoc}
+     * @param random     {@inheritDoc}
+     * @return {@inheritDoc}
+     */
     @Override
-    long skipLength(long streamSize, int sampleSize, Random random) {
+    protected long skipLength(long streamSize, int sampleSize, Random random) {
         final double random1 = RandomSamplingUtils.randomExclusive(random);
         final double random2 = RandomSamplingUtils.randomExclusive(random);
         long skip = (long) (Math.log(random1) / Math.log(1 - W));

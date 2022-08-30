@@ -58,13 +58,27 @@ public class VitterZSampling<T> extends AbstractRandomSampling<T> {
         return new RandomSamplingCollector<>(() -> new VitterZSampling<>(sampleSize, random));
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @param sampleSize {@inheritDoc}
+     * @param random     {@inheritDoc}
+     */
     @Override
-    void init(int sampleSize, Random random) {
+    protected void init(int sampleSize, Random random) {
         W = Math.pow(random.nextDouble(), -1.0 / sampleSize);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @param streamSize {@inheritDoc}
+     * @param sampleSize {@inheritDoc}
+     * @param random     {@inheritDoc}
+     * @return {@inheritDoc}
+     */
     @Override
-    long skipLength(long streamSize, int sampleSize, Random random) {
+    protected long skipLength(long streamSize, int sampleSize, Random random) {
         double term = streamSize - sampleSize + 1;
         while (true) {
             // Generate U and X

@@ -56,8 +56,16 @@ public class VitterXSampling<T> extends AbstractRandomSampling<T> {
         return new RandomSamplingCollector<>(() -> new VitterXSampling<>(sampleSize, random));
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @param streamSize {@inheritDoc}
+     * @param sampleSize {@inheritDoc}
+     * @param random     {@inheritDoc}
+     * @return {@inheritDoc}
+     */
     @Override
-    long skipLength(long streamSize, int sampleSize, Random random) {
+    protected long skipLength(long streamSize, int sampleSize, Random random) {
         streamSize++;
 
         final double r = random.nextDouble();

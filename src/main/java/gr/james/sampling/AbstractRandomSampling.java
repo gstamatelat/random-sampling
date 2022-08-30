@@ -5,6 +5,12 @@ import java.util.*;
 /**
  * This class provides a skeletal implementation of the {@link RandomSampling} interface to minimize the effort required
  * to implement that interface.
+ * <p>
+ * This class requires the implementation of 2 methods:
+ * <ul>
+ *     <li>{@link #skipLength(long, int, Random)}</li>
+ *     <li>{@link #init(int, Random)}</li>
+ * </ul>
  *
  * @param <T> the item type
  * @author Giorgos Stamatelatos
@@ -50,7 +56,7 @@ public abstract class AbstractRandomSampling<T> implements RandomSampling<T> {
      * @throws NullPointerException     if {@code random} is {@code null}
      * @throws IllegalArgumentException if {@code sampleSize} is less than 1
      */
-    AbstractRandomSampling(int sampleSize, Random random) {
+    protected AbstractRandomSampling(int sampleSize, Random random) {
         if (random == null) {
             throw new NullPointerException("Random was null");
         }
@@ -172,14 +178,14 @@ public abstract class AbstractRandomSampling<T> implements RandomSampling<T> {
     /**
      * Returns how many items should the algorithm skip given its state.
      * <p>
-     * The implementation of this method must only rely on the given arguments and not on the state of the instance.
+     * The implementation of this method relies on the given arguments and not on the state of the instance.
      *
      * @param streamSize how many items have been fed to the sampler
      * @param sampleSize expected sample size
      * @param random     the {@link Random} instance to use
      * @return how many items to skip
      */
-    abstract long skipLength(long streamSize, int sampleSize, Random random);
+    protected abstract long skipLength(long streamSize, int sampleSize, Random random);
 
     /**
      * Performs initialization logic.
@@ -189,6 +195,6 @@ public abstract class AbstractRandomSampling<T> implements RandomSampling<T> {
      * @param sampleSize expected sample size
      * @param random     the {@link Random} instance assigned to this instance
      */
-    void init(int sampleSize, Random random) {
+    protected void init(int sampleSize, Random random) {
     }
 }
