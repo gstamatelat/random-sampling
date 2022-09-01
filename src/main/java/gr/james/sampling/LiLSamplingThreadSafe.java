@@ -66,15 +66,29 @@ public class LiLSamplingThreadSafe<T> extends AbstractThreadSafeRandomSampling<T
         return new RandomSamplingCollector<>(() -> new LiLSamplingThreadSafe<>(sampleSize, random));
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @param sampleSize {@inheritDoc}
+     * @param random     {@inheritDoc}
+     */
     @Override
-    void init(int sampleSize, Random random) {
+    protected void init(int sampleSize, Random random) {
         //W = Math.pow(RandomSamplingUtils.randomExclusive(random), 1.0 / sampleSize);
         W = new AtomicLong();
         W.set(Double.doubleToLongBits(Math.pow(RandomSamplingUtils.randomExclusive(random), 1.0 / sampleSize)));
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @param streamSize {@inheritDoc}
+     * @param sampleSize {@inheritDoc}
+     * @param random     {@inheritDoc}
+     * @return {@inheritDoc}
+     */
     @Override
-    long skipLength(long streamSize, int sampleSize, Random random) {
+    protected long skipLength(long streamSize, int sampleSize, Random random) {
         final double random1 = RandomSamplingUtils.randomExclusive(random);
         final double random2 = RandomSamplingUtils.randomExclusive(random);
         double w = Double.longBitsToDouble(W.get());

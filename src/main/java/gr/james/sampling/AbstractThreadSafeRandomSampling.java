@@ -14,14 +14,40 @@ import java.util.concurrent.atomic.AtomicReferenceArray;
  * @author Michael Böckling
  */
 public abstract class AbstractThreadSafeRandomSampling<T> implements RandomSampling<T>, ThreadSafeRandomSampling {
+    /**
+     * The given sample size from the constructor.
+     */
+    protected final int sampleSize;
 
-    private final int sampleSize;
-    private final Random random;
-    private final AtomicReferenceArray<T> sample;
-    private final AtomicInteger samplesCount;
-    private final Collection<T> unmodifiableSample;
-    private AtomicLong streamSize;
-    private AtomicLong skip;
+    /**
+     * The given Random instance from the constructor.
+     */
+    protected final Random random;
+
+    /**
+     * The internal reservoir maintained by the algorithm.
+     */
+    protected final AtomicReferenceArray<T> sample;
+
+    /**
+     * The size of the internal reservoir maintained by the algorithm.
+     */
+    protected final AtomicInteger samplesCount;
+
+    /**
+     * The unmodifiable decorator around the sample.
+     */
+    protected final Collection<T> unmodifiableSample;
+
+    /**
+     * The counted stream size.
+     */
+    protected AtomicLong streamSize;
+
+    /**
+     * The next skip size.
+     */
+    protected AtomicLong skip;
 
     /**
      * Construct a new instance of this class using the specified sample size and RNG. The implementation assumes that
@@ -33,7 +59,7 @@ public abstract class AbstractThreadSafeRandomSampling<T> implements RandomSampl
      * @throws NullPointerException     if {@code random} is {@code null}
      * @throws IllegalArgumentException if {@code sampleSize} is less than 1
      */
-    AbstractThreadSafeRandomSampling(int sampleSize, Random random) {
+    protected AbstractThreadSafeRandomSampling(int sampleSize, Random random) {
         if (random == null) {
             throw new NullPointerException("Random was null");
         }
@@ -175,7 +201,7 @@ public abstract class AbstractThreadSafeRandomSampling<T> implements RandomSampl
      * @param random     the {@link Random} instance to use
      * @return how many items to skip
      */
-    abstract long skipLength(long streamSize, int sampleSize, Random random);
+    protected abstract long skipLength(long streamSize, int sampleSize, Random random);
 
     /**
      * Performs initialization logic.
@@ -185,7 +211,7 @@ public abstract class AbstractThreadSafeRandomSampling<T> implements RandomSampl
      * @param sampleSize expected sample size
      * @param random     the {@link Random} instance assigned to this instance
      */
-    void init(int sampleSize, Random random) {
+    protected void init(int sampleSize, Random random) {
     }
 
     static class AtomicReferenceArrayList<T> extends AbstractList<T> implements List<T>, RandomAccess {
