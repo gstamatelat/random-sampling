@@ -8,6 +8,12 @@ import java.util.concurrent.atomic.AtomicReferenceArray;
 /**
  * This class provides a skeletal implementation of the thread-safe variant of the {@link RandomSampling} interface to
  * minimize the effort required to implement that interface.
+ * <p>
+ * This class requires the implementation of 2 methods:
+ * <ul>
+ *     <li>{@link #skipLength(long, int, Random)}</li>
+ *     <li>{@link #init(int, Random)}</li>
+ * </ul>
  *
  * @param <T> the item type
  * @author Giorgos Stamatelatos
