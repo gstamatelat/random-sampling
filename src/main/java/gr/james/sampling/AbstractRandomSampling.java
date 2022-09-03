@@ -94,24 +94,26 @@ public abstract class AbstractRandomSampling<T> implements RandomSampling<T> {
         this.streamSize++;
         assert this.streamSize > 0;
 
-        // Skip items and add to reservoir
+        // Fill the reservoir
         if (sample.size() < sampleSize) {
             sample.add(item);
             assert sample.size() == Math.min(sampleSize(), streamSize());
             return true;
-        } else {
-            assert sample.size() == sampleSize;
-            if (skip > 0) {
-                skip--;
-                return false;
-            } else {
-                assert skip == 0;
-                sample.set(random.nextInt(sampleSize), item);
-                skip = skipLength(streamSize, sampleSize, random);
-                assert this.skip >= 0;
-                return true;
-            }
         }
+
+        // Skip items
+        assert sample.size() == sampleSize;
+        if (skip > 0) {
+            skip--;
+            return false;
+        }
+
+        // Accept and generate new skip
+        assert skip == 0;
+        sample.set(random.nextInt(sampleSize), item);
+        skip = skipLength(streamSize, sampleSize, random);
+        assert this.skip >= 0;
+        return true;
     }
 
     /**
