@@ -29,13 +29,13 @@ public class Benchmark {
         for (RandomSamplingImplementation<Object> impl : implementations) {
             double sum = 0;
             for (int rep = 0; rep < reps; rep++) {
-                sum += singlePerformance(impl) / 1000000.0;
+                sum += performance(impl) / 1000000.0;
             }
             System.out.printf("%18s %.0f ms%n", impl, sum / reps);
         }
     }
 
-    private static long singlePerformance(RandomSamplingImplementation<Object> impl) {
+    private static long performance(RandomSamplingImplementation<Object> impl) {
         final RandomSampling<Object> alg = impl.implementation().apply(sample, random);
         final long start = System.nanoTime();
         for (int i = 0; i < stream; i++) {
