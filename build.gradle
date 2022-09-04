@@ -72,6 +72,5 @@ javadoc {
 }
 
 dependencies {
-    testImplementation 'junit:junit:4.13.2',
-            'gr.james:stats:0.14'
+    testImplementation 'junit:junit:4.13.2'
 }
