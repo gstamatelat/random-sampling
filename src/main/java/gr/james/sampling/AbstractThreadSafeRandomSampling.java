@@ -56,16 +56,22 @@ public abstract class AbstractThreadSafeRandomSampling<T> implements RandomSampl
     protected AtomicLong skip;
 
     /**
+     * The skip function.
+     */
+    protected final SkipFunction skipFunction;
+
+    /**
      * Construct a new instance of this class using the specified sample size and RNG. The implementation assumes that
      * {@code random} conforms to the contract of {@link Random} and will perform no checks to ensure that. If this
      * contract is violated, the behavior is undefined.
      *
-     * @param sampleSize the sample size
-     * @param random     the RNG to use
+     * @param sampleSize          the sample size
+     * @param random              the RNG to use
+     * @param skipFunctionFactory the factory for the skip function
      * @throws NullPointerException     if {@code random} is {@code null}
      * @throws IllegalArgumentException if {@code sampleSize} is less than 1
      */
-    protected AbstractThreadSafeRandomSampling(int sampleSize, Random random) {
+    protected AbstractThreadSafeRandomSampling(int sampleSize, Random random, SkipFunctionFactory skipFunctionFactory) {
         if (random == null) {
             throw new NullPointerException("Random was null");
         }
@@ -80,6 +86,7 @@ public abstract class AbstractThreadSafeRandomSampling<T> implements RandomSampl
         this.samplesCount = new AtomicInteger(0);
         this.skip = new AtomicLong(skipLength(sampleSize, sampleSize, random));
         this.unmodifiableSample = new AtomicReferenceArrayList<>(sample, samplesCount);
+        this.skipFunction = skipFunctionFactory.create(sampleSize, random);
     }
 
     /**

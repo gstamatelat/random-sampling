@@ -34,7 +34,7 @@ public class LiLSampling<T> extends AbstractRandomSampling<T> {
      * @throws IllegalArgumentException if {@code sampleSize} is less than 1
      */
     public LiLSampling(int sampleSize, Random random) {
-        super(sampleSize, random);
+        super(sampleSize, random, LiLSkipFunction::new);
     }
 
     /**
@@ -94,7 +94,6 @@ public class LiLSampling<T> extends AbstractRandomSampling<T> {
         return skip;
     }
 
-    @Deprecated
     private static class LiLSkipFunction implements SkipFunction {
         private final int sampleSize;
         private final Random random;

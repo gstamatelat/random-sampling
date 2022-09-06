@@ -40,7 +40,7 @@ public class LiLSamplingThreadSafe<T> extends AbstractThreadSafeRandomSampling<T
      * @throws IllegalArgumentException if {@code sampleSize} is less than 1
      */
     public LiLSamplingThreadSafe(int sampleSize, Random random) {
-        super(sampleSize, random);
+        super(sampleSize, random, LiLThreadSafeSkipFunction::new);
     }
 
     /**
@@ -102,7 +102,6 @@ public class LiLSamplingThreadSafe<T> extends AbstractThreadSafeRandomSampling<T
         return skip;
     }
 
-    @Deprecated
     private static class LiLThreadSafeSkipFunction implements SkipFunction {
         private final int sampleSize;
         private final Random random;

@@ -30,7 +30,7 @@ public class VitterXSampling<T> extends AbstractRandomSampling<T> {
      * @throws IllegalArgumentException if {@code sampleSize} is less than 1
      */
     public VitterXSampling(int sampleSize, Random random) {
-        super(sampleSize, random);
+        super(sampleSize, random, VitterXSkipFunction::new);
     }
 
     /**
@@ -81,7 +81,6 @@ public class VitterXSampling<T> extends AbstractRandomSampling<T> {
         return skipCount;
     }
 
-    @Deprecated
     private static class VitterXSkipFunction implements SkipFunction {
         private final int sampleSize;
         private final Random random;

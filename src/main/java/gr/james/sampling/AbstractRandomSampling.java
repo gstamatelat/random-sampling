@@ -47,16 +47,22 @@ public abstract class AbstractRandomSampling<T> implements RandomSampling<T> {
     protected long skip;
 
     /**
+     * The skip function.
+     */
+    protected final SkipFunction skipFunction;
+
+    /**
      * Construct a new instance of this class using the specified sample size and RNG. The implementation assumes that
      * {@code random} conforms to the contract of {@link Random} and will perform no checks to ensure that. If this
      * contract is violated, the behavior is undefined.
      *
-     * @param sampleSize the sample size
-     * @param random     the RNG to use
+     * @param sampleSize          the sample size
+     * @param random              the RNG to use
+     * @param skipFunctionFactory the factory for the skip function
      * @throws NullPointerException     if {@code random} is {@code null}
      * @throws IllegalArgumentException if {@code sampleSize} is less than 1
      */
-    protected AbstractRandomSampling(int sampleSize, Random random) {
+    protected AbstractRandomSampling(int sampleSize, Random random, SkipFunctionFactory skipFunctionFactory) {
         if (random == null) {
             throw new NullPointerException("Random was null");
         }
@@ -70,6 +76,7 @@ public abstract class AbstractRandomSampling<T> implements RandomSampling<T> {
         this.sample = new ArrayList<>(sampleSize);
         this.skip = skipLength(sampleSize, sampleSize, random);
         this.unmodifiableSample = Collections.unmodifiableList(sample);
+        this.skipFunction = skipFunctionFactory.create(sampleSize, random);
     }
 
     /**
