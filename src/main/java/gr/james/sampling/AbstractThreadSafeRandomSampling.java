@@ -84,9 +84,9 @@ public abstract class AbstractThreadSafeRandomSampling<T> implements RandomSampl
         this.streamSize = new AtomicLong(0);
         this.sample = new AtomicReferenceArray<>(sampleSize);
         this.samplesCount = new AtomicInteger(0);
-        this.skip = new AtomicLong(skipLength(sampleSize, sampleSize, random));
         this.unmodifiableSample = new AtomicReferenceArrayList<>(sample, samplesCount);
         this.skipFunction = skipFunctionFactory.create(sampleSize, random);
+        this.skip = new AtomicLong(skipFunction.skip());
     }
 
     /**
@@ -132,7 +132,7 @@ public abstract class AbstractThreadSafeRandomSampling<T> implements RandomSampl
                 }
             } else {
                 assert currentSkipValue == 0;
-                long nextSkipValue = skipLength(streamSize, sampleSize, random);
+                long nextSkipValue = skipFunction.skip();
                 boolean skipCountUpdated = skip.compareAndSet(currentSkipValue, nextSkipValue);
                 if (skipCountUpdated) {
                     sample.set(random.nextInt(sampleSize), item);

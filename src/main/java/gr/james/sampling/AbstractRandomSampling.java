@@ -74,9 +74,9 @@ public abstract class AbstractRandomSampling<T> implements RandomSampling<T> {
         this.sampleSize = sampleSize;
         this.streamSize = 0;
         this.sample = new ArrayList<>(sampleSize);
-        this.skip = skipLength(sampleSize, sampleSize, random);
         this.unmodifiableSample = Collections.unmodifiableList(sample);
         this.skipFunction = skipFunctionFactory.create(sampleSize, random);
+        this.skip = skipFunction.skip();
     }
 
     /**
@@ -118,7 +118,7 @@ public abstract class AbstractRandomSampling<T> implements RandomSampling<T> {
         // Accept and generate new skip
         assert skip == 0;
         sample.set(random.nextInt(sampleSize), item);
-        skip = skipLength(streamSize, sampleSize, random);
+        skip = skipFunction.skip();
         assert this.skip >= 0;
         return true;
     }
