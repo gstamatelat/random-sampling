@@ -27,8 +27,6 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 public class LiLSamplingThreadSafe<T> extends AbstractThreadSafeRandomSampling<T> {
 
-    private AtomicLong W;
-
     /**
      * Construct a new instance of {@link LiLSamplingThreadSafe} using the specified sample size and RNG. The
      * implementation assumes that {@code random} conforms to the contract of {@link Random} and will perform no checks
@@ -64,42 +62,6 @@ public class LiLSamplingThreadSafe<T> extends AbstractThreadSafeRandomSampling<T
      */
     public static <E> RandomSamplingCollector<E> collector(int sampleSize, Random random) {
         return new RandomSamplingCollector<>(() -> new LiLSamplingThreadSafe<>(sampleSize, random));
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @param sampleSize {@inheritDoc}
-     * @param random     {@inheritDoc}
-     */
-    @Override
-    protected void init(int sampleSize, Random random) {
-        //W = Math.pow(RandomSamplingUtils.randomExclusive(random), 1.0 / sampleSize);
-        W = new AtomicLong();
-        W.set(Double.doubleToLongBits(Math.pow(RandomSamplingUtils.randomExclusive(random), 1.0 / sampleSize)));
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @param streamSize {@inheritDoc}
-     * @param sampleSize {@inheritDoc}
-     * @param random     {@inheritDoc}
-     * @return {@inheritDoc}
-     */
-    @Override
-    protected long skipLength(long streamSize, int sampleSize, Random random) {
-        final double random1 = RandomSamplingUtils.randomExclusive(random);
-        final double random2 = RandomSamplingUtils.randomExclusive(random);
-        double w = Double.longBitsToDouble(W.get());
-        long skip = (long) (Math.log(random1) / Math.log(1 - w));
-        assert skip >= 0 || skip == Long.MIN_VALUE;
-        if (skip == Long.MIN_VALUE) {  // Sometimes when W is very small, 1 - W = 1 and Math.log(1) = +0 instead of -0
-            skip = Long.MAX_VALUE;     // This results in negative infinity skip
-        }
-        // W = W * Math.pow(random2, 1.0 / sampleSize);
-        W.set(Double.doubleToLongBits(w * Math.pow(random2, 1.0 / sampleSize)));
-        return skip;
     }
 
     private static class LiLThreadSafeSkipFunction implements SkipFunction {

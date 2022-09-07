@@ -8,12 +8,6 @@ import java.util.concurrent.atomic.AtomicReferenceArray;
 /**
  * This class provides a skeletal implementation of the thread-safe variant of the {@link RandomSampling} interface to
  * minimize the effort required to implement that interface.
- * <p>
- * This class requires the implementation of 2 methods:
- * <ul>
- *     <li>{@link #skipLength(long, int, Random)}</li>
- *     <li>{@link #init(int, Random)}</li>
- * </ul>
  *
  * @param <T> the item type
  * @author Giorgos Stamatelatos
@@ -78,7 +72,6 @@ public abstract class AbstractThreadSafeRandomSampling<T> implements RandomSampl
         if (sampleSize < 1) {
             throw new IllegalArgumentException("Sample size was less than 1");
         }
-        init(sampleSize, random);
         this.random = random;
         this.sampleSize = sampleSize;
         this.streamSize = new AtomicLong(0);
@@ -202,29 +195,6 @@ public abstract class AbstractThreadSafeRandomSampling<T> implements RandomSampl
     @Override
     public final Collection<T> sample() {
         return this.unmodifiableSample;
-    }
-
-    /**
-     * Returns how many items should the algorithm skip given its state.
-     * <p>
-     * The implementation of this method must only rely on the given arguments and not on the state of the instance.
-     *
-     * @param streamSize how many items have been fed to the sampler
-     * @param sampleSize expected sample size
-     * @param random     the {@link Random} instance to use
-     * @return how many items to skip
-     */
-    protected abstract long skipLength(long streamSize, int sampleSize, Random random);
-
-    /**
-     * Performs initialization logic.
-     * <p>
-     * This method is invoked in the constructor.
-     *
-     * @param sampleSize expected sample size
-     * @param random     the {@link Random} instance assigned to this instance
-     */
-    protected void init(int sampleSize, Random random) {
     }
 
     static class AtomicReferenceArrayList<T> extends AbstractList<T> implements List<T>, RandomAccess {
