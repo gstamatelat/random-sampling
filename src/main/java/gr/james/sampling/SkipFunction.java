@@ -6,7 +6,7 @@ package gr.james.sampling;
  * counts in temporal order as the stream increases.
  */
 @FunctionalInterface
-interface SkipFunction {
+public interface SkipFunction {
     /**
      * Returns a {@code long} indicating how many elements the algorithm must skip.
      * <p>
