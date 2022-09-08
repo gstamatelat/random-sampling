@@ -8,12 +8,6 @@ import java.util.concurrent.atomic.AtomicReferenceArray;
 /**
  * This class provides a skeletal implementation of the thread-safe variant of the {@link RandomSampling} interface to
  * minimize the effort required to implement that interface.
- * <p>
- * This class requires the implementation of 2 methods:
- * <ul>
- *     <li>{@link #skipLength(long, int, Random)}</li>
- *     <li>{@link #init(int, Random)}</li>
- * </ul>
  *
  * @param <T> the item type
  * @author Giorgos Stamatelatos
@@ -56,30 +50,36 @@ public abstract class AbstractThreadSafeRandomSampling<T> implements RandomSampl
     protected AtomicLong skip;
 
     /**
+     * The skip function.
+     */
+    protected final SkipFunction skipFunction;
+
+    /**
      * Construct a new instance of this class using the specified sample size and RNG. The implementation assumes that
      * {@code random} conforms to the contract of {@link Random} and will perform no checks to ensure that. If this
      * contract is violated, the behavior is undefined.
      *
-     * @param sampleSize the sample size
-     * @param random     the RNG to use
+     * @param sampleSize          the sample size
+     * @param random              the RNG to use
+     * @param skipFunctionFactory the factory for the skip function
      * @throws NullPointerException     if {@code random} is {@code null}
      * @throws IllegalArgumentException if {@code sampleSize} is less than 1
      */
-    protected AbstractThreadSafeRandomSampling(int sampleSize, Random random) {
+    protected AbstractThreadSafeRandomSampling(int sampleSize, Random random, SkipFunctionFactory skipFunctionFactory) {
         if (random == null) {
             throw new NullPointerException("Random was null");
         }
         if (sampleSize < 1) {
             throw new IllegalArgumentException("Sample size was less than 1");
         }
-        init(sampleSize, random);
         this.random = random;
         this.sampleSize = sampleSize;
         this.streamSize = new AtomicLong(0);
         this.sample = new AtomicReferenceArray<>(sampleSize);
         this.samplesCount = new AtomicInteger(0);
-        this.skip = new AtomicLong(skipLength(sampleSize, sampleSize, random));
         this.unmodifiableSample = new AtomicReferenceArrayList<>(sample, samplesCount);
+        this.skipFunction = skipFunctionFactory.create(sampleSize, random);
+        this.skip = new AtomicLong(skipFunction.skip());
     }
 
     /**
@@ -125,7 +125,7 @@ public abstract class AbstractThreadSafeRandomSampling<T> implements RandomSampl
                 }
             } else {
                 assert currentSkipValue == 0;
-                long nextSkipValue = skipLength(streamSize, sampleSize, random);
+                long nextSkipValue = skipFunction.skip();
                 boolean skipCountUpdated = skip.compareAndSet(currentSkipValue, nextSkipValue);
                 if (skipCountUpdated) {
                     sample.set(random.nextInt(sampleSize), item);
@@ -195,29 +195,6 @@ public abstract class AbstractThreadSafeRandomSampling<T> implements RandomSampl
     @Override
     public final Collection<T> sample() {
         return this.unmodifiableSample;
-    }
-
-    /**
-     * Returns how many items should the algorithm skip given its state.
-     * <p>
-     * The implementation of this method must only rely on the given arguments and not on the state of the instance.
-     *
-     * @param streamSize how many items have been fed to the sampler
-     * @param sampleSize expected sample size
-     * @param random     the {@link Random} instance to use
-     * @return how many items to skip
-     */
-    protected abstract long skipLength(long streamSize, int sampleSize, Random random);
-
-    /**
-     * Performs initialization logic.
-     * <p>
-     * This method is invoked in the constructor.
-     *
-     * @param sampleSize expected sample size
-     * @param random     the {@link Random} instance assigned to this instance
-     */
-    protected void init(int sampleSize, Random random) {
     }
 
     static class AtomicReferenceArrayList<T> extends AbstractList<T> implements List<T>, RandomAccess {

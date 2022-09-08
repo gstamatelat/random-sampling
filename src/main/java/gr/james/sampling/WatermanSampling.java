@@ -30,7 +30,7 @@ public class WatermanSampling<T> extends AbstractRandomSampling<T> {
      * @throws IllegalArgumentException if {@code sampleSize} is less than 1
      */
     public WatermanSampling(int sampleSize, Random random) {
-        super(sampleSize, random);
+        super(sampleSize, random, WatermanSkipFunction::new);
     }
 
     /**
@@ -56,26 +56,6 @@ public class WatermanSampling<T> extends AbstractRandomSampling<T> {
         return new RandomSamplingCollector<>(() -> new WatermanSampling<>(sampleSize, random));
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * @param streamSize {@inheritDoc}
-     * @param sampleSize {@inheritDoc}
-     * @param random     {@inheritDoc}
-     * @return {@inheritDoc}
-     */
-    @Override
-    protected long skipLength(long streamSize, int sampleSize, Random random) {
-        streamSize++;
-        long skipCount = 0;
-        while (random.nextDouble() * streamSize >= sampleSize && streamSize > 0) {
-            streamSize++;
-            skipCount++;
-        }
-        return skipCount;
-    }
-
-    @Deprecated
     private static class WatermanSkipFunction implements SkipFunction {
         private final int sampleSize;
         private final Random random;

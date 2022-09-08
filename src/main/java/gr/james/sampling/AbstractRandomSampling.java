@@ -5,12 +5,6 @@ import java.util.*;
 /**
  * This class provides a skeletal implementation of the {@link RandomSampling} interface to minimize the effort required
  * to implement that interface.
- * <p>
- * This class requires the implementation of 2 methods:
- * <ul>
- *     <li>{@link #skipLength(long, int, Random)}</li>
- *     <li>{@link #init(int, Random)}</li>
- * </ul>
  *
  * @param <T> the item type
  * @author Giorgos Stamatelatos
@@ -47,29 +41,35 @@ public abstract class AbstractRandomSampling<T> implements RandomSampling<T> {
     protected long skip;
 
     /**
+     * The skip function.
+     */
+    protected final SkipFunction skipFunction;
+
+    /**
      * Construct a new instance of this class using the specified sample size and RNG. The implementation assumes that
      * {@code random} conforms to the contract of {@link Random} and will perform no checks to ensure that. If this
      * contract is violated, the behavior is undefined.
      *
-     * @param sampleSize the sample size
-     * @param random     the RNG to use
+     * @param sampleSize          the sample size
+     * @param random              the RNG to use
+     * @param skipFunctionFactory the factory for the skip function
      * @throws NullPointerException     if {@code random} is {@code null}
      * @throws IllegalArgumentException if {@code sampleSize} is less than 1
      */
-    protected AbstractRandomSampling(int sampleSize, Random random) {
+    protected AbstractRandomSampling(int sampleSize, Random random, SkipFunctionFactory skipFunctionFactory) {
         if (random == null) {
             throw new NullPointerException("Random was null");
         }
         if (sampleSize < 1) {
             throw new IllegalArgumentException("Sample size was less than 1");
         }
-        init(sampleSize, random);
         this.random = random;
         this.sampleSize = sampleSize;
         this.streamSize = 0;
         this.sample = new ArrayList<>(sampleSize);
-        this.skip = skipLength(sampleSize, sampleSize, random);
         this.unmodifiableSample = Collections.unmodifiableList(sample);
+        this.skipFunction = skipFunctionFactory.create(sampleSize, random);
+        this.skip = skipFunction.skip();
     }
 
     /**
@@ -111,7 +111,7 @@ public abstract class AbstractRandomSampling<T> implements RandomSampling<T> {
         // Accept and generate new skip
         assert skip == 0;
         sample.set(random.nextInt(sampleSize), item);
-        skip = skipLength(streamSize, sampleSize, random);
+        skip = skipFunction.skip();
         assert this.skip >= 0;
         return true;
     }
@@ -175,28 +175,5 @@ public abstract class AbstractRandomSampling<T> implements RandomSampling<T> {
     @Override
     public Collection<T> sample() {
         return this.unmodifiableSample;
-    }
-
-    /**
-     * Returns how many items should the algorithm skip given its state.
-     * <p>
-     * The implementation of this method relies on the given arguments and not on the state of the instance.
-     *
-     * @param streamSize how many items have been fed to the sampler
-     * @param sampleSize expected sample size
-     * @param random     the {@link Random} instance to use
-     * @return how many items to skip
-     */
-    protected abstract long skipLength(long streamSize, int sampleSize, Random random);
-
-    /**
-     * Performs initialization logic.
-     * <p>
-     * This method is invoked in the constructor.
-     *
-     * @param sampleSize expected sample size
-     * @param random     the {@link Random} instance assigned to this instance
-     */
-    protected void init(int sampleSize, Random random) {
     }
 }

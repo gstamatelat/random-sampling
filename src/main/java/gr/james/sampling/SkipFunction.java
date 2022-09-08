@@ -5,9 +5,8 @@ package gr.james.sampling;
  * reservoir. The {@code SkipFunction} works similarly to an iterator: it's {@link #skip()} method returns the skip
  * counts in temporal order as the stream increases.
  */
-@Deprecated
 @FunctionalInterface
-interface SkipFunction {
+public interface SkipFunction {
     /**
      * Returns a {@code long} indicating how many elements the algorithm must skip.
      * <p>
