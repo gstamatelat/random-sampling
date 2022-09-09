@@ -28,15 +28,15 @@ Using Maven
 <dependency>
     <groupId>gr.james</groupId>
     <artifactId>random-sampling</artifactId>
-    <version>0.25</version>
+    <version>0.26</version>
 </dependency>
 ```
 
 Using Gradle
 
 ```gradle
-implementation 'gr.james:random-sampling:0.25' // Runtime
-api            'gr.james:random-sampling:0.25' // Public API
+implementation 'gr.james:random-sampling:0.26' // Runtime
+api            'gr.james:random-sampling:0.26' // Public API
 ```
 
 ## Examples
@@ -121,6 +121,7 @@ System.out.println(sample);
 Signature: `WatermanSampling` implements `RandomSampling`
 
 #### References
+
 - The Art of Computer Programming, Vol II, Random Sampling and Shuffling.
 
 ### 2 Algorithm X by Vitter
@@ -128,6 +129,7 @@ Signature: `WatermanSampling` implements `RandomSampling`
 Signature: `VitterXSampling` implements `RandomSampling`
 
 #### References
+
 - [Vitter, Jeffrey S. "Random sampling with a reservoir." ACM Transactions on Mathematical Software (TOMS) 11.1 (1985): 37-57.](https://doi.org/10.1145/3147.3165)
 
 ### 3 Algorithm Z by Vitter
@@ -135,6 +137,7 @@ Signature: `VitterXSampling` implements `RandomSampling`
 Signature: `VitterZSampling` implements `RandomSampling`
 
 #### References
+
 - [Vitter, Jeffrey S. "Random sampling with a reservoir." ACM Transactions on Mathematical Software (TOMS) 11.1 (1985): 37-57.](https://doi.org/10.1145/3147.3165)
 
 ### 4 Algorithm L by Li
@@ -142,6 +145,7 @@ Signature: `VitterZSampling` implements `RandomSampling`
 Signature: `LiLSampling` implements `RandomSampling`
 
 #### References
+
 - [Li, Kim-Hung. "Reservoir-sampling algorithms of time complexity O (n (1+ log (N/n)))." ACM Transactions on Mathematical Software (TOMS) 20.4 (1994): 481-493.](https://doi.org/10.1145/198429.198435)
 
 ### 5 Algorithm A-Res by Efraimidis
@@ -149,6 +153,7 @@ Signature: `LiLSampling` implements `RandomSampling`
 Signature: `EfraimidisSampling` implements `WeightedRandomSampling`
 
 #### References
+
 - [Efraimidis, Pavlos S., and Paul G. Spirakis. "Weighted random sampling with a reservoir." Information Processing Letters 97.5 (2006): 181-185.](https://doi.org/10.1016/j.ipl.2005.11.003)
 
 ### 6 Algorithm by Chao
@@ -156,6 +161,7 @@ Signature: `EfraimidisSampling` implements `WeightedRandomSampling`
 Signature: `ChaoSampling` implements `WeightedRandomSampling`
 
 #### References
+
 - [Chao, M. T. "A general purpose unequal probability sampling plan." Biometrika 69.3 (1982): 653-656.](https://doi.org/10.2307/2336002)
 - [Sugden, R. A. "Chao's list sequential scheme for unequal probability sampling." Journal of Applied Statistics 23.4 (1996): 413-421.](https://doi.org/10.1080/02664769624152)
 
@@ -164,6 +170,7 @@ Signature: `ChaoSampling` implements `WeightedRandomSampling`
 Signature: `SequentialPoissonSampling` implements `WeightedRandomSampling`
 
 #### References
+
 - [Ohlsson, Esbjörn. "Sequential poisson sampling." Journal of official Statistics 14.2 (1998): 149.](https://www.mendeley.com/catalogue/95bcff1f-86be-389c-ab3f-717796d22abd/)
 
 ### 7 Algorithm by Rosén
@@ -171,6 +178,7 @@ Signature: `SequentialPoissonSampling` implements `WeightedRandomSampling`
 Signature: `ParetoSampling` implements `WeightedRandomSampling`
 
 #### References
+
 - [Rosén, Bengt. "Asymptotic theory for order sampling." Journal of Statistical Planning and Inference 62.2 (1997): 135-158.](https://doi.org/10.1016/S0378-3758(96)00185-1)
 - [Rosén, Bengt. "On sampling with probability proportional to size." Journal of statistical planning and inference 62.2 (1997): 159-191.](https://doi.org/10.1016/S0378-3758(96)00186-3)
 
