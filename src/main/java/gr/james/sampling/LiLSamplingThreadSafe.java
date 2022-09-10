@@ -65,15 +65,15 @@ public class LiLSamplingThreadSafe<T> extends AbstractThreadSafeRandomSampling<T
     }
 
     private static class LiLThreadSafeSkipFunction implements SkipFunction {
-        private final int sampleSize;
+        private final double sampleSizeReverse;
         private final Random random;
         private final AtomicLong W;
 
         public LiLThreadSafeSkipFunction(int sampleSize, Random random) {
-            this.sampleSize = sampleSize;
+            this.sampleSizeReverse = 1.0 / sampleSize;
             this.random = random;
             W = new AtomicLong();
-            W.set(Double.doubleToLongBits(Math.pow(RandomSamplingUtils.randomExclusive(random), 1.0 / sampleSize)));
+            W.set(Double.doubleToLongBits(Math.pow(RandomSamplingUtils.randomExclusive(random), sampleSizeReverse)));
         }
 
         @Override
@@ -81,13 +81,13 @@ public class LiLSamplingThreadSafe<T> extends AbstractThreadSafeRandomSampling<T
             final double random1 = RandomSamplingUtils.randomExclusive(random);
             final double random2 = RandomSamplingUtils.randomExclusive(random);
             double w = Double.longBitsToDouble(W.get());
-            long skip = (long) (Math.log(random1) / Math.log(1 - w));
-            assert skip >= 0 || skip == Long.MIN_VALUE;
-            if (skip == Long.MIN_VALUE) {  // Sometimes when W is very small, 1 - W = 1 and Math.log(1) = +0 instead of -0
-                skip = Long.MAX_VALUE;     // This results in negative infinity skip
+            final double skipDouble = Math.log(random1) / Math.log(1 - w);
+            assert skipDouble > 0 ^ skipDouble == Double.NEGATIVE_INFINITY; // Can be -Inf if W is tiny
+            if (skipDouble > Long.MAX_VALUE || skipDouble < 0) {
+                throw new StreamOverflowException();
             }
-            // W = W * Math.pow(random2, 1.0 / sampleSize);
-            W.set(Double.doubleToLongBits(w * Math.pow(random2, 1.0 / sampleSize)));
+            final long skip = (long) skipDouble;
+            W.set(Double.doubleToLongBits(w * Math.pow(random2, sampleSizeReverse)));
             return skip;
         }
     }
