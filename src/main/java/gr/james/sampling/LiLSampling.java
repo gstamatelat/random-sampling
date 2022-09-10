@@ -66,7 +66,7 @@ public class LiLSampling<T> extends AbstractRandomSampling<T> {
         public LiLSkipFunction(int sampleSize, Random random) {
             this.sampleSizeReverse = 1.0 / sampleSize;
             this.random = random;
-            this.W = Math.pow(RandomSamplingUtils.randomExclusive(random), 1.0 / sampleSize);
+            this.W = Math.pow(RandomSamplingUtils.randomExclusive(random), sampleSizeReverse);
         }
 
         @Override
