@@ -78,7 +78,7 @@ public abstract class AbstractRandomSampling<T> implements RandomSampling<T> {
      * @param item {@inheritDoc}
      * @return {@inheritDoc}
      * @throws NullPointerException    {@inheritDoc}
-     * @throws StreamOverflowException if the number of items fed exceeds {@link Long#MAX_VALUE}
+     * @throws StreamOverflowException {@inheritDoc}
      */
     @Override
     public boolean feed(T item) {
@@ -86,13 +86,9 @@ public abstract class AbstractRandomSampling<T> implements RandomSampling<T> {
         if (item == null) {
             throw new NullPointerException("Item was null");
         }
-        if (streamSize == Long.MAX_VALUE) {
-            throw new StreamOverflowException();
-        }
 
         // Increase stream size
         this.streamSize++;
-        assert this.streamSize > 0;
 
         // Fill the reservoir
         if (sample.size() < sampleSize) {
@@ -122,7 +118,7 @@ public abstract class AbstractRandomSampling<T> implements RandomSampling<T> {
      * @param items {@inheritDoc}
      * @return {@inheritDoc}
      * @throws NullPointerException    {@inheritDoc}
-     * @throws StreamOverflowException if the number of items fed exceeds {@link Long#MAX_VALUE}
+     * @throws StreamOverflowException {@inheritDoc}
      */
     @Override
     public boolean feed(Iterator<T> items) {
@@ -135,7 +131,7 @@ public abstract class AbstractRandomSampling<T> implements RandomSampling<T> {
      * @param items {@inheritDoc}
      * @return {@inheritDoc}
      * @throws NullPointerException    {@inheritDoc}
-     * @throws StreamOverflowException if the number of items fed exceeds {@link Long#MAX_VALUE}
+     * @throws StreamOverflowException {@inheritDoc}
      */
     @Override
     public boolean feed(Iterable<T> items) {
@@ -154,8 +150,10 @@ public abstract class AbstractRandomSampling<T> implements RandomSampling<T> {
     }
 
     /**
-     * Get the number of items that have been fed to the algorithm during the lifetime of this instance, which is a
-     * non-negative {@code long} value.
+     * Get the number of items that have been fed to the algorithm during the lifetime of this instance.
+     * <p>
+     * If more than {@link Long#MAX_VALUE} items has been fed to the instance, {@code streamSize()} will cycle the long
+     * values, continuing from {@link Long#MIN_VALUE}.
      * <p>
      * This method runs in constant time.
      *
@@ -163,7 +161,6 @@ public abstract class AbstractRandomSampling<T> implements RandomSampling<T> {
      */
     @Override
     public long streamSize() {
-        assert this.streamSize >= 0;
         return this.streamSize;
     }
 
