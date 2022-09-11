@@ -56,16 +56,18 @@
  * {@link gr.james.sampling.ThreadSafeRandomSampling} interface that are thread-safe variants of normal implementations.
  * Consult the table below for a list of thread-safe variants.
  * <h4>Precision</h4>
- * Many implementations have an accumulating state which causes the precision of the algorithms to degrade as the stream
+ * Implementations have an accumulating state which causes the precision of the algorithms to degrade as the stream
  * becomes bigger. An example might be a variable state which strictly increases or decreases as elements are read from
  * the stream. Because the implementations use finite precision data types (usually {@code double} or {@code long}),
- * this behavior causes the precision of these implementations to degrade as the stream size increases.
+ * this behavior causes the precision to degrade as the stream size increases. While all implementations are prone to
+ * precision degradation, this usually occurs for huge stream sizes of 2<sup>48</sup> or more elements (48 being the
+ * number of bits in the seed of the {@link java.util.Random} class).
  * <h4>Overflow</h4>
  * Related to the concept of precision, overflow refers to the situation where the precision has degraded into a
  * non-recurrent state that would prevent the algorithm from behaving consistently. In these cases the implementation
- * will throw {@link gr.james.sampling.StreamOverflowException} to indicate this state. Algorithms that are not prone to
- * precision degrading will never throw {@code StreamOverflowException} and are marked <em>ND</em> in the implementation
- * table below.
+ * will throw {@link gr.james.sampling.StreamOverflowException} (SOE) to indicate this state. All implementations are
+ * prone to precision degradation but not all will throw SOE. Implementations that throw SOE are marked in the table
+ * below.
  * <h3>Implementations</h3>
  * <table class="table" summary="">
  * <thead>
@@ -73,7 +75,7 @@
  * <th>Implementation</th>
  * <th>Algorithm</th>
  * <th>Space</th>
- * <th>Precision</th>
+ * <th>Overflow</th>
  * <th>Weights</th>
  * <th>Strict</th>
  * <th>Thread-Safe Version</th>
@@ -84,7 +86,7 @@
  * <td>{@link gr.james.sampling.WatermanSampling}</td>
  * <td>Algorithm R by Waterman [2]</td>
  * <td>{@code O(k)}</td>
- * <td>D</td>
+ * <td>Y</td>
  * <td>-</td>
  * <td>-</td>
  * <td>-</td>
@@ -93,7 +95,7 @@
  * <td>{@link gr.james.sampling.VitterXSampling}</td>
  * <td>Algorithm X by Vitter [3]</td>
  * <td>{@code O(k)}</td>
- * <td>D</td>
+ * <td>Y</td>
  * <td>-</td>
  * <td>-</td>
  * <td>-</td>
@@ -102,7 +104,7 @@
  * <td>{@link gr.james.sampling.VitterZSampling}</td>
  * <td>Algorithm Z by Vitter [3]</td>
  * <td>{@code O(k)}</td>
- * <td>D</td>
+ * <td>Y</td>
  * <td>-</td>
  * <td>-</td>
  * <td>-</td>
@@ -111,7 +113,7 @@
  * <td>{@link gr.james.sampling.LiLSampling}</td>
  * <td>Algorithm L by Li [4]</td>
  * <td>{@code O(k)}</td>
- * <td>D</td>
+ * <td>Y</td>
  * <td>-</td>
  * <td>-</td>
  * <td>{@link gr.james.sampling.LiLSamplingThreadSafe}</td>
@@ -120,7 +122,7 @@
  * <td>{@link gr.james.sampling.ChaoSampling}</td>
  * <td>Algorithm by Chao [5][6]</td>
  * <td>{@code O(k)}</td>
- * <td>D</td>
+ * <td>Y</td>
  * <td>(0, +&infin;)</td>
  * <td>Y</td>
  * <td>-</td>
@@ -129,7 +131,7 @@
  * <td>{@link gr.james.sampling.EfraimidisSampling}</td>
  * <td>Algorithm A-Res by Efraimidis [7]</td>
  * <td>{@code O(k)}</td>
- * <td>ND</td>
+ * <td>N</td>
  * <td>(0, +&infin;)</td>
  * <td>N</td>
  * <td>-</td>
@@ -138,7 +140,7 @@
  * <td>{@link gr.james.sampling.SequentialPoissonSampling}</td>
  * <td>Algorithm by Ohlsson [8]</td>
  * <td>{@code O(k)}</td>
- * <td>ND</td>
+ * <td>N</td>
  * <td>(0, +&infin;)</td>
  * <td>N</td>
  * <td>-</td>
@@ -147,7 +149,7 @@
  *  <td>{@link gr.james.sampling.ParetoSampling}</td>
  *  <td>Algorithm by Rosén [9][10]</td>
  *  <td>{@code O(k)}</td>
- *  <td>ND</td>
+ *  <td>N</td>
  *  <td>(0, 1)</td>
  *  <td>N</td>
  *  <td>-</td>
