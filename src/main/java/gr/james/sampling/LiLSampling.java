@@ -59,27 +59,27 @@ public class LiLSampling<T> extends AbstractRandomSampling<T> {
     }
 
     private static class LiLSkipFunction implements SkipFunction {
-        private final int sampleSize;
+        private final double sampleSizeReverse;
         private final Random random;
-        private double W;
+        public double W;
 
         public LiLSkipFunction(int sampleSize, Random random) {
-            this.sampleSize = sampleSize;
+            this.sampleSizeReverse = 1.0 / sampleSize;
             this.random = random;
-            this.W = Math.pow(RandomSamplingUtils.randomExclusive(random), 1.0 / sampleSize);
+            this.W = Math.pow(RandomSamplingUtils.randomExclusive(random), sampleSizeReverse);
         }
 
         @Override
         public long skip() throws StreamOverflowException {
             final double random1 = RandomSamplingUtils.randomExclusive(random);
             final double random2 = RandomSamplingUtils.randomExclusive(random);
-            long skip = (long) (Math.log(random1) / Math.log(1 - W));
-            assert skip >= 0 || skip == Long.MIN_VALUE;
-            if (skip == Long.MIN_VALUE) {  // Sometimes when W is very small, 1 - W = 1 and Math.log(1) = +0 instead of -0
-                skip = Long.MAX_VALUE;     // This results in negative infinity skip
+            final double skipDouble = Math.log(random1) / Math.log(1 - W);
+            assert skipDouble > 0 ^ skipDouble == Double.NEGATIVE_INFINITY; // Can be -Inf if W is tiny
+            if (skipDouble > Long.MAX_VALUE || skipDouble < 0) {
+                throw new StreamOverflowException();
             }
-            // W = W * Math.exp(Math.log(random2) / sampleSize);
-            W = W * Math.pow(random2, 1.0 / sampleSize);
+            final long skip = (long) skipDouble;
+            W = W * Math.pow(random2, sampleSizeReverse);
             return skip;
         }
     }

@@ -69,23 +69,19 @@ public class VitterXSampling<T> extends AbstractRandomSampling<T> {
 
         @Override
         public long skip() throws StreamOverflowException {
-            if (streamSize == Long.MAX_VALUE) {
-                throw new StreamOverflowException();
-            }
-
-            streamSize++;
-
             final double r = random.nextDouble();
-            long skipCount = 0;
-
-            double quot = (streamSize - sampleSize) / (double) streamSize;
-            while (quot > r && streamSize > 0) {
-                skipCount++;
-                streamSize++;
-                quot = (quot * (streamSize - sampleSize)) / (double) streamSize;
+            long skip = 0;
+            double quot = 1;
+            while (true) {
+                if (++streamSize < 0) {
+                    throw new StreamOverflowException();
+                }
+                quot *= (streamSize - sampleSize) / (double) streamSize;
+                if (quot <= r) {
+                    return skip;
+                }
+                skip++;
             }
-
-            return skipCount;
         }
     }
 }

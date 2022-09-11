@@ -71,15 +71,12 @@ public class VitterZSampling<T> extends AbstractRandomSampling<T> {
 
         @Override
         public long skip() throws StreamOverflowException {
-            if (streamSize == Long.MAX_VALUE) {
-                throw new StreamOverflowException();
-            }
-
             double term = streamSize - sampleSize + 1;
             while (true) {
                 // Generate U and X
                 double U = RandomSamplingUtils.randomExclusive(random);
                 double X = streamSize * (this.W - 1.0);
+                assert X >= 0;
                 long G = (long) X;
                 // Test if U <= h(G) / cg(X)
                 double lhs = Math.pow(((U * Math.pow(((streamSize + 1) / term), 2)) * (term + G)) / (streamSize + X), 1.0 / sampleSize);
@@ -87,6 +84,9 @@ public class VitterZSampling<T> extends AbstractRandomSampling<T> {
                 if (lhs < rhs) {
                     this.W = rhs / lhs;
                     streamSize += G + 1; // increase stream size
+                    if (streamSize < 0) {
+                        throw new StreamOverflowException();
+                    }
                     return G;
                 }
                 // Test if U <= f(G) / cg(X)
@@ -107,6 +107,9 @@ public class VitterZSampling<T> extends AbstractRandomSampling<T> {
                 this.W = Math.pow(random.nextDouble(), -1.0 / sampleSize);
                 if (Math.pow(y, 1.0 / sampleSize) <= (streamSize + X) / streamSize) {
                     streamSize += G + 1; // increase stream size
+                    if (streamSize < 0) {
+                        throw new StreamOverflowException();
+                    }
                     return G;
                 }
             }

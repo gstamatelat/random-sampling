@@ -88,7 +88,7 @@ public abstract class AbstractThreadSafeRandomSampling<T> implements RandomSampl
      * @param item {@inheritDoc}
      * @return {@inheritDoc}
      * @throws NullPointerException    {@inheritDoc}
-     * @throws StreamOverflowException if the number of items fed exceeds {@link Long#MAX_VALUE}
+     * @throws StreamOverflowException {@inheritDoc}
      */
     @Override
     public final boolean feed(T item) {
@@ -96,14 +96,9 @@ public abstract class AbstractThreadSafeRandomSampling<T> implements RandomSampl
         if (item == null) {
             throw new NullPointerException("Item was null");
         }
-        if (streamSize.get() == Long.MAX_VALUE) {
-            throw new StreamOverflowException();
-        }
 
         // Increase stream size
         long streamSize = this.streamSize.incrementAndGet();
-        assert streamSize > 0;
-
 
         // attempt to add to samples while we don't have a full count yet, until successful or array is full
         for (int samplesInArray = samplesCount.get(); samplesInArray < sampleSize; ) {
@@ -142,7 +137,7 @@ public abstract class AbstractThreadSafeRandomSampling<T> implements RandomSampl
      * @param items {@inheritDoc}
      * @return {@inheritDoc}
      * @throws NullPointerException    {@inheritDoc}
-     * @throws StreamOverflowException if the number of items fed exceeds {@link Long#MAX_VALUE}
+     * @throws StreamOverflowException {@inheritDoc}
      */
     @Override
     public final boolean feed(Iterator<T> items) {
@@ -155,7 +150,7 @@ public abstract class AbstractThreadSafeRandomSampling<T> implements RandomSampl
      * @param items {@inheritDoc}
      * @return {@inheritDoc}
      * @throws NullPointerException    {@inheritDoc}
-     * @throws StreamOverflowException if the number of items fed exceeds {@link Long#MAX_VALUE}
+     * @throws StreamOverflowException {@inheritDoc}
      */
     @Override
     public final boolean feed(Iterable<T> items) {
@@ -174,8 +169,10 @@ public abstract class AbstractThreadSafeRandomSampling<T> implements RandomSampl
     }
 
     /**
-     * Get the number of items that have been fed to the algorithm during the lifetime of this instance, which is a
-     * non-negative {@code long} value.
+     * Get the number of items that have been fed to the algorithm during the lifetime of this instance.
+     * <p>
+     * If more than {@link Long#MAX_VALUE} items has been fed to the instance, {@code streamSize()} will cycle the long
+     * values, continuing from {@link Long#MIN_VALUE}.
      * <p>
      * This method runs in constant time.
      *
@@ -183,7 +180,6 @@ public abstract class AbstractThreadSafeRandomSampling<T> implements RandomSampl
      */
     @Override
     public final long streamSize() {
-        assert this.streamSize.get() >= 0;
         return this.streamSize.get();
     }
 

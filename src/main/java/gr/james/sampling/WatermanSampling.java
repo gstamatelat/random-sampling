@@ -69,16 +69,16 @@ public class WatermanSampling<T> extends AbstractRandomSampling<T> {
 
         @Override
         public long skip() throws StreamOverflowException {
-            if (streamSize == Long.MAX_VALUE) {
-                throw new StreamOverflowException();
+            long skip = 0;
+            while (true) {
+                if (++streamSize < 0) {
+                    throw new StreamOverflowException();
+                }
+                if (random.nextDouble() * streamSize < sampleSize) {
+                    return skip;
+                }
+                skip++;
             }
-            streamSize++;
-            long skipCount = 0;
-            while (random.nextDouble() * streamSize >= sampleSize && streamSize > 0) {
-                streamSize++;
-                skipCount++;
-            }
-            return skipCount;
         }
     }
 }
