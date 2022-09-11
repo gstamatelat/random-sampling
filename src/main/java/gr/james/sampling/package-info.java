@@ -72,78 +72,78 @@
  * <table class="table" summary="">
  * <thead>
  * <tr>
- * <th>Implementation</th>
- * <th>Algorithm</th>
- * <th>Space</th>
- * <th>Overflow</th>
- * <th>Weights</th>
- * <th>Strict</th>
- * <th>Thread-Safe Version</th>
+ *  <th>Implementation</th>
+ *  <th>Algorithm</th>
+ *  <th>Space</th>
+ *  <th>Overflow</th>
+ *  <th>Weights</th>
+ *  <th>Strict</th>
+ *  <th>Thread-Safe Version</th>
  * </tr>
  * </thead>
  * <tbody>
  * <tr>
- * <td>{@link gr.james.sampling.WatermanSampling}</td>
- * <td>Algorithm R by Waterman [2]</td>
- * <td>{@code O(k)}</td>
- * <td>Y</td>
- * <td>-</td>
- * <td>-</td>
- * <td>-</td>
+ *  <td>{@link gr.james.sampling.WatermanSampling}</td>
+ *  <td>Algorithm R by Waterman [2]</td>
+ *  <td>{@code O(k)}</td>
+ *  <td>Y</td>
+ *  <td>-</td>
+ *  <td>-</td>
+ *  <td>-</td>
  * </tr>
  * <tr>
- * <td>{@link gr.james.sampling.VitterXSampling}</td>
- * <td>Algorithm X by Vitter [3]</td>
- * <td>{@code O(k)}</td>
- * <td>Y</td>
- * <td>-</td>
- * <td>-</td>
- * <td>-</td>
+ *  <td>{@link gr.james.sampling.VitterXSampling}</td>
+ *  <td>Algorithm X by Vitter [3]</td>
+ *  <td>{@code O(k)}</td>
+ *  <td>Y</td>
+ *  <td>-</td>
+ *  <td>-</td>
+ *  <td>-</td>
  * </tr>
  * <tr>
- * <td>{@link gr.james.sampling.VitterZSampling}</td>
- * <td>Algorithm Z by Vitter [3]</td>
- * <td>{@code O(k)}</td>
- * <td>Y</td>
- * <td>-</td>
- * <td>-</td>
- * <td>-</td>
+ *  <td>{@link gr.james.sampling.VitterZSampling}</td>
+ *  <td>Algorithm Z by Vitter [3]</td>
+ *  <td>{@code O(k)}</td>
+ *  <td>Y</td>
+ *  <td>-</td>
+ *  <td>-</td>
+ *  <td>-</td>
  * </tr>
  * <tr>
- * <td>{@link gr.james.sampling.LiLSampling}</td>
- * <td>Algorithm L by Li [4]</td>
- * <td>{@code O(k)}</td>
- * <td>Y</td>
- * <td>-</td>
- * <td>-</td>
- * <td>{@link gr.james.sampling.LiLSamplingThreadSafe}</td>
+ *  <td>{@link gr.james.sampling.LiLSampling}</td>
+ *  <td>Algorithm L by Li [4]</td>
+ *  <td>{@code O(k)}</td>
+ *  <td>Y</td>
+ *  <td>-</td>
+ *  <td>-</td>
+ *  <td>{@link gr.james.sampling.LiLSamplingThreadSafe}</td>
  * </tr>
  * <tr>
- * <td>{@link gr.james.sampling.ChaoSampling}</td>
- * <td>Algorithm by Chao [5][6]</td>
- * <td>{@code O(k)}</td>
- * <td>Y</td>
- * <td>(0, +&infin;)</td>
- * <td>Y</td>
- * <td>-</td>
+ *  <td>{@link gr.james.sampling.ChaoSampling}</td>
+ *  <td>Algorithm by Chao [5][6]</td>
+ *  <td>{@code O(k)}</td>
+ *  <td>Y</td>
+ *  <td>(0, +&infin;)</td>
+ *  <td>Y</td>
+ *  <td>-</td>
  * </tr>
  * <tr>
- * <td>{@link gr.james.sampling.EfraimidisSampling}</td>
- * <td>Algorithm A-Res by Efraimidis [7]</td>
- * <td>{@code O(k)}</td>
- * <td>N</td>
- * <td>(0, +&infin;)</td>
- * <td>N</td>
- * <td>-</td>
+ *  <td>{@link gr.james.sampling.EfraimidisSampling}</td>
+ *  <td>Algorithm A-Res by Efraimidis [7]</td>
+ *  <td>{@code O(k)}</td>
+ *  <td>N</td>
+ *  <td>(0, +&infin;)</td>
+ *  <td>N</td>
+ *  <td>-</td>
  * </tr>
  * <tr>
- * <td>{@link gr.james.sampling.SequentialPoissonSampling}</td>
- * <td>Algorithm by Ohlsson [8]</td>
- * <td>{@code O(k)}</td>
- * <td>N</td>
- * <td>(0, +&infin;)</td>
- * <td>N</td>
- * <td>-</td>
+ *  <td>{@link gr.james.sampling.SequentialPoissonSampling}</td>
+ *  <td>Algorithm by Ohlsson [8]</td>
+ *  <td>{@code O(k)}</td>
+ *  <td>N</td>
+ *  <td>(0, +&infin;)</td>
+ *  <td>N</td>
+ *  <td>-</td>
  * </tr>
  * <tr>
  *  <td>{@link gr.james.sampling.ParetoSampling}</td>
