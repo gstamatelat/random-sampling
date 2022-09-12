@@ -107,6 +107,17 @@ public class RandomSamplingTest {
     }
 
     /**
+     * All implementations should handle 2^28 stream size without problems.
+     */
+    @Test
+    public void largeStream() {
+        final RandomSampling<Integer> rs = impl.get();
+        for (long i = 0; i < 0x10000000L; i++) {
+            rs.feed(0);
+        }
+    }
+
+    /**
      * Equivalence between {@link RandomSampling#feed(Object)}, {@link RandomSampling#feed(Iterator)} and
      * {@link RandomSampling#feed(Iterable)}.
      */
