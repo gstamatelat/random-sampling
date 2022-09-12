@@ -64,11 +64,20 @@ public class LiLSamplingThreadSafe<T> extends AbstractThreadSafeRandomSampling<T
         return new RandomSamplingCollector<>(() -> new LiLSamplingThreadSafe<>(sampleSize, random));
     }
 
-    private static class LiLThreadSafeSkipFunction implements SkipFunction {
+    /**
+     * Implementation of {@link LiLSamplingThreadSafe} as a {@link SkipFunction}.
+     */
+    public static class LiLThreadSafeSkipFunction implements SkipFunction {
         private final double sampleSizeReverse;
         private final Random random;
         private final AtomicLong W;
 
+        /**
+         * Construct a new instance of this class with the given sample size and random number generator.
+         *
+         * @param sampleSize the sample size
+         * @param random     the source of randomness
+         */
         public LiLThreadSafeSkipFunction(int sampleSize, Random random) {
             this.sampleSizeReverse = 1.0 / sampleSize;
             this.random = random;
@@ -76,6 +85,12 @@ public class LiLSamplingThreadSafe<T> extends AbstractThreadSafeRandomSampling<T
             W.set(Double.doubleToLongBits(Math.pow(RandomSamplingUtils.randomExclusive(random), sampleSizeReverse)));
         }
 
+        /**
+         * {@inheritDoc}
+         *
+         * @return {@inheritDoc}
+         * @throws StreamOverflowException {@inheritDoc}
+         */
         @Override
         public long skip() throws StreamOverflowException {
             final double random1 = RandomSamplingUtils.randomExclusive(random);

@@ -58,17 +58,32 @@ public class LiLSampling<T> extends AbstractRandomSampling<T> {
         return new RandomSamplingCollector<>(() -> new LiLSampling<>(sampleSize, random));
     }
 
-    private static class LiLSkipFunction implements SkipFunction {
+    /**
+     * Implementation of {@link LiLSampling} as a {@link SkipFunction}.
+     */
+    public static class LiLSkipFunction implements SkipFunction {
         private final double sampleSizeReverse;
         private final Random random;
-        public double W;
+        private double W;
 
+        /**
+         * Construct a new instance of this class with the given sample size and random number generator.
+         *
+         * @param sampleSize the sample size
+         * @param random     the source of randomness
+         */
         public LiLSkipFunction(int sampleSize, Random random) {
             this.sampleSizeReverse = 1.0 / sampleSize;
             this.random = random;
             this.W = Math.pow(RandomSamplingUtils.randomExclusive(random), sampleSizeReverse);
         }
 
+        /**
+         * {@inheritDoc}
+         *
+         * @return {@inheritDoc}
+         * @throws StreamOverflowException {@inheritDoc}
+         */
         @Override
         public long skip() throws StreamOverflowException {
             final double random1 = RandomSamplingUtils.randomExclusive(random);

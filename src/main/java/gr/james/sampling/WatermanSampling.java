@@ -56,17 +56,32 @@ public class WatermanSampling<T> extends AbstractRandomSampling<T> {
         return new RandomSamplingCollector<>(() -> new WatermanSampling<>(sampleSize, random));
     }
 
-    private static class WatermanSkipFunction implements SkipFunction {
+    /**
+     * Implementation of {@link WatermanSampling} as a {@link SkipFunction}.
+     */
+    public static class WatermanSkipFunction implements SkipFunction {
         private final int sampleSize;
         private final Random random;
         private long streamSize;
 
+        /**
+         * Construct a new instance of this class with the given sample size and random number generator.
+         *
+         * @param sampleSize the sample size
+         * @param random     the source of randomness
+         */
         public WatermanSkipFunction(int sampleSize, Random random) {
             this.sampleSize = sampleSize;
             this.random = random;
             this.streamSize = sampleSize;
         }
 
+        /**
+         * {@inheritDoc}
+         *
+         * @return {@inheritDoc}
+         * @throws StreamOverflowException {@inheritDoc}
+         */
         @Override
         public long skip() throws StreamOverflowException {
             long skip = 0;
