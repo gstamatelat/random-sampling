@@ -123,9 +123,10 @@ public class RandomSamplingTest {
      */
     @Test
     public void feedAlternative() {
-        final RandomSampling<Integer> rs1 = impl.get();
-        final RandomSampling<Integer> rs2 = impl.get();
-        final RandomSampling<Integer> rs3 = impl.get();
+        final RandomSampling<Integer> rs1 = impl.get(); // Iterator
+        final RandomSampling<Integer> rs2 = impl.get(); // Iterable
+        final RandomSampling<Integer> rs3 = impl.get(); // Set
+        final RandomSampling<Integer> rs4 = impl.get(); // List
         final Set<Integer> set = new HashSet<>();
         for (int i = 0; i < SAMPLE; i++) {
             set.add(i);
@@ -133,12 +134,15 @@ public class RandomSamplingTest {
         }
         rs2.feed(set.iterator());
         rs3.feed(set);
+        rs4.feed(new ArrayList<>(set));
         Assert.assertTrue(RandomSamplingUtils.samplesEquals(rs1.sample(), rs2.sample()));
         Assert.assertTrue(RandomSamplingUtils.samplesEquals(rs2.sample(), rs3.sample()));
         assertEquals(rs1.streamSize(), rs2.streamSize());
         assertEquals(rs2.streamSize(), rs3.streamSize());
+        assertEquals(rs3.streamSize(), rs4.streamSize());
         assertEquals(rs1.sample().size(), rs2.sample().size());
         assertEquals(rs2.sample().size(), rs3.sample().size());
+        assertEquals(rs3.sample().size(), rs4.sample().size());
     }
 
     /**
