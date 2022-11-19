@@ -4,10 +4,6 @@ plugins {
 
 sourceCompatibility = 1.8
 
-repositories {
-    jcenter()
-}
-
 sourceSets {
     main {
         java {
