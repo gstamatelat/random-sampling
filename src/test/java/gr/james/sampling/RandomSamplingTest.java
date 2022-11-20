@@ -8,6 +8,7 @@ import org.junit.runners.Parameterized;
 
 import java.util.*;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static org.junit.Assert.assertEquals;
@@ -107,6 +108,46 @@ public class RandomSamplingTest {
     }
 
     /**
+     * Same test as {@link #correctness()} but for the feed(Iterator) and feed(Iterable) API.
+     */
+    @Test
+    public void feedAlternative() {
+        final int STREAM = 20;
+        final int REPS = 1000000;
+
+        final Map<String, int[]> d = new HashMap<>();
+        d.put("iterator", new int[STREAM]);
+        d.put("set", new int[STREAM]);
+        d.put("list", new int[STREAM]);
+
+        for (int reps = 0; reps < REPS; reps++) {
+            final Map<String, RandomSampling<Integer>> alg = new HashMap<>();
+            alg.put("iterator", impl.get());
+            alg.put("set", impl.get());
+            alg.put("list", impl.get());
+
+            alg.get("iterator").feed(IntStream.range(0, STREAM).iterator());
+            alg.get("set").feed(IntStream.range(0, STREAM).boxed().collect(Collectors.toSet()));
+            alg.get("list").feed(IntStream.range(0, STREAM).boxed().collect(Collectors.toList()));
+
+            for (String method : d.keySet()) {
+                final Collection<Integer> sample = alg.get(method).sample();
+                for (int s : sample) {
+                    d.get(method)[s]++;
+                }
+            }
+        }
+
+        for (String method : d.keySet()) {
+            for (int c : d.get(method)) {
+                final double expected = (double) REPS * SAMPLE / STREAM;
+                final double actual = (double) c;
+                assertEquals(1, actual / expected, 1e-2);
+            }
+        }
+    }
+
+    /**
      * All implementations should handle 2^28 stream size without problems.
      */
     @Test
@@ -115,34 +156,6 @@ public class RandomSamplingTest {
         for (long i = 0; i < 0x10000000L; i++) {
             rs.feed(0);
         }
-    }
-
-    /**
-     * Equivalence between {@link RandomSampling#feed(Object)}, {@link RandomSampling#feed(Iterator)} and
-     * {@link RandomSampling#feed(Iterable)}.
-     */
-    @Test
-    public void feedAlternative() {
-        final RandomSampling<Integer> rs1 = impl.get(); // Iterator
-        final RandomSampling<Integer> rs2 = impl.get(); // Iterable
-        final RandomSampling<Integer> rs3 = impl.get(); // Set
-        final RandomSampling<Integer> rs4 = impl.get(); // List
-        final Set<Integer> set = new HashSet<>();
-        for (int i = 0; i < SAMPLE; i++) {
-            set.add(i);
-            rs1.feed(i);
-        }
-        rs2.feed(set.iterator());
-        rs3.feed(set);
-        rs4.feed(new ArrayList<>(set));
-        Assert.assertTrue(RandomSamplingUtils.samplesEquals(rs1.sample(), rs2.sample()));
-        Assert.assertTrue(RandomSamplingUtils.samplesEquals(rs2.sample(), rs3.sample()));
-        assertEquals(rs1.streamSize(), rs2.streamSize());
-        assertEquals(rs2.streamSize(), rs3.streamSize());
-        assertEquals(rs3.streamSize(), rs4.streamSize());
-        assertEquals(rs1.sample().size(), rs2.sample().size());
-        assertEquals(rs2.sample().size(), rs3.sample().size());
-        assertEquals(rs3.sample().size(), rs4.sample().size());
     }
 
     /**
