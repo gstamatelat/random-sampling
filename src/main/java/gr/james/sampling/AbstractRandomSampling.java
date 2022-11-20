@@ -135,7 +135,29 @@ public abstract class AbstractRandomSampling<T> implements RandomSampling<T> {
      */
     @Override
     public boolean feed(Iterable<T> items) {
-        return RandomSampling.super.feed(items);
+        if (items instanceof RandomAccess) {
+            assert items instanceof List;
+            final List<T> itemsList = (List<T>) items;
+            boolean returnVar = false;
+            int i = 0;
+            while (this.sample.size() < sampleSize) {
+                boolean modified = this.feed(itemsList.get(i++));
+                assert modified;
+                returnVar = true;
+            }
+            while (this.skip < itemsList.size() - i) {
+                final int previousSkip = (int) this.skip; // skip can surely fit in int
+                this.skip = 0;
+                boolean modified = this.feed(itemsList.get(i + previousSkip));
+                assert modified;
+                returnVar = true;
+                i += previousSkip + 1;
+            }
+            this.skip -= itemsList.size() - i;
+            return returnVar;
+        } else {
+            return RandomSampling.super.feed(items);
+        }
     }
 
     /**
